@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regulus System — Combined Orrery & Survey</title>
+<title>UA.GOV â United Admiralty</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,54 +11,67 @@
   --bg: #03060e;
   --surface: #0b1120;
   --surface2: #101828;
-  --panel-bg: rgba(4,12,28,0.96);
   --border: rgba(40,100,180,0.25);
+  --border-bright: rgba(47,168,255,0.4);
   --accent: #2fa8ff;
   --accent2: #00ffc6;
   --accent3: #ff6b35;
   --gold: #ffcc44;
   --green: #00ffc6;
-  --warn: #ffb347;
   --text: rgba(160,200,230,0.85);
   --text-bright: #e8f4ff;
   --dim: rgba(100,140,180,0.45);
 }
-html, body {
-  width: 100%; height: 100%; overflow: hidden;
+
+html { scroll-behavior: smooth; }
+body {
   background: var(--bg);
   font-family: 'Share Tech Mono', monospace;
   color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-/* Starfield */
+
+/* ââ Starfield ââ */
 body::before {
   content: '';
   position: fixed; inset: 0;
   background-image:
-    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 8%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,0.25) 0%, transparent 100%),
-    radial-gradient(1px 1px at 75% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 20%, rgba(255,255,255,0.35) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.25) 0%, transparent 100%),
-    radial-gradient(2px 2px at 33% 55%, rgba(200,220,255,0.4) 0%, transparent 100%),
-    radial-gradient(2px 2px at 70% 45%, rgba(255,240,200,0.4) 0%, transparent 100%);
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 16% 82%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 91%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 75%, rgba(255,255,255,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 52%, rgba(200,220,255,0.40) 0%, transparent 100%),
+    radial-gradient(2px 2px at 68% 43%, rgba(255,240,200,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 5%  65%, rgba(200,230,255,0.30) 0%, transparent 100%),
+    radial-gradient(2px 2px at 88% 35%, rgba(255,230,200,0.28) 0%, transparent 100%);
   pointer-events: none; z-index: 0;
 }
-/* ── Header ── */
+
+/* ââ Header ââ */
 header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 52px;
-  background: rgba(3,6,14,0.94);
+  background: rgba(3,6,14,0.95);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 0;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
 }
+
 .logo-mark {
-  width: 32px; height: 32px; border-radius: 50%; margin: 0 14px 0 16px; flex-shrink: 0;
+  width: 32px; height: 32px; border-radius: 50%;
+  margin: 0 14px 0 16px; flex-shrink: 0;
   background: radial-gradient(circle at 35% 35%, #fff5d0, #ffcc44 30%, #ff6600 65%, #220000);
   box-shadow: 0 0 14px 3px rgba(255,180,50,0.45);
 }
+
+.header-brand { display: flex; flex-direction: column; justify-content: center; }
 .header-title {
   font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0.15em; color: var(--gold); white-space: nowrap;
@@ -66,1008 +79,586 @@ header {
 .header-sub {
   font-size: 9px; letter-spacing: 0.18em; color: var(--accent); margin-top: 1px;
 }
-.header-stats {
-  margin-left: auto; display: flex; gap: 20px; padding-right: 18px;
+
+.header-nav {
+  margin-left: auto;
+  display: flex; align-items: stretch;
+  height: 100%;
+  padding-right: 0;
+  border-left: 1px solid var(--border);
 }
-.stat-pill { text-align: center; }
-.stat-pill .val { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 600; color: var(--accent2); }
-.stat-pill .lbl { font-size: 8px; letter-spacing: 0.12em; color: var(--dim); }
-/* ── Mode Tabs ── */
-.mode-tabs {
-  display: flex; gap: 0; margin-left: 24px; border-left: 1px solid var(--border);
-}
-.mode-btn {
-  height: 52px; padding: 0 18px;
-  background: none; border: none; border-right: 1px solid var(--border);
+
+.nav-item {
+  display: flex; align-items: center;
+  padding: 0 18px;
   font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
-  color: var(--dim); cursor: pointer; transition: color .2s, background .2s;
+  color: var(--dim);
+  text-decoration: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer; transition: color .2s, background .2s;
+  position: relative;
 }
-.mode-btn:hover { color: var(--accent); background: rgba(47,168,255,0.05); }
-.mode-btn.active { color: var(--accent); background: rgba(47,168,255,0.08); }
-/* ── System Tabs ── */
-.system-tabs { display: flex; gap: 0; border-left: 1px solid var(--border); }
-.tab-btn {
-  height: 52px; padding: 0 14px;
-  background: none; border: none; border-right: 1px solid var(--border);
+.nav-item:hover { color: var(--accent); background: rgba(47,168,255,0.05); }
+.nav-item.active { color: var(--accent); background: rgba(47,168,255,0.07); }
+
+/* Dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; }
+.nav-dropdown-toggle::after {
+  content: 'â¾'; font-size: 9px; color: var(--dim);
+  transition: transform .2s;
+}
+.nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(180deg); color: var(--accent); }
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute; top: 100%; left: 0;
+  min-width: 240px;
+  background: rgba(3,6,14,0.97);
+  border: 1px solid var(--border); border-top: none;
+  backdrop-filter: blur(10px);
+  z-index: 300;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 10px 16px;
   font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
-  color: var(--dim); cursor: pointer; transition: color .2s, background .2s;
+  color: var(--dim); text-decoration: none;
+  border-bottom: 1px solid rgba(40,100,180,0.12);
+  transition: color .15s, background .15s;
 }
-.tab-btn:hover { color: var(--accent); background: rgba(47,168,255,0.05); }
-.tab-btn.active { color: var(--accent); background: rgba(47,168,255,0.08); }
-/* ── Controls ── */
-.controls {
-  display: flex; align-items: center; gap: 10px; padding: 0 14px;
+.nav-dropdown-menu a:last-child { border-bottom: none; }
+.nav-dropdown-menu a:hover { color: var(--accent); background: rgba(47,168,255,0.06); }
+.nav-dropdown-menu .menu-section {
+  padding: 8px 16px 4px;
+  font-size: 8px; letter-spacing: 0.18em;
+  color: rgba(40,100,180,0.5);
+  border-bottom: 1px solid rgba(40,100,180,0.12);
 }
-.ctrl-label { font-size: 9px; letter-spacing: 0.1em; color: var(--dim); }
-.speed-slider {
-  -webkit-appearance: none; width: 80px; height: 3px;
-  background: rgba(47,168,255,0.2); border-radius: 2px; outline: none; cursor: pointer;
+
+/* ââ Main ââ */
+main { padding-top: 52px; position: relative; z-index: 1; }
+
+/* ââ Section scaffolding ââ */
+.section-wrap {
+  max-width: 1440px; margin: 0 auto;
+  padding: 48px 32px;
 }
-.speed-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 10px; height: 10px;
-  border-radius: 50%; background: var(--accent); cursor: pointer;
+.section-eyebrow {
+  font-size: 9px; letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px;
 }
-.pause-btn {
-  height: 26px; padding: 0 10px;
-  background: rgba(47,168,255,0.1); border: 1px solid rgba(47,168,255,0.3);
-  font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.08em;
-  color: var(--accent); cursor: pointer; border-radius: 2px;
+.section-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 24px; height: 1px; background: var(--accent); opacity: 0.6;
 }
-.pause-btn:hover { background: rgba(47,168,255,0.2); }
-/* ── Views ── */
-.view-container {
-  position: fixed; inset: 52px 0 0 0; z-index: 1;
+.section-heading {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.08em;
+  margin-bottom: 6px;
 }
-.view-pane { position: absolute; inset: 0; display: none; }
-.view-pane.active { display: block; }
-/* ── Orrery Canvas ── */
-canvas { width: 100%; height: 100%; display: block; }
-/* ── Legend ── */
-.legend {
-  position: absolute; bottom: 16px; left: 16px;
-  background: var(--panel-bg); border: 1px solid var(--border);
-  padding: 12px 14px; min-width: 160px;
-  font-size: 9px; letter-spacing: 0.06em; line-height: 1.7;
+.section-desc {
+  font-size: 11px; color: var(--dim); letter-spacing: 0.06em;
+  margin-bottom: 28px;
 }
-.legend-title {
-  font-family: 'Orbitron', sans-serif; font-size: 8px; font-weight: 600;
-  letter-spacing: 0.15em; color: var(--dim); margin-bottom: 6px; margin-top: 4px;
+
+/* ââ Map Card ââ */
+.map-meta-row {
+  display: flex; gap: 28px; margin-bottom: 20px;
+  flex-wrap: wrap;
 }
-.legend-title:first-child { margin-top: 0; }
-.legend-item { display: flex; align-items: center; gap: 7px; color: var(--text); }
-.legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.zoom-hint {
-  position: absolute; bottom: 16px; right: 16px;
-  font-size: 8px; letter-spacing: 0.1em; color: var(--dim);
-  text-align: right; line-height: 1.8; pointer-events: none;
-}
-/* ── Tooltip ── */
-.tooltip {
-  position: absolute; pointer-events: none; display: none;
-  background: rgba(4,12,28,0.92); border: 1px solid var(--border);
-  padding: 5px 9px; font-size: 10px; color: var(--accent);
-  letter-spacing: 0.05em; white-space: nowrap; z-index: 200;
-}
-/* ── Info Panel (shared — orrery & survey detail) ── */
-.info-panel {
-  position: absolute; top: 0; right: 0; width: 360px;
-  background: rgba(4,12,28,0.97); border-left: 1px solid var(--border);
-  transform: translateX(110%); transition: transform .3s cubic-bezier(.2,.8,.3,1);
-  z-index: 300; max-height: 100%; overflow-y: auto;
-  backdrop-filter: blur(16px);
-}
-.info-panel.open { transform: translateX(0); }
-.info-panel::-webkit-scrollbar { width: 4px; }
-.info-panel::-webkit-scrollbar-track { background: transparent; }
-.info-panel::-webkit-scrollbar-thumb { background: rgba(47,168,255,0.3); border-radius: 2px; }
-.close-info {
-  position: absolute; top: 10px; right: 10px;
-  background: none; border: 1px solid var(--border); color: var(--dim); cursor: pointer;
-  font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 3px 9px;
-  border-radius: 2px; transition: color .2s, border-color .2s;
-}
-.close-info:hover { color: var(--accent); border-color: var(--accent); }
-.info-system-tag {
-  font-size: 8px; letter-spacing: 0.2em; color: var(--dim);
-  padding: 14px 16px 0; font-family: 'Orbitron', sans-serif;
-}
-.info-name {
-  font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 600;
-  color: #fff; padding: 4px 16px 2px; letter-spacing: 0.05em; padding-right: 50px;
-}
-.info-status { font-size: 10px; padding: 0 16px 10px; letter-spacing: 0.12em; }
-.info-status.colony   { color: var(--green); }
-.info-status.inhabited { color: #88ddff; }
-.info-status.uninhabited { color: var(--dim); }
-.info-status.gas      { color: #ffaa44; }
-.info-divider { height: 1px; background: var(--border); margin: 0 16px; }
-.info-section { padding: 10px 16px 4px; }
-.info-section-title {
-  font-family: 'Orbitron', sans-serif; font-size: 8px; font-weight: 600;
-  letter-spacing: 0.2em; color: var(--dim); margin-bottom: 8px;
-}
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; padding-bottom: 6px; }
-.info-item .k { font-size: 8px; letter-spacing: 0.1em; color: var(--dim); margin-bottom: 1px; }
-.info-item .v { font-size: 11px; color: var(--text); }
-.info-item .v.hot    { color: #ff6644; }
-.info-item .v.warm   { color: #ffaa44; }
-.info-item .v.cool   { color: #88ddff; }
-.info-item .v.cold   { color: #aaccff; }
-.info-item .v.frozen { color: #cceeff; }
-.info-item .v.accent { color: var(--green); }
-/* ── Body vis ── */
-.panel-body-vis { display: flex; justify-content: center; padding: 12px 0 16px; }
-.body-circle {
-  width: 70px; height: 70px; border-radius: 50%;
-  box-shadow: 0 0 30px rgba(255,255,255,0.08), inset -8px -8px 20px rgba(0,0,0,0.6);
-}
-/* ── Economic summary block ── */
-.econ-block {
-  margin: 0 16px 12px; padding: 10px 12px;
-  background: rgba(47,168,255,0.05); border: 1px solid rgba(47,168,255,0.15);
+.map-meta-pill {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 4px;
 }
-.econ-block-title {
-  font-family: 'Orbitron', sans-serif; font-size: 8px; font-weight: 600;
-  letter-spacing: 0.18em; color: var(--accent); margin-bottom: 6px;
+.map-meta-pill .val {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--accent2);
 }
-.econ-block p {
-  font-family: 'Exo 2', 'Share Tech Mono', sans-serif; font-size: 10.5px;
-  line-height: 1.6; color: var(--text); margin-bottom: 6px; font-weight: 300;
+.map-meta-pill .lbl {
+  font-size: 8px; letter-spacing: 0.14em; color: var(--dim);
 }
-.econ-block p:last-child { margin-bottom: 0; }
-.econ-tag {
-  display: inline-block; padding: 1px 6px; border-radius: 2px;
-  font-size: 9px; letter-spacing: 0.05em; margin-right: 3px;
+
+.map-card {
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow:
+    0 0 60px rgba(47,168,255,0.10),
+    0 0 120px rgba(47,168,255,0.05),
+    inset 0 0 40px rgba(0,0,0,0.3);
+  position: relative;
 }
-.econ-tag.surplus { background: rgba(0,255,198,0.12); color: var(--accent2); }
-.econ-tag.deficit { background: rgba(255,107,53,0.12); color: var(--accent3); }
-.econ-tag.critical { background: rgba(255,60,60,0.15); color: #ff6666; }
-.econ-tag.growth { background: rgba(255,200,68,0.12); color: var(--gold); }
-/* ── Survey Table View ── */
-.survey-shell {
-  display: grid; grid-template-rows: auto 1fr; grid-template-columns: 220px 1fr;
-  grid-template-areas: "sidebar main"; height: 100%;
+.map-card::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--surface);
 }
-.survey-sidebar {
-  grid-area: sidebar; border-right: 1px solid var(--border);
-  background: rgba(11,17,32,0.7); padding: 16px 0; overflow-y: auto;
+.map-card iframe {
+  position: relative; z-index: 1;
+  width: 100%; height: 700px;
+  border: none; display: block;
 }
-.sidebar-label {
-  font-size: 9px; color: var(--dim); letter-spacing: 0.18em; padding: 0 16px 8px;
+
+/* ââ Divider ââ */
+.section-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  margin: 0;
 }
-.sys-btn {
+
+/* ââ Planet Cards ââ */
+.planets-header {
+  text-align: center;
+  padding: 56px 32px 20px;
+}
+.planets-header .section-eyebrow { justify-content: center; }
+.planets-header .section-eyebrow::before { display: none; }
+.planets-heading {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px; font-weight: 900;
+  color: var(--text-bright); letter-spacing: 0.12em;
+  text-shadow: 0 0 40px rgba(47,168,255,0.3);
+}
+.planets-sub {
+  font-size: 11px; color: var(--dim); letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+
+/* Individual planet cards */
+.planet-card {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 60px 10% 60px 8%;
+}
+.planet-card:last-child { border-bottom: 1px solid var(--border); }
+
+/* Nebula atmosphere background per planet */
+.planet-card.abaia {
+  background:
+    radial-gradient(ellipse 60% 80% at 75% 50%, rgba(15,50,100,0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(8,20,40,0.6) 0%, transparent 100%),
+    var(--bg);
+}
+.planet-card.liora {
+  background:
+    radial-gradient(ellipse 60% 80% at 75% 50%, rgba(20,45,80,0.3) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(8,16,30,0.6) 0%, transparent 100%),
+    var(--bg);
+}
+.planet-card.vexsis {
+  background:
+    radial-gradient(ellipse 60% 80% at 75% 50%, rgba(10,45,25,0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(5,15,10,0.6) 0%, transparent 100%),
+    var(--bg);
+}
+
+/* Planet globe CSS art */
+.planet-globe {
+  position: absolute;
+  right: 7%;
+  top: 50%; transform: translateY(-50%);
+  width: 340px; height: 340px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Abaia â ocean world, blue-green */
+.planet-card.abaia .planet-globe {
+  background:
+    radial-gradient(circle at 28% 25%, rgba(255,255,255,0.12) 0%, transparent 18%),
+    radial-gradient(circle at 58% 18%, rgba(255,255,255,0.08) 0%, transparent 14%),
+    radial-gradient(circle at 38% 62%, rgba(70,160,90,0.75) 0%, transparent 28%),
+    radial-gradient(circle at 22% 50%, rgba(55,140,75,0.60) 0%, transparent 18%),
+    radial-gradient(circle at 68% 68%, rgba(45,120,65,0.55) 0%, transparent 22%),
+    radial-gradient(circle at 80% 35%, rgba(30,90,50,0.40) 0%, transparent 15%),
+    radial-gradient(circle at 50% 50%, #1a7298 0%, #0e4868 50%, #062035 80%, #020c18 100%);
+  box-shadow:
+    0 0 70px 18px rgba(30,130,210,0.28),
+    0 0 140px 70px rgba(30,130,210,0.12),
+    0 0 220px 120px rgba(30,130,210,0.05),
+    inset -50px -35px 90px rgba(0,0,0,0.85);
+}
+
+/* Liora â rocky/water mix, cool blue-gray */
+.planet-card.liora .planet-globe {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,255,255,0.10) 0%, transparent 16%),
+    radial-gradient(circle at 62% 68%, rgba(195,185,175,0.45) 0%, transparent 32%),
+    radial-gradient(circle at 28% 60%, rgba(155,145,135,0.50) 0%, transparent 22%),
+    radial-gradient(circle at 70% 35%, rgba(170,160,150,0.35) 0%, transparent 18%),
+    radial-gradient(circle at 50% 50%, #5c7a9a 0%, #3c5272 48%, #1c2e42 75%, #09141e 100%);
+  box-shadow:
+    0 0 70px 18px rgba(100,170,240,0.22),
+    0 0 140px 70px rgba(100,170,240,0.10),
+    0 0 220px 120px rgba(100,170,240,0.04),
+    inset -50px -35px 90px rgba(0,0,0,0.85);
+}
+
+/* Vexsis â lush green world */
+.planet-card.vexsis .planet-globe {
+  background:
+    radial-gradient(circle at 38% 26%, rgba(255,255,255,0.09) 0%, transparent 14%),
+    radial-gradient(circle at 55% 55%, rgba(110,195,70,0.65) 0%, transparent 38%),
+    radial-gradient(circle at 28% 48%, rgba(85,170,50,0.55) 0%, transparent 25%),
+    radial-gradient(circle at 72% 40%, rgba(130,210,90,0.45) 0%, transparent 22%),
+    radial-gradient(circle at 40% 75%, rgba(75,150,45,0.40) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, #2a7230 0%, #1a5020 52%, #0a2810 80%, #030a04 100%);
+  box-shadow:
+    0 0 70px 18px rgba(60,200,90,0.22),
+    0 0 140px 70px rgba(60,200,90,0.10),
+    0 0 220px 120px rgba(60,200,90,0.04),
+    inset -50px -35px 90px rgba(0,0,0,0.85);
+}
+
+/* Planet stats */
+.planet-stats { position: relative; z-index: 1; max-width: 420px; }
+
+.planet-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 9px; letter-spacing: 0.18em;
+  border: 1px solid;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.planet-card.abaia .planet-badge { color: var(--accent2); border-color: rgba(0,255,198,0.3); background: rgba(0,255,198,0.05); }
+.planet-card.liora .planet-badge { color: var(--accent); border-color: rgba(47,168,255,0.3); background: rgba(47,168,255,0.05); }
+.planet-card.vexsis .planet-badge { color: #90ee60; border-color: rgba(100,220,60,0.3); background: rgba(100,220,60,0.05); }
+
+.planet-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px; font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--text-bright);
+  text-shadow: 0 0 30px rgba(232,244,255,0.2);
+  margin-bottom: 6px;
+  line-height: 1;
+}
+.planet-card.abaia .planet-name { text-shadow: 0 0 30px rgba(30,130,210,0.4); }
+.planet-card.liora .planet-name { text-shadow: 0 0 30px rgba(47,168,255,0.3); }
+.planet-card.vexsis .planet-name { text-shadow: 0 0 30px rgba(60,200,90,0.35); }
+
+.planet-tagline {
+  font-family: 'Exo 2', sans-serif; font-style: italic;
+  font-size: 12px; color: var(--dim); letter-spacing: 0.06em;
+  margin-bottom: 32px;
+}
+
+.planet-data {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.planet-data-row {
+  display: flex; align-items: baseline; gap: 0;
+  border-bottom: 1px solid rgba(40,100,180,0.12);
+  padding-bottom: 14px;
+}
+.planet-data-row:last-child { border-bottom: none; padding-bottom: 0; }
+.planet-data-label {
+  font-size: 9px; letter-spacing: 0.16em; color: var(--dim);
+  width: 160px; flex-shrink: 0;
+  text-transform: uppercase;
+}
+.planet-data-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px; font-weight: 600;
+  color: var(--text-bright);
+}
+.planet-data-value.large {
+  font-size: 22px;
+}
+.planet-data-value .unit {
+  font-size: 10px; font-weight: 400; color: var(--dim);
+  margin-left: 4px; letter-spacing: 0.08em;
+}
+.planet-data-value.highlight-green { color: var(--accent2); }
+.planet-data-value.highlight-blue { color: var(--accent); }
+.planet-data-value.highlight-plantgreen { color: #90ee60; }
+.planet-data-value.highlight-warn { color: var(--gold); }
+.planet-data-value.highlight-dim { color: var(--dim); }
+
+/* Growth rate indicator bar */
+.growth-bar-wrap {
+  margin-top: 8px;
   display: flex; align-items: center; gap: 10px;
-  width: 100%; padding: 8px 16px; background: none; border: none;
-  cursor: pointer; color: var(--text); font-family: 'Share Tech Mono', monospace;
-  font-size: 11px; transition: background .15s, color .15s; text-align: left;
 }
-.sys-btn:hover { background: rgba(47,168,255,0.06); color: var(--text-bright); }
-.sys-btn.active { background: rgba(47,168,255,0.1); border-left: 2px solid var(--accent); color: var(--accent); }
-.star-dot {
-  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+.growth-bar-track {
+  flex: 1; height: 3px;
+  background: rgba(40,100,180,0.15);
+  border-radius: 2px;
+  overflow: hidden;
 }
-.dot-a { background: radial-gradient(circle, #fff5d0, #ffcc44); box-shadow: 0 0 5px rgba(255,200,80,0.5); }
-.dot-b { background: radial-gradient(circle, #ffd090, #ff8820); box-shadow: 0 0 5px rgba(255,140,50,0.5); }
-.dot-c { background: radial-gradient(circle, #ffeeee, #ff9090); box-shadow: 0 0 5px rgba(255,130,130,0.5); }
-.dot-all { background: radial-gradient(circle, #c8f0ff, #2fa8ff); box-shadow: 0 0 5px rgba(47,168,255,0.5); }
-.sys-count {
-  margin-left: auto; font-size: 9px; color: var(--dim);
-  background: var(--surface); padding: 1px 6px; border-radius: 8px;
+.growth-bar-fill {
+  height: 100%; border-radius: 2px;
+  transition: width 0.8s ease;
 }
-.sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
-.type-filters { padding: 0 16px; }
-.type-toggle {
-  display: flex; align-items: center; gap: 7px; padding: 3px 0;
-  cursor: pointer; font-size: 11px; color: var(--dim); user-select: none;
+.growth-bar-pct {
+  font-size: 10px; color: var(--dim); white-space: nowrap;
+  font-family: 'Orbitron', sans-serif;
 }
-.type-toggle:hover { color: var(--text); }
-.type-toggle input[type=checkbox] { accent-color: var(--accent); width: 12px; height: 12px; }
-.search-wrap { padding: 0 16px 12px; }
-.search-input {
-  width: 100%; background: var(--surface); border: 1px solid var(--border);
-  border-radius: 3px; padding: 6px 8px; color: var(--text);
-  font-family: 'Share Tech Mono', monospace; font-size: 10px; outline: none;
+
+/* ââ Footer ââ */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 24px 32px;
+  display: flex; align-items: center; gap: 12px;
 }
-.search-input:focus { border-color: var(--accent); }
-.search-input::placeholder { color: var(--dim); }
-.survey-main { grid-area: main; padding: 16px 20px; overflow: auto; }
-.table-wrap {
-  overflow-x: auto; border: 1px solid var(--border); border-radius: 4px;
-  background: rgba(11,17,32,0.5);
+.footer-text {
+  font-size: 9px; letter-spacing: 0.12em; color: var(--dim);
+  margin-left: auto;
 }
-table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
-thead tr { background: var(--surface2); border-bottom: 1px solid var(--border); }
-th {
-  padding: 8px 12px; font-family: 'Share Tech Mono', monospace; font-size: 9px;
-  color: var(--dim); letter-spacing: 0.1em; text-align: left; cursor: pointer;
-  user-select: none; transition: color .15s;
+
+/* ââ Responsive ââ */
+@media (max-width: 900px) {
+  .section-wrap { padding: 32px 20px; }
+  .map-card iframe { height: 520px; }
+  .planet-card { padding: 48px 6% 220px; }
+  .planet-globe {
+    width: 240px; height: 240px;
+    right: 50%; top: auto; bottom: 20px;
+    transform: translateX(50%);
+  }
+  .planet-name { font-size: 28px; }
 }
-th:hover { color: var(--accent); }
-th.sorted { color: var(--accent2); }
-th .sort-arrow { opacity: 0.4; margin-left: 3px; }
-th.sorted .sort-arrow { opacity: 1; }
-tbody tr { border-bottom: 1px solid rgba(26,42,69,0.4); cursor: pointer; transition: background .12s; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: rgba(47,168,255,0.06); }
-tbody tr.selected { background: rgba(47,168,255,0.1); border-left: 2px solid var(--accent); }
-td { padding: 7px 12px; color: var(--text); font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 300; }
-.td-name { font-weight: 400; color: var(--text-bright); }
-.type-badge {
-  display: inline-block; padding: 1px 6px; border-radius: 2px;
-  font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.06em;
+@media (max-width: 600px) {
+  .header-sub { display: none; }
+  .nav-item { padding: 0 12px; font-size: 10px; }
+  .map-card iframe { height: 420px; }
+  .planet-card { padding: 40px 5% 200px; }
+  .planet-globe { width: 190px; height: 190px; }
 }
-.badge-planet { background: rgba(47,168,255,0.12); color: var(--accent); }
-.badge-moon   { background: rgba(0,255,198,0.08);  color: var(--accent2); }
-.badge-dwarf  { background: rgba(255,107,53,0.1);  color: var(--accent3); }
-.badge-gas    { background: rgba(255,180,71,0.1);   color: var(--warn); }
-.colony-badge {
-  display: inline-block; padding: 1px 5px; border-radius: 2px;
-  font-family: 'Share Tech Mono', monospace; font-size: 9px;
-  background: rgba(0,255,198,0.12); color: var(--accent2);
-}
-.temp-hot    { color: var(--accent3); }
-.temp-warm   { color: var(--warn); }
-.temp-cool   { color: #8fd0ff; }
-.temp-cold   { color: #a0d0ff; }
-.temp-frozen { color: #c0e8ff; }
-.no-data { color: var(--dim); font-size: 10px; }
-.empty-state {
-  text-align: center; padding: 50px 16px; color: var(--dim);
-  font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.1em;
-}
-.scroll-hint {
-  font-size: 9px; color: var(--dim); text-align: right; padding: 4px 0 8px; letter-spacing: 0.08em;
-}
-/* Scrollbars */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(47,168,255,0.25); border-radius: 2px; }
 </style>
 </head>
 <body>
 
+<!-- ââââââââââââââââââââââââââââââââââââââââââ
+     HEADER
+âââââââââââââââââââââââââââââââââââââââââââ -->
 <header>
   <div class="logo-mark"></div>
-  <div>
-    <div class="header-title">REGULUS SYSTEM</div>
-    <div class="header-sub">Orrery & Planetary Survey</div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY GOVERNMENT</div>
   </div>
-  <div class="mode-tabs">
-    <button class="mode-btn active" onclick="setMode('orrery')">ORRERY</button>
-    <button class="mode-btn" onclick="setMode('survey')">SURVEY</button>
-  </div>
-  <div class="system-tabs" id="orrery-tabs">
-    <button class="tab-btn active" onclick="setOrreryView('ALL')">ALL</button>
-    <button class="tab-btn" onclick="setOrreryView('A')">REG A</button>
-    <button class="tab-btn" onclick="setOrreryView('B')">REG B</button>
-    <button class="tab-btn" onclick="setOrreryView('C')">REG C</button>
-  </div>
-  <div class="controls" id="orrery-controls">
-    <span class="ctrl-label">SPEED</span>
-    <input type="range" class="speed-slider" id="speed-slider" min="0.05" max="4" step="0.05" value="0.5">
-    <button class="pause-btn" id="pause-btn" onclick="togglePause()">⏸ PAUSE</button>
-  </div>
-  <div class="header-stats">
-    <div class="stat-pill"><div class="val" id="stat-pop">1,005M</div><div class="lbl">POPULATION</div></div>
-    <div class="stat-pill"><div class="val" id="stat-bodies">—</div><div class="lbl">BODIES</div></div>
-    <div class="stat-pill"><div class="val" id="stat-colonies">—</div><div class="lbl">COLONIES</div></div>
-  </div>
+
+  <nav class="header-nav">
+    <a class="nav-item active" href="index.html">HOME</a>
+
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle">MOIAC</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">DEPARTMENTS</div>
+        <a href="#">Department of Commerce</a>
+        <a href="#">Department of Energy</a>
+        <a href="#">Department of Maritime Transport</a>
+        <a href="#">Department of Extraction</a>
+        <div class="menu-section">PLANETARY DEVELOPMENT</div>
+        <a href="#">Abaia Development Authority</a>
+        <a href="#">Liora Development Authority</a>
+        <a href="#">Vexsis Council on Economic Dev.</a>
+      </div>
+    </div>
+
+    <a class="nav-item" href="#">MOD</a>
+  </nav>
 </header>
 
-<div class="view-container">
-  <!-- ═══ ORRERY VIEW ═══ -->
-  <div class="view-pane active" id="view-orrery">
-    <canvas id="orrery"></canvas>
-    <div class="info-panel" id="orrery-info-panel">
-      <button class="close-info" onclick="closeOrreryInfo()">✕ CLOSE</button>
-      <div id="orrery-info-content"></div>
+<!-- ââââââââââââââââââââââââââââââââââââââââââ
+     MAIN
+âââââââââââââââââââââââââââââââââââââââââââ -->
+<main>
+
+  <!-- ââ Regulus System Map ââ -->
+  <div class="section-wrap">
+    <div class="section-eyebrow">REGULUS STAR SYSTEM</div>
+    <h1 class="section-heading">Interactive Survey &amp; Orrery</h1>
+    <p class="section-desc">Real-time orbital simulation and colonial survey data for all bodies in the Regulus system.</p>
+
+    <div class="map-meta-row">
+      <div class="map-meta-pill">
+        <span class="val">3</span>
+        <span class="lbl">STELLAR BODIES</span>
+      </div>
+      <div class="map-meta-pill">
+        <span class="val">14</span>
+        <span class="lbl">SURVEYED BODIES</span>
+      </div>
+      <div class="map-meta-pill">
+        <span class="val">3</span>
+        <span class="lbl">INHABITED WORLDS</span>
+      </div>
+      <div class="map-meta-pill">
+        <span class="val">ABAIA</span>
+        <span class="lbl">SYSTEM CAPITAL</span>
+      </div>
+      <div class="map-meta-pill">
+        <span class="val">ASR 0</span>
+        <span class="lbl">SURVEY EPOCH</span>
+      </div>
     </div>
-    <div class="legend">
-      <div class="legend-title">Body Type</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle at 35% 35%,#a0e0ff,#2080c0)"></div> Terrestrial</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle at 35% 35%,#80e090,#208040)"></div> Habitable</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle at 35% 35%,#ffe0a0,#e07020)"></div> Gas Giant</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle at 35% 35%,#d0e8ff,#8090b0)"></div> Ice / Frozen</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle at 35% 35%,#ff8040,#c03010)"></div> Hot / Volcanic</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffcc44;border:1px solid rgba(255,200,80,0.8)"></div> Colony ★</div>
-      <div class="legend-title" style="margin-top:8px">Stars</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle,#fff8d0,#ffcc44,#ff6600);box-shadow:0 0 4px rgba(255,200,80,0.6)"></div> Regulus A</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle,#ffd090,#ff8820,#aa3300);box-shadow:0 0 3px rgba(255,140,50,0.5)"></div> Regulus B</div>
-      <div class="legend-item"><div class="legend-dot" style="background:radial-gradient(circle,#ffeeee,#ff9090,#cc2222);box-shadow:0 0 3px rgba(255,130,130,0.5)"></div> Regulus C</div>
+
+    <div class="map-card">
+      <iframe
+        src="regulus_system_map.html"
+        title="Regulus Star System â Interactive Survey & Orrery"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
     </div>
-    <div class="tooltip" id="tooltip"></div>
-    <div class="zoom-hint">SCROLL · zoom<br>DRAG · pan<br>CLICK · details</div>
   </div>
 
-  <!-- ═══ SURVEY VIEW ═══ -->
-  <div class="view-pane" id="view-survey">
-    <div class="survey-shell">
-      <div class="survey-sidebar">
-        <div class="sidebar-label">STAR SYSTEM</div>
-        <button class="sys-btn active" data-system="ALL" onclick="filterSystem('ALL')">
-          <span class="star-dot dot-all"></span> All Systems <span class="sys-count" id="cnt-ALL"></span>
-        </button>
-        <button class="sys-btn" data-system="Regulus A" onclick="filterSystem('Regulus A')">
-          <span class="star-dot dot-a"></span> Regulus A <span class="sys-count" id="cnt-A"></span>
-        </button>
-        <button class="sys-btn" data-system="Regulus B" onclick="filterSystem('Regulus B')">
-          <span class="star-dot dot-b"></span> Regulus B <span class="sys-count" id="cnt-B"></span>
-        </button>
-        <button class="sys-btn" data-system="Regulus C" onclick="filterSystem('Regulus C')">
-          <span class="star-dot dot-c"></span> Regulus C <span class="sys-count" id="cnt-C"></span>
-        </button>
-        <hr class="sidebar-divider">
-        <div class="sidebar-label">BODY TYPE</div>
-        <div class="type-filters" id="type-filters">
-          <label class="type-toggle"><input type="checkbox" checked value="Planet"> Planet</label>
-          <label class="type-toggle"><input type="checkbox" checked value="Moon"> Moon</label>
-          <label class="type-toggle"><input type="checkbox" checked value="Dwarf"> Dwarf</label>
-          <label class="type-toggle"><input type="checkbox" checked value="Gas"> Gas Giant</label>
-        </div>
-        <hr class="sidebar-divider">
-        <div class="sidebar-label">SEARCH</div>
-        <div class="search-wrap">
-          <input type="text" class="search-input" id="search-box" placeholder="Name, terrain, atmo…" oninput="applyFilters()">
-        </div>
-        <hr class="sidebar-divider">
-        <div class="sidebar-label">HABITABILITY</div>
-        <div class="type-filters">
-          <label class="type-toggle"><input type="checkbox" id="filter-breathable" onchange="applyFilters()"> Breathable</label>
-          <label class="type-toggle"><input type="checkbox" id="filter-liquid" onchange="applyFilters()"> Liquid Water</label>
-          <label class="type-toggle"><input type="checkbox" id="filter-colony" onchange="applyFilters()"> Colonies Only</label>
-        </div>
-      </div>
-      <div class="survey-main">
-        <div class="scroll-hint">← scroll table →</div>
-        <div class="table-wrap">
-          <table id="survey-table">
-            <thead><tr>
-              <th onclick="sortBy('name')" class="sorted">Name <span class="sort-arrow">↑</span></th>
-              <th onclick="sortBy('system')">System <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('type')">Type <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('pop')">Pop <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('temp')">Temp <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('gravity')">Gravity <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('diameter')">Diameter <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('atmosphere')">Atmo <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('terrain')">Terrain <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('hydrosphere')">Hydro <span class="sort-arrow">↕</span></th>
-              <th onclick="sortBy('status')">Status <span class="sort-arrow">↕</span></th>
-            </tr></thead>
-            <tbody id="table-body"></tbody>
-          </table>
-          <div class="empty-state" id="empty-state" style="display:none;">NO BODIES MATCH CURRENT FILTERS</div>
-        </div>
-      </div>
-    </div>
-    <!-- Survey detail panel -->
-    <div class="info-panel" id="survey-info-panel">
-      <button class="close-info" onclick="closeSurveyInfo()">✕ CLOSE</button>
-      <div id="survey-info-content"></div>
-    </div>
+  <div class="section-divider"></div>
+
+  <!-- ââ Planet Cards header ââ -->
+  <div class="planets-header">
+    <div class="section-eyebrow">INHABITED WORLDS</div>
+    <h2 class="planets-heading">UNITED ADMIRALTY</h2>
+    <p class="planets-sub">Core worlds of the Second Republic â ASR 0 Census data</p>
   </div>
-</div>
 
-<script>
-// ════════════════════════════════════════════════════════════════════════════════
-//  DATA
-// ════════════════════════════════════════════════════════════════════════════════
+  <!-- ââ Abaia ââ -->
+  <div class="planet-card abaia">
+    <div class="planet-stats">
+      <div class="planet-badge">Home World Â· Capital</div>
+      <div class="planet-name">Abaia</div>
+      <div class="planet-tagline">Administrative and industrial capital of the United Admiralty</div>
 
-// ── Stars ──
-const STARS = {
-  A: { label:'Regulus A', r:26, colors:['#fff8d0','#ffcc44','#ff7700','#1a0000'], glowColor:'rgba(255,210,80,0.4)', orbitAroundA:0, periodAroundA:null },
-  B: { label:'Regulus B', r:18, colors:['#ffd090','#ff8820','#aa3300','#220800'], glowColor:'rgba(255,140,50,0.32)', orbitAroundA:2340, periodAroundA:300 },
-  C: { label:'Regulus C', r:13, colors:['#ffeeee','#ff9090','#cc2222','#1a0000'], glowColor:'rgba(255,130,130,0.28)', orbitAroundB:160, periodAroundB:80 }
-};
-
-// ── Orrery planets (for animation) ──
-const PLANETS = {
-  A: [
-    { name:'Regulus A I', type:'Terrestrial', orbit:70, period:7.9, r:4, colors:['#b8b020','#706010'], temp:202, gravity:0.342, atmo:null, status:'Uninhabited', colony:false, distance:1080, diameter:5800, mass:0.071, day:'22.0 hrs', year:'2,883.5 days', pressure:null, terrain:null, hydro:null, tectonics:'Plastic', mag:0.9, maxpop:null, axial:34, tidal:null },
-    { name:'Abaia', type:'Terrestrial', orbit:105, period:16.2, r:7, colors:['#2080c0','#104060'], temp:31, gravity:1.28, atmo:'N₂/O₂', status:'Colony', colony:true, pop:'538M', distance:12400, diameter:11340, mass:1.21, day:'28.0 hrs', year:'5,913 days', pressure:0.9, terrain:'Mountain', hydro:'Liquid', tectonics:'Extreme', mag:3.5, maxpop:1743, axial:23, tidal:false },
-    { name:'Liora (Reg A III)', type:'Terrestrial', orbit:145, period:25, r:8, colors:['#208040','#103020'], temp:26.3, gravity:1.76, atmo:'N₂/O₂', status:'Inhabited', colony:false, pop:'299M', distance:30000, diameter:6989, mass:9.74, day:'11.2 hrs', year:'18,250 days', pressure:1.04, terrain:'Jungle/Mountain', hydro:'Liquid', tectonics:'Extreme', mag:1, maxpop:3675, axial:45, tidal:false },
-    { name:'Regulus A IV', type:'Terrestrial', orbit:188, period:38, r:5, colors:['#a0b8c8','#506070'], temp:-50, gravity:0.277, atmo:'13%', status:'Uninhabited', colony:false, distance:4200, diameter:1301, mass:0.03, day:'32.0 hrs', year:'33,215 days', pressure:null, terrain:'Mountain', hydro:'Ice Sheet', tectonics:'Platelet', mag:1.5, maxpop:5528, axial:34, tidal:false,
-      moons:[
-        { name:'Reg A IV-1', orbit:13, period:1.6, r:2, colors:['#888','#444'], temp:-102, gravity:0.00188, distance:40, day:'38.5 hrs', year:'1.60 days', maxpop:18, mag:0.12, tidal:true }
-      ]
-    },
-    { name:'Regulus A V', type:'Terrestrial', orbit:228, period:52, r:5.5, colors:['#b0c8d8','#6080a0'], temp:-136, gravity:0.226, atmo:'74%', status:'Uninhabited', colony:false, distance:6800, diameter:3410, mass:0.064, day:'3,936.0 hrs', year:'49,640 days', pressure:null, terrain:'Mountain', hydro:'Ice Sheet', tectonics:'Extreme', mag:0.008, maxpop:7201, axial:23, tidal:false,
-      moons:[
-        { name:'Reg A V-1', orbit:15, period:4.2, r:2, colors:['#777','#444'], temp:-89, gravity:0.082, distance:800, day:'103.2 hrs', year:'4.20 days', maxpop:45, mag:0.35, tidal:true }
-      ]
-    },
-    { name:'Regulus A VI', type:'Gas Giant', orbit:290, period:75, r:16, colors:['#e07020','#803008','#c04010'], temp:-213, gravity:4.41, atmo:'Gas', status:'Gas Giant', colony:false, rings:true, distance:144000, mass:600, day:'15.0 hrs', year:'2,598 yrs', pressure:null, mag:15, maxpop:51, axial:45, tidal:false,
-      moons:[
-        { name:'Reg A VI-1', orbit:18, period:0.12, r:1.5, colors:['#666','#333'], temp:-223, gravity:0.0078, distance:200, day:'2.8 hrs', year:'0.12 days', maxpop:84, mag:0.003, tidal:true },
-        { name:'Reg A VI-2', orbit:22, period:1.59, r:1.8, colors:['#776655','#332211'], temp:-208, gravity:0.0345, distance:400, day:'38.2 hrs', year:'1.59 days', maxpop:487, mag:0.07, tidal:true, tectonics:'Hot Spot' },
-        { name:'Reg A VI-3', orbit:27, period:1.63, r:1.8, colors:['#668866','#334433'], temp:-200, gravity:0.0376, distance:600, day:'39.1 hrs', year:'1.63 days', maxpop:494, mag:0.005, tidal:true, tectonics:'Hot Spot' },
-        { name:'Reg A VI-5 (L)', orbit:33, period:2.1, r:2.5, colors:['#889aaa','#445566'], temp:-216, gravity:0.19, distance:3600, day:'50.4 hrs', year:'2.1 days', maxpop:581, terrain:'Mountain', mag:0.9, tidal:true, tectonics:'Platelet' },
-        { name:'Reg A VI-8 (L)', orbit:40, period:2.9, r:3, colors:['#7080a0','#303848'], temp:-216, gravity:0.212, distance:4000, day:'69.6 hrs', year:'2.9 days', maxpop:720, terrain:'Mountain', hydro:'Crustal', atmo:'22%', mag:1.8, tidal:true, tectonics:'Extreme' },
-      ]
-    },
-    { name:'Regulus A VII', type:'Dwarf', orbit:360, period:110, r:3, colors:['#606878','#303438'], temp:-227, gravity:0.033, atmo:'39%', status:'Uninhabited', colony:false, distance:1120, mass:0.000291, day:'24.0 hrs', year:'70,908 yrs', pressure:null, hydro:'Ice Sheet', tectonics:'Hot Spot', maxpop:108193, axial:1, tidal:false,
-      moons:[
-        { name:'Reg A VII-1', orbit:12, period:5.8, r:1.5, colors:['#555','#333'], temp:-239, day:'139.2 hrs', year:'5.8 days', tidal:true },
-        { name:'Reg A VII-2', orbit:18, period:18.8, r:1.5, colors:['#555','#333'], temp:-221, day:'451.2 hrs', year:'18.8 days', tidal:true },
-      ]
-    },
-  ],
-  B: [
-    { name:'Regulus B I', type:'Dwarf', orbit:50, period:6.4, r:2.5, colors:['#c03010','#600800'], temp:314, gravity:0.047, atmo:null, status:'Uninhabited', colony:false, distance:400, day:'153.6 hrs', year:'6.4 days', mag:0.005, maxpop:9, tidal:true },
-    { name:'Regulus B II', type:'Terrestrial', orbit:82, period:1.3, r:7, colors:['#ff6020','#a02000'], temp:655, gravity:1.81, atmo:'Venusian', status:'Colony', colony:true, distance:15400, diameter:17490, day:'31.2 hrs', year:'1.3 days', pressure:181, terrain:'Mountain', tectonics:'Platelet', mag:0.1, maxpop:34, tidal:false },
-    { name:'Vexsis (Reg B III)', type:'Terrestrial', orbit:118, period:40, r:7.5, colors:['#208840','#104020'], temp:-4.55, gravity:0.55, atmo:'N₂/O₂', status:'Inhabited', colony:false, pop:'123M', distance:13200, diameter:12840, day:'4,608.0 hrs', year:'4,608 days', pressure:0.93, terrain:'Forested Mountain', hydro:'Liquid', tectonics:'Plate', mag:0.6, maxpop:62, tidal:false },
-    { name:'Regulus B IV', type:'Dwarf', orbit:150, period:24, r:3, colors:['#506878','#283440'], temp:-5.6, gravity:0.079, atmo:'15% Water', status:'Uninhabited', colony:false, distance:1200, hydro:'Liquid', tectonics:'Hot Spot', mag:0.3, maxpop:108, day:'24.0 hrs', year:'24.0 days', tidal:false },
-    { name:'Regulus B V', type:'Terrestrial', orbit:185, period:35, r:5, colors:['#90a8b8','#485060'], temp:-118, gravity:0.371, atmo:'CO₂/N₂', status:'Uninhabited', colony:false, distance:6800, diameter:3410, day:"20.0 hrs", year:"20.0 days", terrain:'Mountain', hydro:'Ice Sheet', tectonics:'Platelet', mag:1.4, maxpop:188, tidal:false },
-    { name:'Regulus B VI', type:'Gas Giant', orbit:245, period:55, r:15, colors:['#d06818','#703008','#b03800'], temp:-142, gravity:2.54, atmo:'Gas', status:'Gas Giant', colony:false, rings:true, distance:144000, day:'8.0 hrs', year:'8.0 days', mag:6, maxpop:316, tidal:false,
-      moons:[
-        { name:'Reg B VI-1', orbit:20, period:3.6, r:3, colors:['#8898aa','#445566'], temp:-142, gravity:0.439, distance:56000, day:'3.6 days', year:'3.6 days', atmo:'H₂/He', pressure:0.193, hydro:'Ice Sheet', tectonics:'Plastic', mag:7, maxpop:82, tidal:true },
-        { name:'Reg B VI-2', orbit:27, period:5.6, r:2, colors:['#887760','#443830'], temp:-123, gravity:0.077, distance:1400, day:'5.6 days', year:'5.6 days', tectonics:'Hot Spot', mag:1.5, maxpop:110, tidal:true },
-        { name:'Reg B VI-10', orbit:35, period:3.7, r:2.5, colors:['#708090','#384050'], temp:-167, tidal:true },
-        { name:'Reg B VI-17', orbit:44, period:12.7, r:3, colors:['#7888a0','#384450'], temp:-145, tidal:true },
-      ]
-    },
-  ],
-  C: [
-    { name:'Regulus C I', type:'Terrestrial', orbit:55, period:12, r:4.5, colors:['#c05030','#601810'], temp:180, gravity:0.6, atmo:'Thin CO₂', status:'Uninhabited', colony:false },
-    { name:'Regulus C II', type:'Terrestrial', orbit:90, period:28, r:6, colors:['#8898aa','#404850'], temp:15, gravity:0.85, atmo:'Unknown', status:'Unknown', colony:false },
-    { name:'Regulus C III', type:'Dwarf', orbit:130, period:55, r:3, colors:['#7090a0','#384858'], temp:-80, gravity:0.2, atmo:null, status:'Uninhabited', colony:false },
-  ]
-};
-
-// ── Survey table data ──
-const RAW = [
-  { system:"Regulus A", parent:null, name:"Regulus A I", type:"Terrestrial", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:202, gravity:0.342, distance:1080, diameter:5800, tidal:null, maxpop:null, tectonics:"Plastic", mag:0.9, day:"22.0 hrs", year:"2,883.5 days", mass:0.071, axial:34, status:"Uninhabited" },
-  { system:"Regulus A", parent:null, name:"Abaia", type:"Terrestrial", colony:"Colony", pop:538.1, terrain:"Mountain", hydro:"Liquid", atmo:"N₂/O₂ (0.20)", pressure:0.9, temp:31, gravity:1.28, distance:12400, diameter:11340, tidal:null, maxpop:1743, tectonics:"Extreme", mag:3.5, day:"28.0 hrs", year:"5,913 days", mass:1.21, axial:23, status:"Colony" },
-  { system:"Regulus A", parent:null, name:"Liora (Reg A III)", type:"Terrestrial", colony:null, pop:298.8, terrain:"Jungle/Mountain", hydro:"Liquid", atmo:"N₂/O₂ (.23)", pressure:1.04, temp:26.3, gravity:1.76, distance:30000, diameter:6989, tidal:null, maxpop:3675, tectonics:"Extreme", mag:1, day:"11.2 hrs", year:"18,250 days", mass:9.74, axial:45, status:"Inhabited" },
-  { system:"Regulus A", parent:null, name:"Regulus A IV", type:"Terrestrial", colony:null, pop:null, terrain:"Mountain", hydro:"Ice Sheet", atmo:"13%", pressure:null, temp:-50, gravity:0.277, distance:4200, diameter:1301, tidal:null, maxpop:5528, tectonics:"Platelet", mag:1.5, day:"32.0 hrs", year:"33,215 days", mass:0.03, axial:34, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A IV", name:"Regulus A-VI 1", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-102, gravity:0.00188, distance:40, diameter:null, tidal:true, maxpop:18, tectonics:null, mag:0.12, day:"38.5 hrs", year:"1.60 days", mass:0, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:null, name:"Regulus A V", type:"Terrestrial", colony:null, pop:null, terrain:"Mountain", hydro:"Ice Sheet", atmo:"74%", pressure:null, temp:-136, gravity:0.226, distance:6800, diameter:3410, tidal:null, maxpop:7201, tectonics:"Extreme", mag:0.008, day:"3,936.0 hrs", year:"49,640 days", mass:0.064, axial:23, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A V", name:"Regulus A V-1", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-89, gravity:0.082, distance:800, diameter:null, tidal:true, maxpop:45, tectonics:"Hot Spot", mag:0.35, day:"103.2 hrs", year:"4.20 days", mass:0.00032, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:null, name:"Regulus A VI", type:"Super Jovian", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-213, gravity:4.41, distance:144000, diameter:null, tidal:null, maxpop:51, tectonics:null, mag:15, day:"15.0 hrs", year:"2,598 yrs", mass:600, axial:45, status:"Gas Giant" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-1", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-223, gravity:0.0078, distance:200, diameter:null, tidal:true, maxpop:84, tectonics:null, mag:0.003, day:"2.8 hrs", year:"0.12 days", mass:0.00002, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-2", type:"Moon", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-208, gravity:0.0345, distance:400, diameter:null, tidal:true, maxpop:487, tectonics:"Hot Spot", mag:0.07, day:"38.2 hrs", year:"1.59 days", mass:0.000034, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-3", type:"Moon", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-200, gravity:0.0376, distance:600, diameter:null, tidal:true, maxpop:494, tectonics:"Hot Spot", mag:0.005, day:"39.1 hrs", year:"1.63 days", mass:0.000083, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-4", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-206, gravity:0.0138, distance:160, diameter:null, tidal:true, maxpop:506, tectonics:null, mag:0.004, day:"20.6 hrs", year:"1.69 days", mass:0.000002, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-5", type:"Moon-Large", colony:null, pop:null, terrain:"Mountain", hydro:null, atmo:null, pressure:null, temp:-216, gravity:0.19, distance:3600, diameter:null, tidal:true, maxpop:581, tectonics:"Platelet", mag:0.9, day:"50.4 hrs", year:"2.1 days", mass:0.0152, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-6", type:"Moon", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-218, gravity:0.0317, distance:600, diameter:null, tidal:true, maxpop:602, tectonics:null, mag:0.005, day:"52.8 hrs", year:"2.2 days", mass:0.00007, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-7", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-208, gravity:0.00411, distance:100, diameter:null, tidal:true, maxpop:616, tectonics:null, mag:null, day:"55.2 hrs", year:"2.3 days", mass:0, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-8", type:"Moon-Large", colony:null, pop:null, terrain:"Mountain", hydro:"Crustal", atmo:"22%", pressure:null, temp:-216, gravity:0.212, distance:4000, diameter:null, tidal:true, maxpop:720, tectonics:"Extreme", mag:1.8, day:"69.6 hrs", year:"2.9 days", mass:0.0208, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:"Regulus A VI", name:"Regulus A VI-9 to VI-18", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-215, gravity:0.005, distance:500, diameter:null, tidal:true, maxpop:null, tectonics:null, mag:null, day:"varies", year:"varies", mass:null, axial:0, status:"Uninhabited" },
-  { system:"Regulus A", parent:null, name:"Regulus A VII", type:"Dwarf", colony:null, pop:null, terrain:null, hydro:"Ice Sheet", atmo:"39%", pressure:null, temp:-227, gravity:0.0329, distance:1120, diameter:null, tidal:null, maxpop:108193, tectonics:"Hot Spot", mag:null, day:"24.0 hrs", year:"70,908 yrs", mass:0.000291, axial:1, status:"Uninhabited" },
-  { system:"Regulus B", parent:null, name:"Regulus B I", type:"Dwarf", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:314, gravity:0.0468, distance:400, diameter:null, tidal:true, maxpop:9, tectonics:null, mag:0.005, day:"153.6 hrs", year:"6.4 days", mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus B", parent:null, name:"Regulus B II", type:"Terrestrial", colony:"Colony", pop:null, terrain:"Mountain", hydro:null, atmo:"Venusian", pressure:181, temp:655, gravity:1.81, distance:15400, diameter:17490, tidal:null, maxpop:34, tectonics:"Platelet", mag:0.1, day:"31.2 hrs", year:"1.3 days", mass:null, axial:null, status:"Colony" },
-  { system:"Regulus B", parent:null, name:"Vexsis (Reg B III)", type:"Terrestrial", colony:null, pop:123.4, terrain:"Forested Mountain", hydro:"Liquid", atmo:"N₂/O₂ (0.22)", pressure:0.93, temp:-4.55, gravity:0.55, distance:13200, diameter:12840, tidal:null, maxpop:62, tectonics:"Plate", mag:0.6, day:"4,608.0 hrs", year:"4,608 days", mass:null, axial:null, status:"Inhabited" },
-  { system:"Regulus B", parent:null, name:"Regulus B IV", type:"Dwarf", colony:null, pop:null, terrain:null, hydro:"Liquid", atmo:"15% Water", pressure:null, temp:-5.6, gravity:0.079, distance:1200, diameter:null, tidal:null, maxpop:108, tectonics:"Hot Spot", mag:0.3, day:"24.0 hrs", year:"24.0 days", mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus B", parent:null, name:"Regulus B V", type:"Terrestrial", colony:null, pop:null, terrain:"Mountain", hydro:"Ice Sheet", atmo:"CO₂/N₂", pressure:null, temp:-118, gravity:0.371, distance:6800, diameter:3410, tidal:null, maxpop:188, tectonics:"Platelet", mag:1.4, day:"20.0 hrs", year:"20.0 days", mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus B", parent:null, name:"Regulus B VI", type:"Gas Giant", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-142, gravity:2.54, distance:144000, diameter:null, tidal:null, maxpop:316, tectonics:null, mag:6, day:"8.0 hrs", year:"8.0 days", mass:null, axial:null, status:"Gas Giant" },
-  { system:"Regulus B", parent:"Regulus B VI", name:"Reg B VI-1", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:"Ice Sheet", atmo:"H₂/He", pressure:0.193, temp:-142, gravity:0.439, distance:56000, diameter:null, tidal:true, maxpop:82, tectonics:"Plastic", mag:7, day:"3.6 days", year:"3.6 days", mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus B", parent:"Regulus B VI", name:"Reg B VI-2", type:"Moon", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-123, gravity:0.077, distance:1400, diameter:null, tidal:true, maxpop:110, tectonics:"Hot Spot", mag:1.5, day:"5.6 days", year:"5.6 days", mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus B", parent:"Regulus B VI", name:"Reg B VI-3 to VI-23", type:"Moon-Small", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-140, gravity:0.01, distance:300, diameter:null, tidal:true, maxpop:null, tectonics:null, mag:null, day:"varies", year:"varies", mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus C", parent:null, name:"Regulus C I", type:"Terrestrial", colony:null, pop:null, terrain:null, hydro:null, atmo:"Thin CO₂", pressure:null, temp:180, gravity:0.6, distance:null, diameter:null, tidal:null, maxpop:null, tectonics:null, mag:null, day:null, year:null, mass:null, axial:null, status:"Uninhabited" },
-  { system:"Regulus C", parent:null, name:"Regulus C II", type:"Terrestrial", colony:null, pop:null, terrain:null, hydro:null, atmo:"Unknown", pressure:null, temp:15, gravity:0.85, distance:null, diameter:null, tidal:null, maxpop:null, tectonics:null, mag:null, day:null, year:null, mass:null, axial:null, status:"Unknown" },
-  { system:"Regulus C", parent:null, name:"Regulus C III", type:"Dwarf", colony:null, pop:null, terrain:null, hydro:null, atmo:null, pressure:null, temp:-80, gravity:0.2, distance:null, diameter:null, tidal:null, maxpop:null, tectonics:null, mag:null, day:null, year:null, mass:null, axial:null, status:"Uninhabited" },
-];
-
-// ── Economic context for inhabited worlds ──
-const ECON = {
-  'Abaia': {
-    role: 'System Capital & Industrial Core',
-    governor: 'WILLNerb',
-    popDetail: '583.12M (growth 2.46%)',
-    workerStatus: 'Surplus: +7.20M',
-    taxes: '16,050 cr/yr (worker)',
-    garrison: '9,330 troops | 35,272t ground force',
-    keyFacilities: '900 Construction Factories · 700 Mines · 150 Fuel Refineries · 100 Maintenance · 25 Research Labs · 20 Ordnance Factories · 15 Fighter Factories · 5 Military Academies · 9 Slipways',
-    employment: 'Services 70% (408M) · Mining 35M · Construction 45M · Scientists 25M · Shipyard 12.5M · Refinery 7.5M',
-    minerals: 'Total: 14M units | 78,246/yr',
-    alerts: 'Mecassium ~9 yrs · Neutronium ~12 yrs · Tritanium ~13 yrs',
-    fuel: '150 refineries | 7.2M kL capacity | $1,083.77/L',
-    summary: 'Undisputed capital — largest population, all major military, industrial, research, and shipyard facilities. Houses the Abaia Naval Academy and system\'s only ground force construction complex. Drives 41% of system mineral production. Five-year plan focuses on maintaining industrial dominance while managing critical mineral depletion in Mecassium and Neutronium.',
-  },
-  'Liora (Reg A III)': {
-    role: 'Financial Hub & Research Centre',
-    governor: 'ChetR',
-    popDetail: '298.76M (growth 3.29% — fastest)',
-    workerStatus: 'Surplus: +2.19M',
-    taxes: '8,160 cr/yr (worker) + 28,140 cr/yr (financial)',
-    garrison: 'NONE — 300M undefended',
-    keyFacilities: '1,000 Financial Centres · 250 Construction Factories · 100 Mines · 30 Maintenance · 20 Fuel Refineries · 2 Slipways',
-    employment: 'Services 70% (209M) · Financial Workers 50M · Construction 12.5M · Mining 5M',
-    minerals: '7 of 11 types DEPLETED — only 518 units/yr from 545M reserves (accessibility 0.1)',
-    alerts: 'Sorium fully depleted — all fuel imported · No garrison or ground forces · Mecassium ~174 yrs',
-    fuel: '20 refineries | 960K kL capacity | Sorium imported | $1,153.90/L',
-    summary: 'The system\'s financial powerhouse generating 77% of all financial centre revenue. Five-year plan targets 1,300 financial centres, 25 research labs, and 380 factories by Year 5 — positioning Liora as the intellectual capital and fiscal stabiliser of the polity. Annual wealth projected to reach 45,500 credits. Critically lacks any military presence despite being the second-largest population centre.',
-  },
-  'Vexsis (Reg B III)': {
-    role: 'Primary Mining Colony & Resource Engine',
-    governor: 'NONE ASSIGNED',
-    popDetail: '123.42M (growth 0.00%)',
-    workerStatus: 'SHORTAGE: -8.15M workers',
-    taxes: '4,316 cr/yr (worker)',
-    garrison: 'NONE — completely undefended',
-    keyFacilities: '1,000 Mines · 20 Maintenance · 5 Fuel Refineries — NO construction, NO shipyards, NO military',
-    employment: 'Services 59% (73M) · Mining 50M · Agriculture 6M · Scientists 1M',
-    minerals: 'Total: 265M units | 111,780/yr (59% of system output)',
-    alerts: 'No governor · 0% growth · 8.15M worker shortage · Tritanium ~12 yrs · No defences',
-    fuel: '5 refineries | 240K kL capacity | $1,083.77/L',
-    summary: 'The system\'s mineral extraction engine — 1,000 mines producing 59% of all system output including critical Duranium, Sorium, and Gallicite reserves. Entirely dependent on Abaia for all infrastructure imports. Five-year plan emphasises securing the fuel future via sorium harvesting at nearby gas giant, resolving the 8.15M labour shortfall through immigration, and leveraging planned military base for economic spillovers. The sole inhabited body orbiting Regulus B, connected to the system via a single jump point.',
-  },
-};
-
-// ════════════════════════════════════════════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════════════════════════════════════════════
-let currentMode = 'orrery';
-let orreryView = 'ALL';
-let time = 0, paused = false, speed = 0.5;
-let zoom = 1, panX = 0, panY = 0;
-let dragging = false, lastMX = 0, lastMY = 0, wasDragging = false;
-let hoveredBody = null, selectedBody = null;
-let hitTargets = [];
-
-// Survey state
-let filteredData = [...RAW];
-let sortKey = 'name', sortDir = 1;
-let activeSystem = 'ALL';
-let selectedRow = null;
-
-const canvas = document.getElementById('orrery');
-const ctx = canvas.getContext('2d');
-const tooltip = document.getElementById('tooltip');
-
-function W() { return canvas.width; }
-function H() { return canvas.height; }
-function CX() { return W()/2 + panX * devicePixelRatio; }
-function CY() { return H()/2 + panY * devicePixelRatio; }
-
-function resize() {
-  canvas.width = canvas.offsetWidth * devicePixelRatio;
-  canvas.height = canvas.offsetHeight * devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-window.addEventListener('resize', resize);
-resize();
-
-// ════════════════════════════════════════════════════════════════════════════════
-//  MODE SWITCHING
-// ════════════════════════════════════════════════════════════════════════════════
-function setMode(mode) {
-  currentMode = mode;
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === mode));
-  document.getElementById('view-orrery').classList.toggle('active', mode === 'orrery');
-  document.getElementById('view-survey').classList.toggle('active', mode === 'survey');
-  document.getElementById('orrery-tabs').style.display = mode === 'orrery' ? 'flex' : 'none';
-  document.getElementById('orrery-controls').style.display = mode === 'orrery' ? 'flex' : 'none';
-  if (mode === 'orrery') { resize(); }
-  if (mode === 'survey') { applyFilters(); }
-}
-
-// ════════════════════════════════════════════════════════════════════════════════
-//  ORRERY — Drawing
-// ════════════════════════════════════════════════════════════════════════════════
-function drawGrid() {
-  const W2 = canvas.offsetWidth, H2 = canvas.offsetHeight;
-  const step = 80 * zoom;
-  const ox = (CX()/devicePixelRatio) % step;
-  const oy = (CY()/devicePixelRatio) % step;
-  ctx.save();
-  ctx.strokeStyle = 'rgba(20,50,100,0.18)';
-  ctx.lineWidth = 0.5;
-  for (let x = ox - step; x < W2 + step; x += step) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H2); ctx.stroke();
-  }
-  for (let y = oy - step; y < H2 + step; y += step) {
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W2, y); ctx.stroke();
-  }
-  ctx.restore();
-}
-function drawOrbit(cx, cy, r, color='rgba(30,70,130,0.25)', dash=[]) {
-  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 0.7; ctx.setLineDash(dash);
-  ctx.beginPath(); ctx.arc(cx/devicePixelRatio, cy/devicePixelRatio, r * zoom, 0, Math.PI*2); ctx.stroke();
-  ctx.restore();
-}
-function drawStar(sx, sy, key, label) {
-  const s = STARS[key];
-  const x = sx/devicePixelRatio, y = sy/devicePixelRatio;
-  const r = s.r * Math.max(0.5, zoom);
-  ctx.save();
-  const grd = ctx.createRadialGradient(x, y, r*0.5, x, y, r*3);
-  grd.addColorStop(0, s.glowColor); grd.addColorStop(1, 'transparent');
-  ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(x, y, r*3, 0, Math.PI*2); ctx.fill();
-  const brd = ctx.createRadialGradient(x - r*0.3, y - r*0.3, r*0.05, x, y, r);
-  s.colors.forEach((c, i) => brd.addColorStop(i / (s.colors.length - 1), c));
-  ctx.fillStyle = brd; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
-  if (zoom > 0.25) {
-    ctx.font = `${Math.max(9, 11*zoom)}px 'Orbitron', monospace`;
-    ctx.fillStyle = 'rgba(255,220,120,0.7)'; ctx.textAlign = 'center';
-    ctx.fillText(label || s.label, x, y - r - 6*zoom);
-  }
-  ctx.restore();
-}
-function planetColor(body) {
-  if (body.colony) return ['#ffcc44','#aa8800'];
-  if (body.status === 'Inhabited') return ['#40c880','#208040'];
-  return body.colors || ['#888','#444'];
-}
-function drawPlanet(px, py, body, isMoon=false) {
-  const x = px/devicePixelRatio, y = py/devicePixelRatio;
-  const r = Math.max(isMoon ? 1.5 : 2, body.r * Math.min(zoom, 1.4));
-  const isSel = selectedBody === body;
-  const cols = planetColor(body);
-  if (body.rings && zoom > 0.4) {
-    ctx.save(); ctx.strokeStyle = 'rgba(200,160,80,0.25)'; ctx.lineWidth = 2 * zoom;
-    ctx.beginPath(); ctx.ellipse(x, y, r*2.2, r*0.5, 0, 0, Math.PI*2); ctx.stroke(); ctx.restore();
-  }
-  if (isSel) {
-    ctx.save(); ctx.shadowColor = '#2fa8ff'; ctx.shadowBlur = 12;
-    ctx.fillStyle = 'rgba(47,168,255,0.2)';
-    ctx.beginPath(); ctx.arc(x, y, r+4, 0, Math.PI*2); ctx.fill(); ctx.restore();
-  }
-  if (body.colony) {
-    ctx.save(); ctx.strokeStyle = 'rgba(255,200,60,0.55)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(x, y, r+3, 0, Math.PI*2); ctx.stroke(); ctx.restore();
-  }
-  const grd = ctx.createRadialGradient(x - r*0.3, y - r*0.3, r*0.05, x, y, r);
-  grd.addColorStop(0, cols[0]); grd.addColorStop(1, cols[cols.length-1]);
-  ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
-  const showLabel = isMoon ? zoom > 1.0 : zoom > 0.5;
-  if (showLabel) {
-    ctx.save();
-    const lbl = body.colony ? '★ ' + body.name : body.name;
-    ctx.font = `${Math.max(7, (isMoon ? 7.5 : 9) * zoom)}px 'Share Tech Mono', monospace`;
-    ctx.fillStyle = isSel ? 'rgba(47,168,255,0.9)' : body.colony ? 'rgba(255,200,60,0.8)' : body.status === 'Inhabited' ? 'rgba(0,255,198,0.6)' : 'rgba(140,185,215,0.5)';
-    ctx.textAlign = 'left'; ctx.fillText(lbl, x + r + 4*zoom, y + 3); ctx.restore();
-  }
-  hitTargets.push({ body, x: px, y: py, r: Math.max(r, 5) * devicePixelRatio });
-}
-function drawBodies(starX, starY, key) {
-  PLANETS[key].forEach(body => {
-    drawOrbit(starX, starY, body.orbit);
-    const a = (time / body.period) * Math.PI * 2;
-    const bx = starX + Math.cos(a) * body.orbit * zoom * devicePixelRatio;
-    const by = starY + Math.sin(a) * body.orbit * zoom * devicePixelRatio;
-    body._x = bx; body._y = by;
-    drawPlanet(bx, by, body);
-    if (body.moons && zoom > 0.55) {
-      body.moons.forEach((m, mi) => {
-        drawOrbit(bx, by, m.orbit, 'rgba(20,55,110,0.18)', [3,5]);
-        const ma = (time / m.period) * Math.PI * 2 + mi * 1.1;
-        const mx2 = bx + Math.cos(ma) * m.orbit * zoom * devicePixelRatio;
-        const my2 = by + Math.sin(ma) * m.orbit * zoom * devicePixelRatio;
-        drawPlanet(mx2, my2, m, true);
-      });
-    }
-  });
-}
-function frame() {
-  if (currentMode !== 'orrery') { requestAnimationFrame(frame); return; }
-  const W2 = canvas.offsetWidth, H2 = canvas.offsetHeight;
-  ctx.save(); ctx.scale(1/devicePixelRatio, 1/devicePixelRatio);
-  ctx.clearRect(0, 0, W(), H()); ctx.fillStyle = '#03060e'; ctx.fillRect(0, 0, W(), H());
-  ctx.restore();
-  drawGrid();
-  hitTargets = [];
-  if (orreryView === 'A') {
-    const ax = CX(), ay = CY(); drawBodies(ax, ay, 'A'); drawStar(ax, ay, 'A');
-  } else if (orreryView === 'B') {
-    const bx = CX(), by = CY();
-    const cAngle = (time / STARS.C.periodAroundB) * Math.PI * 2;
-    const cx2 = bx + Math.cos(cAngle) * STARS.C.orbitAroundB * zoom * devicePixelRatio;
-    const cy2 = by + Math.sin(cAngle) * STARS.C.orbitAroundB * zoom * devicePixelRatio;
-    drawOrbit(bx, by, STARS.C.orbitAroundB, 'rgba(255,130,130,0.22)', [6,10]);
-    drawBodies(cx2, cy2, 'C'); drawStar(cx2, cy2, 'C', 'Reg C');
-    drawBodies(bx, by, 'B'); drawStar(bx, by, 'B', 'Reg B');
-  } else if (orreryView === 'C') {
-    const cx2 = CX(), cy2 = CY(); drawBodies(cx2, cy2, 'C'); drawStar(cx2, cy2, 'C', 'Regulus C');
-  } else {
-    const ax = CX(), ay = CY();
-    const bAngle = (time / STARS.B.periodAroundA) * Math.PI * 2;
-    const bx = ax + Math.cos(bAngle) * STARS.B.orbitAroundA * zoom * devicePixelRatio;
-    const by = ay + Math.sin(bAngle) * STARS.B.orbitAroundA * zoom * devicePixelRatio;
-    const cAngle = (time / STARS.C.periodAroundB) * Math.PI * 2;
-    const cx2 = bx + Math.cos(cAngle) * STARS.C.orbitAroundB * zoom * devicePixelRatio;
-    const cy2 = by + Math.sin(cAngle) * STARS.C.orbitAroundB * zoom * devicePixelRatio;
-    drawOrbit(ax, ay, STARS.B.orbitAroundA, 'rgba(255,140,50,0.15)', [10,14]);
-    drawOrbit(bx, by, STARS.C.orbitAroundB, 'rgba(255,130,130,0.18)', [5,9]);
-    drawBodies(ax, ay, 'A'); drawBodies(bx, by, 'B'); drawBodies(cx2, cy2, 'C');
-    drawStar(cx2, cy2, 'C', 'Reg C'); drawStar(bx, by, 'B', 'Reg B'); drawStar(ax, ay, 'A', 'Reg A');
-  }
-  if (!paused) time += 0.004 * speed;
-  requestAnimationFrame(frame);
-}
-
-// ════════════════════════════════════════════════════════════════════════════════
-//  ORRERY — Interaction
-// ════════════════════════════════════════════════════════════════════════════════
-function hitTest(mx, my) {
-  for (const t of hitTargets) {
-    const dx = mx * devicePixelRatio - t.x;
-    const dy = my * devicePixelRatio - t.y;
-    if (dx*dx + dy*dy < (t.r + 4*devicePixelRatio)*(t.r + 4*devicePixelRatio)) return t.body;
-  }
-  return null;
-}
-canvas.addEventListener('wheel', e => {
-  e.preventDefault();
-  zoom = Math.max(0.05, Math.min(8, zoom * (e.deltaY < 0 ? 1.1 : 0.91)));
-}, { passive: false });
-canvas.addEventListener('mousedown', e => { dragging = true; wasDragging = false; lastMX = e.clientX; lastMY = e.clientY; });
-window.addEventListener('mouseup', e => {
-  if (!wasDragging && currentMode === 'orrery') {
-    const rect = canvas.getBoundingClientRect();
-    const hit = hitTest(e.clientX - rect.left, e.clientY - rect.top);
-    if (hit) { selectedBody = hit; showOrreryInfo(hit); }
-    else { selectedBody = null; closeOrreryInfo(); }
-  }
-  dragging = false;
-});
-canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  if (dragging) { panX += (mx - lastMX); panY += (my - lastMY); wasDragging = true; }
-  lastMX = mx; lastMY = my;
-  const hit = hitTest(mx, my);
-  hoveredBody = hit;
-  if (hit) {
-    canvas.style.cursor = 'pointer';
-    tooltip.style.display = 'block';
-    tooltip.style.left = (e.clientX + 14) + 'px';
-    tooltip.style.top  = (e.clientY - 10) + 'px';
-    tooltip.textContent = hit.name + (hit.temp != null ? `  ${hit.temp}°C` : '') + (hit.gravity != null ? `  ${hit.gravity}G` : '');
-  } else {
-    canvas.style.cursor = dragging ? 'grabbing' : 'default';
-    tooltip.style.display = 'none';
-  }
-});
-
-// ════════════════════════════════════════════════════════════════════════════════
-//  INFO PANEL (shared builder)
-// ════════════════════════════════════════════════════════════════════════════════
-function tempClass(t) {
-  if (t == null) return '';
-  if (t > 100) return 'hot'; if (t > 30) return 'warm'; if (t > 0) return 'cool'; if (t > -100) return 'cold'; return 'frozen';
-}
-function val(v, unit='', fallback='—') {
-  if (v == null || v === '') return `<span style="color:var(--dim)">${fallback}</span>`;
-  return `${v}${unit}`;
-}
-function getBodyColorCSS(r) {
-  const t = (r.type||r.status||'').toLowerCase();
-  if (t.includes('gas') || t.includes('jovian')) return 'radial-gradient(circle at 40% 35%, #ffe0a0, #e07020 50%, #803008 100%)';
-  if (r.atmo && r.atmo.match && r.atmo.match(/O₂|oxygen/i) && r.hydro && r.hydro.includes && r.hydro.includes('Liquid')) return 'radial-gradient(circle at 35% 30%, #a0e0ff, #2080c0 50%, #104060 100%)';
-  if (r.temp != null && r.temp < -150) return 'radial-gradient(circle at 35% 30%, #d0e8ff, #8090b0 50%, #303850 100%)';
-  if (r.terrain && typeof r.terrain === 'string' && r.terrain.toLowerCase().includes('jungle')) return 'radial-gradient(circle at 35% 30%, #80e090, #208040 50%, #103020 100%)';
-  if (r.hydro && typeof r.hydro === 'string' && r.hydro.includes('Ice')) return 'radial-gradient(circle at 35% 30%, #e8f4ff, #a0b8c8 50%, #506070 100%)';
-  if (r.temp != null && r.temp > 300) return 'radial-gradient(circle at 35% 30%, #ff8040, #c03010 50%, #601008 100%)';
-  return 'radial-gradient(circle at 35% 30%, #b0b8c0, #606870 50%, #303438 100%)';
-}
-
-function buildInfoHTML(body, forSurvey=false) {
-  const statusCls = body.colony || body.status === 'Colony' ? 'colony' : body.status === 'Inhabited' ? 'inhabited' : body.status === 'Gas Giant' ? 'gas' : 'uninhabited';
-  const popStr = body.pop ? (typeof body.pop === 'number' ? body.pop + 'M' : body.pop) : '';
-  const bodyColor = getBodyColorCSS(body);
-
-  // Check for economic data
-  const econKey = Object.keys(ECON).find(k => body.name && body.name.includes(k.split(' (')[0]));
-  const econ = econKey ? ECON[econKey] : null;
-
-  let html = `
-    <div class="info-system-tag">${body.type || body.system || 'Body'}</div>
-    <div class="info-name">${body.name}</div>
-    <div class="info-status ${statusCls}">${body.status || 'Unknown'}${popStr ? ' · ' + popStr : ''}</div>
-    <div class="panel-body-vis"><div class="body-circle" style="background:${bodyColor}"></div></div>
-    <div class="info-divider"></div>`;
-
-  // Economic context block for inhabited worlds
-  if (econ) {
-    html += `
-    <div class="econ-block">
-      <div class="econ-block-title">ECONOMIC PROFILE — ${econ.role.toUpperCase()}</div>
-      <p>${econ.summary}</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:8px;">
-        <div class="info-item"><div class="k">Governor</div><div class="v" style="color:${econ.governor === 'NONE ASSIGNED' ? '#ff6666' : 'var(--accent2)'}">${econ.governor}</div></div>
-        <div class="info-item"><div class="k">Population</div><div class="v">${econ.popDetail}</div></div>
-        <div class="info-item"><div class="k">Workforce</div><div class="v" style="color:${econ.workerStatus.includes('SHORTAGE') ? '#ff6666' : 'var(--accent2)'}">${econ.workerStatus}</div></div>
-        <div class="info-item"><div class="k">Taxes</div><div class="v">${econ.taxes}</div></div>
-        <div class="info-item" style="grid-column:span 2"><div class="k">Garrison</div><div class="v" style="color:${econ.garrison === 'NONE — completely undefended' || econ.garrison.startsWith('NONE') ? '#ff6666' : 'var(--text)'}">${econ.garrison}</div></div>
-        <div class="info-item" style="grid-column:span 2"><div class="k">Key Facilities</div><div class="v" style="font-size:9.5px;line-height:1.5">${econ.keyFacilities}</div></div>
-        <div class="info-item" style="grid-column:span 2"><div class="k">Minerals</div><div class="v">${econ.minerals}</div></div>
-        <div class="info-item" style="grid-column:span 2"><div class="k">Fuel</div><div class="v">${econ.fuel}</div></div>
-        <div class="info-item" style="grid-column:span 2"><div class="k">Alerts</div><div class="v" style="color:#ff8866;font-size:10px">${econ.alerts}</div></div>
+      <div class="planet-data">
+        <div class="planet-data-row">
+          <span class="planet-data-label">Population</span>
+          <span class="planet-data-value large highlight-green">583<span class="unit">million</span></span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Growth Rate</span>
+          <span class="planet-data-value highlight-green">
+            2.46<span class="unit">% per annum</span>
+          </span>
+          <div style="flex:1; margin-left: 16px;">
+            <div class="growth-bar-track">
+              <div class="growth-bar-fill" style="width:49%; background: var(--accent2);"></div>
+            </div>
+          </div>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Industrial BP</span>
+          <span class="planet-data-value highlight-green">10,800<span class="unit">per year</span></span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Annual Revenue</span>
+          <span class="planet-data-value">16,050<span class="unit">wealth units</span></span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Facilities</span>
+          <span class="planet-data-value" style="font-size:12px; line-height:1.5;">
+            900 factories Â· 700 mines Â· 150 refineries<br>
+            25 research labs Â· 5 shipyards
+          </span>
+        </div>
       </div>
     </div>
-    <div class="info-divider"></div>`;
-  }
+    <div class="planet-globe"></div>
+  </div>
 
-  html += `
-    <div class="info-section">
-      <div class="info-section-title">Physical</div>
-      <div class="info-grid">
-        <div class="info-item"><div class="k">Temperature</div><div class="v ${tempClass(body.temp)}">${val(body.temp,'°C')}</div></div>
-        <div class="info-item"><div class="k">Gravity</div><div class="v">${val(body.gravity,'G')}</div></div>
-        <div class="info-item"><div class="k">Diameter</div><div class="v">${val(body.diameter,' km')}</div></div>
-        <div class="info-item"><div class="k">Mass</div><div class="v">${val(body.mass,' M⊕')}</div></div>
-        <div class="info-item"><div class="k">Axial Tilt</div><div class="v">${val(body.axial,'°')}</div></div>
-        <div class="info-item"><div class="k">Tidal Lock</div><div class="v">${body.tidal ? 'Yes' : (body.tidal === false ? 'No' : '—')}</div></div>
+  <!-- ââ Liora ââ -->
+  <div class="planet-card liora">
+    <div class="planet-stats">
+      <div class="planet-badge">Core World</div>
+      <div class="planet-name">Liora</div>
+      <div class="planet-tagline">Financial and commercial hub of the Regulus system</div>
+
+      <div class="planet-data">
+        <div class="planet-data-row">
+          <span class="planet-data-label">Population</span>
+          <span class="planet-data-value large highlight-blue">298<span class="unit">million</span></span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Growth Rate</span>
+          <span class="planet-data-value highlight-blue">
+            3.29<span class="unit">% per annum</span>
+          </span>
+          <div style="flex:1; margin-left: 16px;">
+            <div class="growth-bar-track">
+              <div class="growth-bar-fill" style="width:66%; background: var(--accent);"></div>
+            </div>
+          </div>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Sorium Reserve</span>
+          <span class="planet-data-value highlight-blue">79,593<span class="unit">kt â Taruscav Field</span></span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Institutions</span>
+          <span class="planet-data-value" style="font-size:12px; line-height:1.5;">
+            Bank of Liora Â· Liora Stock Exchange<br>
+            Liora Bond Exchange Â· Orbital Repair Yards
+          </span>
+        </div>
       </div>
     </div>
-    <div class="info-divider"></div>
-    <div class="info-section">
-      <div class="info-section-title">Environment</div>
-      <div class="info-grid">
-        <div class="info-item"><div class="k">Atmosphere</div><div class="v">${val(body.atmo)}</div></div>
-        <div class="info-item"><div class="k">Pressure</div><div class="v">${val(body.pressure,' atm')}</div></div>
-        <div class="info-item"><div class="k">Hydrosphere</div><div class="v">${val(body.hydro)}</div></div>
-        <div class="info-item"><div class="k">Terrain</div><div class="v">${val(body.terrain)}</div></div>
-        <div class="info-item"><div class="k">Tectonics</div><div class="v">${val(body.tectonics)}</div></div>
-        <div class="info-item"><div class="k">Mag. Field</div><div class="v">${val(body.mag)}</div></div>
+    <div class="planet-globe"></div>
+  </div>
+
+  <!-- ââ Vexsis ââ -->
+  <div class="planet-card vexsis">
+    <div class="planet-stats">
+      <div class="planet-badge">Core World</div>
+      <div class="planet-name">Vexsis</div>
+      <div class="planet-tagline">Emerging colony â Vexsis Council on Economic Development</div>
+
+      <div class="planet-data">
+        <div class="planet-data-row">
+          <span class="planet-data-label">Population</span>
+          <span class="planet-data-value large highlight-plantgreen">124<span class="unit">million</span></span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Growth Rate</span>
+          <span class="planet-data-value highlight-dim">
+            0.00<span class="unit">% per annum</span>
+          </span>
+          <div style="flex:1; margin-left: 16px;">
+            <div class="growth-bar-track">
+              <div class="growth-bar-fill" style="width:0%; background: #90ee60;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Status</span>
+          <span class="planet-data-value highlight-warn" style="font-size:12px;">
+            Population stabilised â development phase
+          </span>
+        </div>
+        <div class="planet-data-row">
+          <span class="planet-data-label">Administration</span>
+          <span class="planet-data-value" style="font-size:12px; line-height:1.5;">
+            Vexsis Council on Economic Development<br>
+            <span style="color:var(--dim); font-size:10px;">page under construction</span>
+          </span>
+        </div>
       </div>
     </div>
-    <div class="info-divider"></div>
-    <div class="info-section">
-      <div class="info-section-title">Orbital</div>
-      <div class="info-grid">
-        <div class="info-item"><div class="k">Day Length</div><div class="v">${val(body.day)}</div></div>
-        <div class="info-item"><div class="k">Year Length</div><div class="v">${val(body.year)}</div></div>
-        <div class="info-item"><div class="k">Orbit Dist.</div><div class="v">${val(body.distance,' km')}</div></div>
-        <div class="info-item"><div class="k">Max Pop.</div><div class="v">${body.maxpop != null ? body.maxpop.toLocaleString()+'K' : '—'}</div></div>
-      </div>
-    </div>`;
-  return html;
-}
+    <div class="planet-globe"></div>
+  </div>
 
-// ── Orrery info panel ──
-function showOrreryInfo(body) {
-  document.getElementById('orrery-info-content').innerHTML = buildInfoHTML(body);
-  document.getElementById('orrery-info-panel').classList.add('open');
-}
-function closeOrreryInfo() {
-  document.getElementById('orrery-info-panel').classList.remove('open'); selectedBody = null;
-}
+</main>
 
-// ── Survey info panel ──
-function showSurveyInfo(idx) {
-  selectedRow = idx;
-  const r = RAW[idx];
-  document.getElementById('survey-info-content').innerHTML = buildInfoHTML(r, true);
-  document.getElementById('survey-info-panel').classList.add('open');
-  sortAndRender();
-}
-function closeSurveyInfo() {
-  selectedRow = null;
-  document.getElementById('survey-info-panel').classList.remove('open');
-  sortAndRender();
-}
+<!-- ââââââââââââââââââââââââââââââââââââââââââ
+     FOOTER
+âââââââââââââââââââââââââââââââââââââââââââ -->
+<footer>
+  <div class="logo-mark" style="width:20px; height:20px; margin:0;"></div>
+  <span class="footer-text">UA.GOV Â· UNITED ADMIRALTY GOVERNMENT Â· SECOND REPUBLIC Â· ASR 0</span>
+</footer>
 
-// ════════════════════════════════════════════════════════════════════════════════
-//  ORRERY — Controls
-// ════════════════════════════════════════════════════════════════════════════════
-function setOrreryView(v) {
-  orreryView = v; panX = 0; panY = 0;
-  zoom = v === 'ALL' ? 0.28 : 1;
-  document.querySelectorAll('#orrery-tabs .tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['ALL','A','B','C'][i] === v);
-  });
-}
-function togglePause() {
-  paused = !paused;
-  document.getElementById('pause-btn').textContent = paused ? '▶ PLAY' : '⏸ PAUSE';
-}
-document.getElementById('speed-slider').addEventListener('input', e => { speed = parseFloat(e.target.value); });
-
-// ════════════════════════════════════════════════════════════════════════════════
-//  SURVEY — Table logic
-// ════════════════════════════════════════════════════════════════════════════════
-function getTypeCategory(type) {
-  if (!type) return 'Moon';
-  const t = type.toLowerCase();
-  if (t.includes('gas') || t.includes('jovian')) return 'Gas';
-  if (t.includes('dwarf')) return 'Dwarf';
-  if (t.includes('moon')) return 'Moon';
-  return 'Planet';
-}
-function typeBadge(type) {
-  const cat = getTypeCategory(type);
-  const labels = { Gas:'GAS GIANT', Dwarf:'DWARF', Moon:'MOON', Planet:'PLANET' };
-  const cls = { Gas:'badge-gas', Dwarf:'badge-dwarf', Moon:'badge-moon', Planet:'badge-planet' };
-  return `<span class="type-badge ${cls[cat]}">${labels[cat]}</span>`;
-}
-function surveyTempClass(t) { if (t==null) return ''; if (t>100) return 'temp-hot'; if (t>30) return 'temp-warm'; if (t>0) return 'temp-cool'; if (t>-100) return 'temp-cold'; return 'temp-frozen'; }
-function statusBadge(row) {
-  if (row.status === 'Colony') return `<span class="colony-badge">COLONY</span>`;
-  if (row.status === 'Inhabited') return `<span class="colony-badge" style="background:rgba(255,180,71,0.15);color:var(--warn);">INHABITED</span>`;
-  if (row.status === 'Gas Giant') return `<span class="type-badge badge-gas">GAS GIANT</span>`;
-  return '<span class="no-data">—</span>';
-}
-function getTypeIcon(type) {
-  const t = (type||'').toLowerCase();
-  if (t.includes('gas') || t.includes('jovian')) return '&#x1FA90;';
-  if (t.includes('moon')) return '&#x1F311;';
-  if (t.includes('dwarf')) return '&#x26AB;';
-  return '&#x1F30D;';
-}
-function filterSystem(sys) {
-  activeSystem = sys;
-  document.querySelectorAll('.sys-btn').forEach(b => b.classList.toggle('active', b.dataset.system === sys));
-  applyFilters();
-}
-function applyFilters() {
-  const search = document.getElementById('search-box').value.toLowerCase();
-  const typeChecks = [...document.querySelectorAll('#type-filters input[type=checkbox]')];
-  const allowedTypes = typeChecks.filter(c => c.checked).map(c => c.value);
-  const onlyBreathable = document.getElementById('filter-breathable').checked;
-  const onlyLiquid = document.getElementById('filter-liquid').checked;
-  const onlyColony = document.getElementById('filter-colony').checked;
-  filteredData = RAW.filter(r => {
-    if (activeSystem !== 'ALL' && r.system !== activeSystem) return false;
-    if (!allowedTypes.includes(getTypeCategory(r.type))) return false;
-    if (onlyBreathable && (!r.atmo || !r.atmo.match(/O₂|oxygen/i))) return false;
-    if (onlyLiquid && (!r.hydro || !r.hydro.toLowerCase().includes('liquid'))) return false;
-    if (onlyColony && r.status !== 'Colony') return false;
-    if (search) {
-      const haystack = [r.name, r.system, r.terrain, r.atmo, r.hydro, r.type, r.status].join(' ').toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
-    return true;
-  });
-  sortAndRender();
-}
-function sortBy(key) {
-  if (sortKey === key) { sortDir *= -1; } else { sortKey = key; sortDir = 1; }
-  document.querySelectorAll('#survey-table th').forEach(th => {
-    th.classList.remove('sorted'); th.querySelector('.sort-arrow').textContent = '↕';
-  });
-  const idx = ['name','system','type','pop','temp','gravity','diameter','atmosphere','terrain','hydrosphere','status'];
-  const colIdx = idx.indexOf(key);
-  const ths = document.querySelectorAll('#survey-table th');
-  if (ths[colIdx]) { ths[colIdx].classList.add('sorted'); ths[colIdx].querySelector('.sort-arrow').textContent = sortDir === 1 ? '↑' : '↓'; }
-  sortAndRender();
-}
-function sortAndRender() {
-  const keyMap = { name:r=>r.name, system:r=>r.system, type:r=>r.type, pop:r=>r.pop??-Infinity, temp:r=>r.temp??-Infinity, gravity:r=>r.gravity??-Infinity, diameter:r=>r.diameter??-Infinity, atmosphere:r=>r.atmo??'', terrain:r=>r.terrain??'', hydrosphere:r=>r.hydro??'', status:r=>r.status??'' };
-  const fn = keyMap[sortKey] || (r=>r.name);
-  const sorted = [...filteredData].sort((a,b) => { const av=fn(a), bv=fn(b); return av < bv ? -sortDir : av > bv ? sortDir : 0; });
-  renderTable(sorted);
-}
-function renderTable(data) {
-  const tbody = document.getElementById('table-body');
-  const empty = document.getElementById('empty-state');
-  if (!data.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
-  empty.style.display = 'none';
-  tbody.innerHTML = data.map((r) => `
-    <tr onclick="showSurveyInfo(${RAW.indexOf(r)})" ${selectedRow===RAW.indexOf(r)?'class="selected"':''}>
-      <td class="td-name">${getTypeIcon(r.type)} ${r.name}${r.parent ? `<br><span style="font-size:9px;color:var(--dim)">↳ ${r.parent}</span>` : ''}</td>
-      <td style="font-size:9px;color:var(--dim);font-family:'Share Tech Mono',monospace;">${r.system}</td>
-      <td>${typeBadge(r.type)}</td>
-      <td>${r.pop !== null ? `<span style="color:var(--accent2)">${r.pop}M</span>` : '<span class="no-data">—</span>'}</td>
-      <td class="${surveyTempClass(r.temp)}">${r.temp !== null ? r.temp+'°C' : '<span class="no-data">—</span>'}</td>
-      <td>${r.gravity !== null ? r.gravity+'G' : '<span class="no-data">—</span>'}</td>
-      <td>${r.diameter !== null ? r.diameter.toLocaleString()+' km' : '<span class="no-data">—</span>'}</td>
-      <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;">${r.atmo ?? '<span class="no-data">—</span>'}</td>
-      <td>${r.terrain ?? '<span class="no-data">—</span>'}</td>
-      <td>${r.hydro ?? '<span class="no-data">—</span>'}</td>
-      <td>${statusBadge(r)}</td>
-    </tr>
-  `).join('');
-}
-
-// ── Init stats ──
-function updateStats() {
-  document.getElementById('stat-bodies').textContent = RAW.length;
-  document.getElementById('stat-colonies').textContent = RAW.filter(r => r.status === 'Colony').length;
-  document.getElementById('cnt-ALL').textContent = RAW.length;
-  document.getElementById('cnt-A').textContent = RAW.filter(r => r.system === 'Regulus A').length;
-  document.getElementById('cnt-B').textContent = RAW.filter(r => r.system === 'Regulus B').length;
-  document.getElementById('cnt-C').textContent = RAW.filter(r => r.system === 'Regulus C').length;
-}
-document.querySelectorAll('#type-filters input[type=checkbox]').forEach(c => { c.addEventListener('change', applyFilters); });
-
-// ── Boot ──
-updateStats();
-setOrreryView('ALL');
-setMode('orrery');
-frame();
-</script>
 </body>
 </html>
