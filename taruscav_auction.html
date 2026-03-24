@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taruscav Sorium Auction Authority — Regulus A VI</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #02040a;
+  --surface: #0a0f1e;
+  --surface2: #0e1526;
+  --border: rgba(40,100,180,0.22);
+  --border-bright: rgba(47,168,255,0.4);
+  --accent: #2fa8ff;
+  --accent2: #00ffc6;
+  --gold: #ffcc44;
+  --green: #00ffc6;
+  --red: #ff4455;
+  --amber: #ff9a1f;
+  --nebula1: #7b3fa0;   /* purple */
+  --nebula2: #a0532a;   /* burnt orange */
+  --nebula3: #1a4a8a;   /* deep blue */
+  --text: rgba(160,200,230,0.85);
+  --text-bright: #e8f4ff;
+  --dim: rgba(100,140,180,0.45);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Nebula Background ── */
+.nebula-layer {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+/* Stars */
+.nebula-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 5%   8%, rgba(255,255,255,0.7)  0%, transparent 100%),
+    radial-gradient(1px 1px at 11%  33%, rgba(255,255,255,0.5)  0%, transparent 100%),
+    radial-gradient(1px 1px at 18%  72%, rgba(255,255,255,0.4)  0%, transparent 100%),
+    radial-gradient(1px 1px at 23%  18%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30%  55%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 37%  88%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 44%  12%, rgba(255,255,255,0.6)  0%, transparent 100%),
+    radial-gradient(1px 1px at 50%  44%, rgba(255,255,255,0.3)  0%, transparent 100%),
+    radial-gradient(1px 1px at 57%  77%, rgba(255,255,255,0.5)  0%, transparent 100%),
+    radial-gradient(1px 1px at 62%  22%, rgba(255,255,255,0.4)  0%, transparent 100%),
+    radial-gradient(1px 1px at 70%  60%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 76%  38%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82%  82%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88%  15%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1px 1px at 94%  50%, rgba(255,255,255,0.4)  0%, transparent 100%),
+    radial-gradient(1px 1px at 98%  90%, rgba(255,255,255,0.3)  0%, transparent 100%),
+    radial-gradient(2px 2px at 15%  47%, rgba(200,200,255,0.45) 0%, transparent 100%),
+    radial-gradient(2px 2px at 66%  68%, rgba(200,200,255,0.35) 0%, transparent 100%),
+    radial-gradient(2px 2px at 40%  30%, rgba(255,220,180,0.3)  0%, transparent 100%),
+    radial-gradient(2px 2px at 85%  55%, rgba(200,200,255,0.4)  0%, transparent 100%);
+}
+/* Gas clouds */
+.nebula-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    /* large purple cloud upper-right */
+    radial-gradient(ellipse 60% 40% at 80% 15%,
+      rgba(123,63,160,0.18) 0%, rgba(80,30,120,0.08) 50%, transparent 70%),
+    /* burnt orange band across middle-right */
+    radial-gradient(ellipse 70% 30% at 90% 55%,
+      rgba(160,83,42,0.14) 0%, rgba(120,60,20,0.06) 50%, transparent 70%),
+    /* deep blue cloud lower-left */
+    radial-gradient(ellipse 55% 45% at 10% 80%,
+      rgba(26,74,138,0.16) 0%, rgba(15,50,100,0.07) 50%, transparent 70%),
+    /* faint purple wash upper-left */
+    radial-gradient(ellipse 50% 35% at 5% 20%,
+      rgba(100,50,140,0.10) 0%, transparent 60%),
+    /* warm amber drift lower-right */
+    radial-gradient(ellipse 45% 35% at 75% 85%,
+      rgba(160,100,30,0.10) 0%, transparent 60%),
+    /* central teal tint */
+    radial-gradient(ellipse 80% 20% at 50% 50%,
+      rgba(30,80,130,0.06) 0%, transparent 70%);
+}
+
+/* ── Grid lines ── */
+.grid-lines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(47,168,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47,168,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; height: 56px;
+  background: rgba(2,4,10,0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 2px solid var(--accent);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(47,168,255,0.08);
+}
+.header-brand { display: flex; flex-direction: column; gap: 1px; }
+.header-title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--accent); letter-spacing: 0.18em; }
+.header-sub { font-size: 8px; color: var(--dim); letter-spacing: 0.22em; }
+.header-nav { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.nav-item {
+  padding: 0 14px; height: 56px; display: flex; align-items: center;
+  font-size: 11px; letter-spacing: 0.12em; color: var(--dim);
+  text-decoration: none; cursor: pointer;
+  transition: color .15s, background .15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-item:hover { color: var(--text-bright); background: rgba(47,168,255,0.04); }
+.nav-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* Dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { user-select: none; }
+.nav-dropdown-toggle::after { content: ' ▾'; font-size: 9px; }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: 56px; right: 0;
+  background: rgba(2,4,10,0.98);
+  border: 1px solid var(--border-bright);
+  min-width: 260px; padding: 6px 0;
+  backdrop-filter: blur(16px);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 8px 18px;
+  font-size: 11px; letter-spacing: 0.1em; color: var(--dim);
+  text-decoration: none; transition: color .1s, background .1s;
+}
+.nav-dropdown-menu a:hover { color: var(--text-bright); background: rgba(47,168,255,0.07); }
+.menu-section {
+  padding: 10px 18px 4px; font-size: 9px;
+  letter-spacing: 0.22em; color: rgba(100,140,180,0.35);
+  border-top: 1px solid rgba(40,100,180,0.15); margin-top: 4px;
+}
+.menu-section:first-child { border-top: none; margin-top: 0; }
+
+/* ── Live Market Ticker ── */
+.live-ticker {
+  background: linear-gradient(90deg, rgba(123,63,160,0.12), rgba(255,204,68,0.08), rgba(160,83,42,0.10));
+  border-bottom: 1px solid rgba(255,204,68,0.28);
+  padding: 12px 32px;
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+}
+.ticker-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+  box-shadow: 0 0 10px var(--gold);
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+@keyframes live-pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+.ticker-label {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--gold); font-weight: 600;
+}
+.ticker-price {
+  font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+  color: var(--gold); line-height: 1;
+}
+.ticker-unit { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+.ticker-change { font-size: 11px; color: var(--green); letter-spacing: 0.1em; }
+.ticker-divider { width: 1px; height: 28px; background: var(--border); }
+.ticker-lot {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.ticker-lot-label { font-size: 8px; color: var(--dim); letter-spacing: 0.18em; }
+.ticker-lot-val { font-size: 12px; color: var(--text-bright); letter-spacing: 0.1em; font-weight: 600; }
+.ticker-right { margin-left: auto; font-size: 9px; color: var(--dim); letter-spacing: 0.14em; }
+
+/* ── Hero ── */
+.hero {
+  position: relative; z-index: 1;
+  padding: 72px 32px 56px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+/* Gas Giant orb */
+.gas-giant-scene {
+  position: absolute; right: 32px; top: 40px;
+  width: 340px; height: 340px; pointer-events: none;
+}
+.gas-giant {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 60% 20% at 50% 30%,
+      rgba(255,180,80,0.45) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 40% at 50% 50%,
+      rgba(160,83,42,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 30% at 50% 70%,
+      rgba(100,55,20,0.30) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 100% at 50% 50%,
+      #4a2a0a 0%, #2a1505 40%, #1a0e04 70%, #0e0804 100%);
+  box-shadow:
+    0 0 80px rgba(123,63,160,0.25),
+    0 0 160px rgba(123,63,160,0.12),
+    0 0 40px rgba(200,120,40,0.15),
+    inset -20px -20px 60px rgba(0,0,0,0.7);
+}
+/* atmospheric bands */
+.gas-band {
+  position: absolute; left: 0; right: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.gas-band-1 {
+  top: 22%; height: 8%;
+  background: linear-gradient(90deg,
+    transparent 5%, rgba(255,160,60,0.18) 20%, rgba(255,200,80,0.25) 50%,
+    rgba(255,160,60,0.18) 80%, transparent 95%);
+}
+.gas-band-2 {
+  top: 38%; height: 6%;
+  background: linear-gradient(90deg,
+    transparent 10%, rgba(180,100,30,0.20) 30%, rgba(200,130,50,0.22) 60%,
+    rgba(180,100,30,0.15) 85%, transparent 95%);
+}
+.gas-band-3 {
+  top: 52%; height: 9%;
+  background: linear-gradient(90deg,
+    transparent 8%, rgba(220,140,50,0.16) 25%, rgba(240,170,70,0.22) 55%,
+    rgba(220,140,50,0.16) 80%, transparent 95%);
+}
+.gas-band-4 {
+  top: 68%; height: 5%;
+  background: linear-gradient(90deg,
+    transparent 12%, rgba(160,90,25,0.18) 35%, rgba(180,110,35,0.20) 65%,
+    rgba(160,90,25,0.14) 88%, transparent 95%);
+}
+/* Rings */
+.ring-wrap {
+  position: absolute; inset: -30%;
+  border-radius: 50%;
+  transform: rotateX(72deg);
+  pointer-events: none;
+}
+.ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(255,180,80,0.22);
+}
+.ring-1 { inset: 8%; border-width: 12px; border-color: rgba(200,140,60,0.14); }
+.ring-2 { inset: 2%; border-width: 6px; border-color: rgba(180,120,50,0.10); }
+.ring-3 { inset: -6%; border-width: 3px; border-color: rgba(160,100,40,0.08); }
+/* Halo glow */
+.gas-halo {
+  position: absolute;
+  inset: -35%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%,
+    transparent 48%,
+    rgba(123,63,160,0.10) 58%,
+    rgba(160,83,42,0.08) 65%,
+    transparent 75%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.28em; color: var(--gold);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+}
+.hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(30px, 4.5vw, 56px); font-weight: 900;
+  color: var(--text-bright); line-height: 1.05;
+  letter-spacing: 0.04em; margin-bottom: 10px;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-family: 'Exo 2', sans-serif; font-style: italic;
+  font-size: 14px; color: var(--dim); margin-bottom: 28px; letter-spacing: 0.08em;
+}
+.hero-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 14px;
+  color: var(--text); line-height: 1.75; max-width: 540px; margin-bottom: 36px;
+}
+.hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-val {
+  font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 600;
+  color: var(--gold); line-height: 1;
+}
+.hero-stat-label { font-size: 9px; letter-spacing: 0.2em; color: var(--dim); }
+
+/* ── Section ── */
+.section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 32px 64px;
+}
+.section-header {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.18em;
+}
+.section-sub { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+
+/* ── Info Panel ── */
+.info-panel {
+  background: rgba(10,15,30,0.80);
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px;
+  margin-bottom: 48px;
+  backdrop-filter: blur(8px);
+}
+.info-group-title {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--gold);
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,204,68,0.15);
+}
+.info-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.info-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; }
+.info-val { font-size: 10px; color: var(--text-bright); text-align: right; }
+.info-val.gold { color: var(--gold); }
+.info-val.green { color: var(--green); }
+.info-val.amber { color: var(--amber); }
+
+/* ── Auction Lots Grid ── */
+.lots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.lot-card {
+  background: rgba(10,15,30,0.80);
+  border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+  backdrop-filter: blur(6px);
+}
+.lot-card:hover {
+  border-color: rgba(255,204,68,0.3);
+  box-shadow: 0 0 20px rgba(123,63,160,0.1);
+}
+.lot-card-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--nebula1), var(--amber), var(--gold));
+  opacity: 0.7;
+}
+.lot-card-body { padding: 18px 20px 0; }
+.lot-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.lot-id {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.08em;
+}
+.lot-zone { font-size: 9px; color: var(--dim); letter-spacing: 0.18em; margin-top: 2px; }
+.lot-status {
+  font-size: 8px; letter-spacing: 0.16em; padding: 3px 9px;
+  border: 1px solid;
+}
+.lot-status.open    { color: var(--green); border-color: rgba(0,255,198,0.3); background: rgba(0,255,198,0.05); }
+.lot-status.awarded { color: var(--gold);  border-color: rgba(255,204,68,0.3); background: rgba(255,204,68,0.05); }
+.lot-status.pending { color: var(--amber); border-color: rgba(255,154,31,0.3); background: rgba(255,154,31,0.05); }
+.lot-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 11px;
+  color: var(--dim); line-height: 1.6; margin-bottom: 14px;
+}
+.lot-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.lot-stat-item {}
+.lot-stat-val { font-size: 15px; font-weight: 600; color: var(--text-bright); }
+.lot-stat-val.gold { color: var(--gold); }
+.lot-stat-label { font-size: 8px; letter-spacing: 0.14em; color: var(--dim); margin-top: 2px; }
+.lot-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.lot-bid-label { font-size: 8px; letter-spacing: 0.16em; color: var(--dim); }
+.lot-bid-val { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 600; color: var(--gold); }
+.lot-deadline { font-size: 9px; color: var(--dim); }
+
+/* ── Active Licensees ── */
+.licensees-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 48px;
+}
+.licensees-table th {
+  font-size: 9px; letter-spacing: 0.2em; color: var(--dim);
+  padding: 10px 16px; text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,15,30,0.6);
+}
+.licensees-table td {
+  font-size: 11px; color: var(--text);
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(40,100,180,0.12);
+}
+.licensees-table tr:hover td { background: rgba(47,168,255,0.03); }
+.licensees-table td.gold { color: var(--gold); font-weight: 600; }
+.licensees-table td.green { color: var(--green); }
+.licensees-table td.dim { color: var(--dim); font-size: 10px; }
+
+/* ── Rules ── */
+.rules-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+}
+.rule-card {
+  background: rgba(10,15,30,0.75);
+  border: 1px solid var(--border);
+  padding: 22px;
+  backdrop-filter: blur(6px);
+}
+.rule-num {
+  font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 600;
+  color: var(--gold); letter-spacing: 0.2em; margin-bottom: 8px;
+}
+.rule-title {
+  font-size: 12px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 10px; letter-spacing: 0.06em;
+}
+.rule-text {
+  font-family: 'Exo 2', sans-serif; font-size: 11px;
+  color: var(--dim); line-height: 1.7;
+}
+
+/* ── Footer ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 24px 32px;
+  background: rgba(2,4,10,0.7);
+  backdrop-filter: blur(8px);
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.footer-brand {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+  color: var(--accent); letter-spacing: 0.2em;
+}
+.footer-copy { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; }
+.footer-links { margin-left: auto; display: flex; gap: 20px; }
+.footer-links a { font-size: 9px; letter-spacing: 0.16em; color: var(--dim); text-decoration: none; }
+.footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="nebula-layer"></div>
+<div class="grid-lines"></div>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo-mark"></div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY · REGULUS SYSTEM</div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-item">HOME</a>
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle">MINISTRIES</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">EXECUTIVE</div>
+        <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
+        <a href="mic.html">MIC — Industry &amp; Commerce</a>
+        <a href="mod.html">MOD — Ministry of Defence</a>
+        <a href="doe.html">DOE — Department of Energy</a>
+        <div class="menu-section">REGULATORY</div>
+        <a href="ada.html">ADA — Abaia Development Authority</a>
+        <a href="lda.html">LDA — Liora Development Authority</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item">INTELLIGENCE</a>
+    <a href="#" class="nav-item">CONTACT</a>
+    <a href="taruscav_auction.html" class="nav-item active">TARUSCAV AUCTION</a>
+  </nav>
+</header>
+
+<!-- ── Live Ticker ── -->
+<div class="live-ticker">
+  <div class="ticker-dot"></div>
+  <span class="ticker-label">SORIUM RIGHTS MARKET</span>
+  <div class="ticker-price">2,840</div>
+  <span class="ticker-unit">Cr/t</span>
+  <span class="ticker-change">↑ +15 Cr/t  (+0.53%)</span>
+  <div class="ticker-divider"></div>
+  <div class="ticker-lot">
+    <span class="ticker-lot-label">ACTIVE LOTS</span>
+    <span class="ticker-lot-val">7 OPEN</span>
+  </div>
+  <div class="ticker-divider"></div>
+  <div class="ticker-lot">
+    <span class="ticker-lot-label">CYCLE</span>
+    <span class="ticker-lot-val">Y.38 / Q3</span>
+  </div>
+  <div class="ticker-divider"></div>
+  <div class="ticker-lot">
+    <span class="ticker-lot-label">NEXT AWARD</span>
+    <span class="ticker-lot-val">Y.38 / Q4 / D.01</span>
+  </div>
+  <span class="ticker-right">04:32 ST · MIC-ORL AUTHORITY</span>
+</div>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <!-- Gas Giant -->
+    <div class="gas-giant-scene">
+      <div class="gas-halo"></div>
+      <div class="ring-wrap">
+        <div class="ring ring-3"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-1"></div>
+      </div>
+      <div class="gas-giant">
+        <div class="gas-band gas-band-1"></div>
+        <div class="gas-band gas-band-2"></div>
+        <div class="gas-band gas-band-3"></div>
+        <div class="gas-band gas-band-4"></div>
+      </div>
+    </div>
+
+    <div class="hero-eyebrow">TARUSCAV · MIC-ORL · REGULUS A VI</div>
+    <h1 class="hero-title">TARUSCAV<br><span>SORIUM AUCTION</span></h1>
+    <div class="hero-subtitle">Atmospheric Harvesting Rights — Gas Giant Regulus A VI</div>
+    <p class="hero-desc">
+      The Taruscav Sorium Auction Authority manages the competitive licensing of Sorium atmospheric harvesting rights across the stratospheric zones of Regulus A VI. Extraction licences are awarded by sealed tender each quarter to certified operators. All proceeds fund the United Admiralty fuel reserve programme and system infrastructure. Current cycle open for bids.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val">2,840</div>
+        <div class="hero-stat-label">SPOT RATE (Cr/t)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">7</div>
+        <div class="hero-stat-label">LOTS OPEN</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">18,768</div>
+        <div class="hero-stat-label">SYSTEM UNITS/YR</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">EST. Y.18</div>
+        <div class="hero-stat-label">AUTHORITY FOUNDED</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Overview Panel ── -->
+  <section class="section">
+    <div class="info-panel">
+      <div class="info-group">
+        <div class="info-group-title">CURRENT CYCLE</div>
+        <div class="info-row">
+          <span class="info-key">ACTIVE PERIOD</span>
+          <span class="info-val">Y.38 / Q3</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">BIDS CLOSE</span>
+          <span class="info-val gold">Y.38 / Q4 / D.01</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LOTS OPEN</span>
+          <span class="info-val">7 of 10</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LOTS AWARDED</span>
+          <span class="info-val green">3 active licences</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ADMINISTERING BODY</span>
+          <span class="info-val">MIC-ORL</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">REGULUS A VI — BODY STATS</div>
+        <div class="info-row">
+          <span class="info-key">BODY DESIGNATION</span>
+          <span class="info-val">Regulus A VI</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">COMMON NAME</span>
+          <span class="info-val">Taruscav</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">CLASS</span>
+          <span class="info-val">Gas Giant</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">SORIUM CONCENTRATION</span>
+          <span class="info-val green">RICH</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">SURVEYED ZONES</span>
+          <span class="info-val">10 (fully mapped)</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">MARKET REFERENCE</div>
+        <div class="info-row">
+          <span class="info-key">SORIUM SPOT RATE</span>
+          <span class="info-val gold">2,840 Cr/t</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">52-WEEK RANGE</span>
+          <span class="info-val">2,710 – 2,890 Cr/t</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ABAIA FUEL COST</span>
+          <span class="info-val">1,083.77 Cr/L</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LIORA LANDED COST</span>
+          <span class="info-val amber">1,153.90 Cr/L</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LIORA PREMIUM</span>
+          <span class="info-val amber">+70.13 Cr/L (import)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Open Lots ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">OPEN EXTRACTION LOTS — Y.38 / Q3</div>
+      <div class="section-sub">COMPETITIVE SEALED TENDER · REGULUS A VI ATMOSPHERIC ZONES</div>
+    </div>
+
+    <div class="lots-grid">
+
+      <div class="lot-card">
+        <div class="lot-card-bar"></div>
+        <div class="lot-card-body">
+          <div class="lot-card-header">
+            <div>
+              <div class="lot-id">LOT A-IV — ZONE 4</div>
+              <div class="lot-zone">UPPER STRATOSPHERE · EQUATORIAL BAND</div>
+            </div>
+            <div class="lot-status open">OPEN</div>
+          </div>
+          <div class="lot-desc">
+            High-concentration equatorial zone. Consistent Sorium density across extraction altitude. Most competitive lot this cycle. Preferred by fleet operators due to proximity and yield.
+          </div>
+          <div class="lot-stats">
+            <div class="lot-stat-item">
+              <div class="lot-stat-val gold">3,200 t</div>
+              <div class="lot-stat-label">EST. ANNUAL YIELD</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">10 yrs</div>
+              <div class="lot-stat-label">LICENCE TERM</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">Grade A</div>
+              <div class="lot-stat-label">SORIUM PURITY</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">High</div>
+              <div class="lot-stat-label">ACCESSIBILITY</div>
+            </div>
+          </div>
+        </div>
+        <div class="lot-footer">
+          <div>
+            <div class="lot-bid-label">OPENING BID</div>
+            <div class="lot-bid-val">4,200,000 Cr</div>
+          </div>
+          <div class="lot-deadline">CLOSES Y.38 / Q4 / D.01</div>
+        </div>
+      </div>
+
+      <div class="lot-card">
+        <div class="lot-card-bar"></div>
+        <div class="lot-card-body">
+          <div class="lot-card-header">
+            <div>
+              <div class="lot-id">LOT B-II — ZONE 2</div>
+              <div class="lot-zone">MID STRATOSPHERE · NORTHERN BELT</div>
+            </div>
+            <div class="lot-status open">OPEN</div>
+          </div>
+          <div class="lot-desc">
+            Northern belt zone. Moderate Sorium density with some atmospheric turbulence requiring certified Class-III extraction vessels. Accessible to licensed independent operators.
+          </div>
+          <div class="lot-stats">
+            <div class="lot-stat-item">
+              <div class="lot-stat-val gold">1,980 t</div>
+              <div class="lot-stat-label">EST. ANNUAL YIELD</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">8 yrs</div>
+              <div class="lot-stat-label">LICENCE TERM</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">Grade B</div>
+              <div class="lot-stat-label">SORIUM PURITY</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">Moderate</div>
+              <div class="lot-stat-label">ACCESSIBILITY</div>
+            </div>
+          </div>
+        </div>
+        <div class="lot-footer">
+          <div>
+            <div class="lot-bid-label">OPENING BID</div>
+            <div class="lot-bid-val">2,600,000 Cr</div>
+          </div>
+          <div class="lot-deadline">CLOSES Y.38 / Q4 / D.01</div>
+        </div>
+      </div>
+
+      <div class="lot-card">
+        <div class="lot-card-bar"></div>
+        <div class="lot-card-body">
+          <div class="lot-card-header">
+            <div>
+              <div class="lot-id">LOT C-VII — ZONE 7</div>
+              <div class="lot-zone">LOWER STRATOSPHERE · SOUTHERN POLAR</div>
+            </div>
+            <div class="lot-status open">OPEN</div>
+          </div>
+          <div class="lot-desc">
+            Southern polar zone. Lower concentration but minimal competition from adjacent lots. Suited to smaller independent operators. Class-II extraction licence required.
+          </div>
+          <div class="lot-stats">
+            <div class="lot-stat-item">
+              <div class="lot-stat-val gold">1,440 t</div>
+              <div class="lot-stat-label">EST. ANNUAL YIELD</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">6 yrs</div>
+              <div class="lot-stat-label">LICENCE TERM</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">Grade B</div>
+              <div class="lot-stat-label">SORIUM PURITY</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">Low-Mod</div>
+              <div class="lot-stat-label">ACCESSIBILITY</div>
+            </div>
+          </div>
+        </div>
+        <div class="lot-footer">
+          <div>
+            <div class="lot-bid-label">OPENING BID</div>
+            <div class="lot-bid-val">1,800,000 Cr</div>
+          </div>
+          <div class="lot-deadline">CLOSES Y.38 / Q4 / D.01</div>
+        </div>
+      </div>
+
+      <div class="lot-card">
+        <div class="lot-card-bar"></div>
+        <div class="lot-card-body">
+          <div class="lot-card-header">
+            <div>
+              <div class="lot-id">LOT D-IX — ZONE 9</div>
+              <div class="lot-zone">DEEP ATMOSPHERE · EQUATORIAL EAST</div>
+            </div>
+            <div class="lot-status pending">SURVEY PENDING</div>
+          </div>
+          <div class="lot-desc">
+            Newly surveyed deep atmosphere zone identified by DOE-SPC / ADA survey teams at grid reference T-7-Gamma. Pre-feasibility assessment underway. Projected to be highest yield zone when opened.
+          </div>
+          <div class="lot-stats">
+            <div class="lot-stat-item">
+              <div class="lot-stat-val" style="color:var(--amber)">TBD</div>
+              <div class="lot-stat-label">EST. ANNUAL YIELD</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val">TBD</div>
+              <div class="lot-stat-label">LICENCE TERM</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val" style="color:var(--amber)">Unrated</div>
+              <div class="lot-stat-label">SORIUM PURITY</div>
+            </div>
+            <div class="lot-stat-item">
+              <div class="lot-stat-val" style="color:var(--amber)">Under Survey</div>
+              <div class="lot-stat-label">ACCESSIBILITY</div>
+            </div>
+          </div>
+        </div>
+        <div class="lot-footer">
+          <div>
+            <div class="lot-bid-label">STATUS</div>
+            <div class="lot-bid-val" style="color:var(--amber)">Y.39 / Q1 AUCTION</div>
+          </div>
+          <div class="lot-deadline">SURVEY DUE D.18 / Q3</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Active Licences ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">ACTIVE EXTRACTION LICENCES</div>
+      <div class="section-sub">AWARDED OPERATORS — CURRENT PRODUCTION</div>
+    </div>
+
+    <table class="licensees-table">
+      <thead>
+        <tr>
+          <th>LOT / ZONE</th>
+          <th>OPERATOR</th>
+          <th>AWARDED</th>
+          <th>EXPIRES</th>
+          <th>LICENCE FEE PAID</th>
+          <th>AVG YIELD / YR</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LOT A-I · Zone 1</td>
+          <td>Abaia Mining Consortium</td>
+          <td class="dim">Y.30 / Q1</td>
+          <td class="dim">Y.40 / Q1</td>
+          <td class="gold">5,100,000 Cr</td>
+          <td>3,840 t</td>
+          <td class="green">ACTIVE</td>
+        </tr>
+        <tr>
+          <td>LOT A-III · Zone 3</td>
+          <td>Vexsis Mining Collective</td>
+          <td class="dim">Y.34 / Q3</td>
+          <td class="dim">Y.42 / Q3</td>
+          <td class="gold">3,800,000 Cr</td>
+          <td>2,760 t</td>
+          <td class="green">ACTIVE</td>
+        </tr>
+        <tr>
+          <td>LOT B-V · Zone 5</td>
+          <td>DOE-SPC (Govt. Reserve)</td>
+          <td class="dim">Y.36 / Q2</td>
+          <td class="dim">Y.44 / Q2</td>
+          <td class="gold">2,200,000 Cr</td>
+          <td>2,148 t</td>
+          <td class="green">ACTIVE</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Rules ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">AUCTION RULES &amp; REQUIREMENTS</div>
+      <div class="section-sub">MIC-ORL REGULATIONS · TARUSCAV AUTHORITY CHARTER</div>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-num">RULE 01</div>
+        <div class="rule-title">Sealed Tender Process</div>
+        <div class="rule-text">All bids are submitted sealed to MIC-ORL by the closing date. Bids are opened simultaneously at the award ceremony. Highest compliant bid wins. No extensions granted except by Admiralty directive.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">RULE 02</div>
+        <div class="rule-title">Operator Certification</div>
+        <div class="rule-text">Bidders must hold a valid UA Atmospheric Extraction Licence (Class II or III), have demonstrated extraction capacity, and maintain no outstanding violations with MIC or DOE. New operators require MIC-ORL approval 30 days before cycle close.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">RULE 03</div>
+        <div class="rule-title">Minimum Reserve Pricing</div>
+        <div class="rule-text">Each lot carries a published opening bid (reserve price) calculated from projected yield multiplied by the current spot rate minus operating cost allowance. Bids below reserve are automatically rejected.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">RULE 04</div>
+        <div class="rule-title">Licence Terms & Renewal</div>
+        <div class="rule-text">Licence terms run 6–10 standard years depending on zone classification. Renewal applications must be submitted no later than 2 quarters before expiry. Renewal bids are treated as first-round bids with incumbent preference of 5%.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">RULE 05</div>
+        <div class="rule-title">Yield Reporting</div>
+        <div class="rule-text">Licensees must submit quarterly extraction reports to MIC-ORL and DOE-SPC. Failure to meet 70% of projected annual yield triggers a performance review. Two consecutive shortfalls may result in licence forfeiture and re-auction.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">RULE 06</div>
+        <div class="rule-title">Dispute Resolution</div>
+        <div class="rule-text">Disputes over awards, yield assessments, or licence violations are adjudicated by the MIC-ORL Disputes Board. Appeals may be escalated to MOIAC-DJC under the Regulus Settlement Charter, Section IV.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">UA.GOV</div>
+    <div class="footer-copy">© UNITED ADMIRALTY · MIC-ORL TARUSCAV AUCTION AUTHORITY · REGULUS SYSTEM</div>
+    <div class="footer-links">
+      <a href="index.html">HOME</a>
+      <a href="mic.html">MIC-ORL</a>
+      <a href="#">LEGAL</a>
+      <a href="#">CONTACT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
