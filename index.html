@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UA.GOV â United Admiralty</title>
+<title>UA.GOV — United Admiralty</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ââ Starfield ââ */
+/* ── Starfield ── */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -54,7 +54,7 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
-/* ââ Header ââ */
+/* ── Header ── */
 header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 52px;
@@ -105,7 +105,7 @@ header {
 .nav-dropdown { position: relative; }
 .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; }
 .nav-dropdown-toggle::after {
-  content: 'â¾'; font-size: 9px; color: var(--dim);
+  content: '▾'; font-size: 9px; color: var(--dim);
   transition: transform .2s;
 }
 .nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(180deg); color: var(--accent); }
@@ -136,10 +136,10 @@ header {
   border-bottom: 1px solid rgba(40,100,180,0.12);
 }
 
-/* ââ Main ââ */
+/* ── Main ── */
 main { padding-top: 52px; position: relative; z-index: 1; }
 
-/* ââ Section scaffolding ââ */
+/* ── Section scaffolding ── */
 .section-wrap {
   max-width: 1440px; margin: 0 auto;
   padding: 48px 32px;
@@ -165,7 +165,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   margin-bottom: 28px;
 }
 
-/* ââ Map Card ââ */
+/* ── Map Card ── */
 .map-meta-row {
   display: flex; gap: 28px; margin-bottom: 20px;
   flex-wrap: wrap;
@@ -206,14 +206,14 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   border: none; display: block;
 }
 
-/* ââ Divider ââ */
+/* ── Divider ── */
 .section-divider {
   width: 100%; height: 1px;
   background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
   margin: 0;
 }
 
-/* ââ Planet Cards ââ */
+/* ── Planet Cards ── */
 .planets-header {
   text-align: center;
   padding: 56px 32px 20px;
@@ -272,7 +272,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   flex-shrink: 0;
 }
 
-/* Abaia â ocean world, blue-green */
+/* Abaia — ocean world, blue-green */
 .planet-card.abaia .planet-globe {
   background:
     radial-gradient(circle at 28% 25%, rgba(255,255,255,0.12) 0%, transparent 18%),
@@ -289,7 +289,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
     inset -50px -35px 90px rgba(0,0,0,0.85);
 }
 
-/* Liora â rocky/water mix, cool blue-gray */
+/* Liora — rocky/water mix, cool blue-gray */
 .planet-card.liora .planet-globe {
   background:
     radial-gradient(circle at 35% 28%, rgba(255,255,255,0.10) 0%, transparent 16%),
@@ -304,7 +304,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
     inset -50px -35px 90px rgba(0,0,0,0.85);
 }
 
-/* Vexsis â lush green world */
+/* Vexsis — lush green world */
 .planet-card.vexsis .planet-globe {
   background:
     radial-gradient(circle at 38% 26%, rgba(255,255,255,0.09) 0%, transparent 14%),
@@ -407,7 +407,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   font-family: 'Orbitron', sans-serif;
 }
 
-/* ââ Footer ââ */
+/* ── Footer ── */
 footer {
   position: relative; z-index: 1;
   border-top: 1px solid var(--border);
@@ -419,7 +419,7 @@ footer {
   margin-left: auto;
 }
 
-/* ââ Responsive ââ */
+/* ── Responsive ── */
 @media (max-width: 900px) {
   .section-wrap { padding: 32px 20px; }
   .map-card iframe { height: 520px; }
@@ -442,9 +442,9 @@ footer {
 </head>
 <body>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââââ
+<!-- ══════════════════════════════════════════
      HEADER
-âââââââââââââââââââââââââââââââââââââââââââ -->
+═══════════════════════════════════════════ -->
 <header>
   <div class="logo-mark"></div>
   <div class="header-brand">
@@ -460,24 +460,25 @@ footer {
         <div class="menu-section">EXECUTIVE</div>
         <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
         <a href="mic.html">MIC — Industry &amp; Commerce</a>
-        <a href="#">MOD — Ministry of Defence</a>
-        <a href="#">DOE — Department of Energy</a>
+        <a href="mod.html">MOD — Ministry of Defence</a>
+        <a href="doe.html">DOE — Department of Energy</a>
         <div class="menu-section">REGULATORY</div>
-        <a href="#">ADA — Abaia Development Authority</a>
-        <a href="#">LDA — Liora Development Authority</a>
+        <a href="ada.html">ADA — Abaia Development Authority</a>
+        <a href="lda.html">LDA — Liora Development Authority</a>
       </div>
     </div>
     <a class="nav-item" href="#">INTELLIGENCE</a>
     <a class="nav-item" href="#">CONTACT</a>
+    <a class="nav-item" href="taruscav_auction.html">TARUSCAV AUCTION</a>
   </nav>
 </header>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââââ
+<!-- ══════════════════════════════════════════
      MAIN
-âââââââââââââââââââââââââââââââââââââââââââ -->
+═══════════════════════════════════════════ -->
 <main>
 
-  <!-- ââ Regulus System Map ââ -->
+  <!-- ── Regulus System Map ── -->
   <div class="section-wrap">
     <div class="section-eyebrow">REGULUS STAR SYSTEM</div>
     <h1 class="section-heading">Interactive Survey &amp; Orrery</h1>
@@ -509,7 +510,7 @@ footer {
     <div class="map-card">
       <iframe
         src="regulus_system_map.html"
-        title="Regulus Star System â Interactive Survey & Orrery"
+        title="Regulus Star System — Interactive Survey & Orrery"
         allowfullscreen
         loading="lazy">
       </iframe>
@@ -518,17 +519,17 @@ footer {
 
   <div class="section-divider"></div>
 
-  <!-- ââ Planet Cards header ââ -->
+  <!-- ── Planet Cards header ── -->
   <div class="planets-header">
     <div class="section-eyebrow">INHABITED WORLDS</div>
     <h2 class="planets-heading">UNITED ADMIRALTY</h2>
-    <p class="planets-sub">Core worlds of the Second Republic â ASR 0 Census data</p>
+    <p class="planets-sub">Core worlds of the Second Republic — ASR 0 Census data</p>
   </div>
 
-  <!-- ââ Abaia ââ -->
+  <!-- ── Abaia ── -->
   <div class="planet-card abaia">
     <div class="planet-stats">
-      <div class="planet-badge">Home World Â· Capital</div>
+      <div class="planet-badge">Home World · Capital</div>
       <div class="planet-name">Abaia</div>
       <div class="planet-tagline">Administrative and industrial capital of the United Admiralty</div>
 
@@ -559,8 +560,8 @@ footer {
         <div class="planet-data-row">
           <span class="planet-data-label">Facilities</span>
           <span class="planet-data-value" style="font-size:12px; line-height:1.5;">
-            900 factories Â· 700 mines Â· 150 refineries<br>
-            25 research labs Â· 5 shipyards
+            900 factories · 700 mines · 150 refineries<br>
+            25 research labs · 5 shipyards
           </span>
         </div>
       </div>
@@ -568,7 +569,7 @@ footer {
     <div class="planet-globe"></div>
   </div>
 
-  <!-- ââ Liora ââ -->
+  <!-- ── Liora ── -->
   <div class="planet-card liora">
     <div class="planet-stats">
       <div class="planet-badge">Core World</div>
@@ -593,13 +594,13 @@ footer {
         </div>
         <div class="planet-data-row">
           <span class="planet-data-label">Sorium Reserve</span>
-          <span class="planet-data-value highlight-blue">79,593<span class="unit">kt â Taruscav Field</span></span>
+          <span class="planet-data-value highlight-blue">79,593<span class="unit">kt — Taruscav Field</span></span>
         </div>
         <div class="planet-data-row">
           <span class="planet-data-label">Institutions</span>
           <span class="planet-data-value" style="font-size:12px; line-height:1.5;">
-            Bank of Liora Â· Liora Stock Exchange<br>
-            Liora Bond Exchange Â· Orbital Repair Yards
+            Bank of Liora · Liora Stock Exchange<br>
+            Liora Bond Exchange · Orbital Repair Yards
           </span>
         </div>
       </div>
@@ -607,12 +608,12 @@ footer {
     <div class="planet-globe"></div>
   </div>
 
-  <!-- ââ Vexsis ââ -->
+  <!-- ── Vexsis ── -->
   <div class="planet-card vexsis">
     <div class="planet-stats">
       <div class="planet-badge">Core World</div>
       <div class="planet-name">Vexsis</div>
-      <div class="planet-tagline">Emerging colony â Vexsis Council on Economic Development</div>
+      <div class="planet-tagline">Emerging colony — Vexsis Council on Economic Development</div>
 
       <div class="planet-data">
         <div class="planet-data-row">
@@ -633,7 +634,7 @@ footer {
         <div class="planet-data-row">
           <span class="planet-data-label">Status</span>
           <span class="planet-data-value highlight-warn" style="font-size:12px;">
-            Population stabilised â development phase
+            Population stabilised — development phase
           </span>
         </div>
         <div class="planet-data-row">
@@ -650,12 +651,12 @@ footer {
 
 </main>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââââ
+<!-- ══════════════════════════════════════════
      FOOTER
-âââââââââââââââââââââââââââââââââââââââââââ -->
+═══════════════════════════════════════════ -->
 <footer>
   <div class="logo-mark" style="width:20px; height:20px; margin:0;"></div>
-  <span class="footer-text">UA.GOV Â· UNITED ADMIRALTY GOVERNMENT Â· SECOND REPUBLIC Â· ASR 0</span>
+  <span class="footer-text">UA.GOV · UNITED ADMIRALTY GOVERNMENT · SECOND REPUBLIC · ASR 0</span>
 </footer>
 
 </body>

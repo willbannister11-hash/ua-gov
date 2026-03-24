@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOIAC â Ministry of Internal Affairs &amp; Colonial Affairs</title>
+<title>MOIAC — Ministry of Internal Affairs &amp; Colonial Affairs</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ââ Starfield ââ */
+/* ── Starfield ── */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -54,7 +54,7 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
-/* ââ Header ââ */
+/* ── Header ── */
 header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 52px;
@@ -102,7 +102,7 @@ header {
 .nav-dropdown { position: relative; }
 .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; }
 .nav-dropdown-toggle::after {
-  content: 'â¾'; font-size: 9px; color: var(--dim);
+  content: '▾'; font-size: 9px; color: var(--dim);
   transition: transform .2s;
 }
 .nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(180deg); color: var(--accent); }
@@ -133,10 +133,10 @@ header {
   border-bottom: 1px solid rgba(40,100,180,0.12);
 }
 
-/* ââ Main ââ */
+/* ── Main ── */
 main { padding-top: 52px; position: relative; z-index: 1; }
 
-/* ââ Hero Banner ââ */
+/* ── Hero Banner ── */
 .hero {
   position: relative;
   background: linear-gradient(180deg, rgba(11,17,32,0.0) 0%, var(--surface) 100%),
@@ -200,7 +200,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   font-size: 8px; letter-spacing: 0.2em; color: var(--dim);
 }
 
-/* ââ Section scaffolding ââ */
+/* ── Section scaffolding ── */
 .section-wrap {
   max-width: 1440px; margin: 0 auto;
   padding: 48px 32px;
@@ -225,13 +225,13 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   margin-bottom: 32px; max-width: 700px;
 }
 
-/* ââ Divider ââ */
+/* ── Divider ── */
 .section-divider {
   border: none;
   border-top: 1px solid var(--border);
 }
 
-/* ââ Minister Card ââ */
+/* ── Minister Card ── */
 .minister-card {
   display: flex; gap: 28px; align-items: flex-start;
   background: var(--surface);
@@ -279,7 +279,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   color: rgba(255,204,68,0.6);
 }
 
-/* ââ Department Grid ââ */
+/* ── Department Grid ── */
 .dept-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -342,10 +342,10 @@ main { padding-top: 52px; position: relative; z-index: 1; }
   text-decoration: none;
   display: flex; align-items: center; gap: 6px;
 }
-.dept-card-link::after { content: 'â'; }
+.dept-card-link::after { content: '→'; }
 .dept-card-link:hover { color: var(--accent2); }
 
-/* ââ Bulletin Board ââ */
+/* ── Bulletin Board ── */
 .bulletin-list { display: flex; flex-direction: column; gap: 0; }
 .bulletin-item {
   display: flex; align-items: baseline; gap: 16px;
@@ -375,7 +375,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
 }
 .bulletin-title a:hover { color: var(--accent); }
 
-/* ââ Two-col layout ââ */
+/* ── Two-col layout ── */
 .two-col {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -384,7 +384,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
 }
 @media (max-width: 960px) { .two-col { grid-template-columns: 1fr; } }
 
-/* ââ Info panel ââ */
+/* ── Info panel ── */
 .info-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -411,7 +411,7 @@ main { padding-top: 52px; position: relative; z-index: 1; }
 .info-val.gold { color: var(--gold); }
 .info-val.green { color: var(--accent2); }
 
-/* ââ Footer ââ */
+/* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
   padding: 28px 32px;
@@ -441,7 +441,7 @@ footer {
 </head>
 <body>
 
-<!-- ââ Header ââ -->
+<!-- ── Header ── -->
 <header>
   <div class="logo-mark"></div>
   <div class="header-brand">
@@ -456,21 +456,22 @@ footer {
         <div class="menu-section">EXECUTIVE</div>
         <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
         <a href="mic.html">MIC — Industry &amp; Commerce</a>
-        <a href="#">MOD — Ministry of Defence</a>
-        <a href="#">DOE — Department of Energy</a>
+        <a href="mod.html">MOD — Ministry of Defence</a>
+        <a href="doe.html">DOE — Department of Energy</a>
         <div class="menu-section">REGULATORY</div>
-        <a href="#">ADA — Abaia Development Authority</a>
-        <a href="#">LDA — Liora Development Authority</a>
+        <a href="ada.html">ADA — Abaia Development Authority</a>
+        <a href="lda.html">LDA — Liora Development Authority</a>
       </div>
     </div>
     <a href="#" class="nav-item">INTELLIGENCE</a>
     <a href="#" class="nav-item">CONTACT</a>
+    <a href="taruscav_auction.html" class="nav-item">TARUSCAV AUCTION</a>
   </nav>
 </header>
 
 <main>
 
-  <!-- ââ Hero ââ -->
+  <!-- ── Hero ── -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-eyebrow">MINISTRY OF INTERNAL AFFAIRS &amp; COLONIAL AFFAIRS</div>
@@ -501,7 +502,7 @@ footer {
     </div>
   </section>
 
-  <!-- ââ Minister & Quick Info ââ -->
+  <!-- ── Minister & Quick Info ── -->
   <section>
     <div class="section-wrap" style="padding-bottom: 0;">
       <div class="two-col">
@@ -534,27 +535,27 @@ footer {
             <div class="bulletin-item">
               <span class="bulletin-date">Y.38 / Q2</span>
               <span class="bulletin-tag directive">DIRECTIVE</span>
-              <span class="bulletin-title"><a href="#">Colonial Transit Levy Amendment â revised fuel surcharge schedule for intra-Regulus civilian convoys</a></span>
+              <span class="bulletin-title"><a href="#">Colonial Transit Levy Amendment — revised fuel surcharge schedule for intra-Regulus civilian convoys</a></span>
             </div>
             <div class="bulletin-item">
               <span class="bulletin-date">Y.38 / Q1</span>
               <span class="bulletin-tag notice">NOTICE</span>
-              <span class="bulletin-title"><a href="#">Vexsis Outpost Zoning Expansion â new residential and industrial sectors approved for northern plateau</a></span>
+              <span class="bulletin-title"><a href="#">Vexsis Outpost Zoning Expansion — new residential and industrial sectors approved for northern plateau</a></span>
             </div>
             <div class="bulletin-item">
               <span class="bulletin-date">Y.37 / Q4</span>
               <span class="bulletin-tag update">UPDATE</span>
-              <span class="bulletin-title"><a href="#">Liora Colonial Registry â population census reconciliation complete, records open for query</a></span>
+              <span class="bulletin-title"><a href="#">Liora Colonial Registry — population census reconciliation complete, records open for query</a></span>
             </div>
             <div class="bulletin-item">
               <span class="bulletin-date">Y.37 / Q4</span>
               <span class="bulletin-tag alert">ALERT</span>
-              <span class="bulletin-title"><a href="#">Abaia Infrastructure Review â elevated dust storm activity has prompted temporary suspension of new surface construction permits</a></span>
+              <span class="bulletin-title"><a href="#">Abaia Infrastructure Review — elevated dust storm activity has prompted temporary suspension of new surface construction permits</a></span>
             </div>
             <div class="bulletin-item">
               <span class="bulletin-date">Y.37 / Q3</span>
               <span class="bulletin-tag notice">NOTICE</span>
-              <span class="bulletin-title"><a href="#">Inter-Planetary Movement Protocol updated â biometric registry requirements now mandatory for all colonial transfers</a></span>
+              <span class="bulletin-title"><a href="#">Inter-Planetary Movement Protocol updated — biometric registry requirements now mandatory for all colonial transfers</a></span>
             </div>
           </div>
         </div>
@@ -572,7 +573,7 @@ footer {
           </div>
           <div class="info-row">
             <div class="info-label">JURISDICTION</div>
-            <div class="info-val">Abaia Â· Liora Â· Vexsis Outpost</div>
+            <div class="info-val">Abaia · Liora · Vexsis Outpost</div>
           </div>
           <div class="info-row">
             <div class="info-label">HEADQUARTERS</div>
@@ -588,7 +589,7 @@ footer {
           </div>
           <div class="info-row">
             <div class="info-label">DEPARTMENTS</div>
-            <div class="info-val">6 active Â· 1 provisional</div>
+            <div class="info-val">6 active · 1 provisional</div>
           </div>
           <div class="info-row">
             <div class="info-label">BUDGET CYCLE</div>
@@ -596,7 +597,7 @@ footer {
           </div>
           <div class="info-row">
             <div class="info-label">CHARTER REF.</div>
-            <div class="info-val">RSC-IV Â§Â§ 12â34, 88â91</div>
+            <div class="info-val">RSC-IV §§ 12–34, 88–91</div>
           </div>
           <div class="info-row">
             <div class="info-label">PUBLIC CONTACT</div>
@@ -610,7 +611,7 @@ footer {
 
   <hr class="section-divider" style="margin: 0 32px;">
 
-  <!-- ââ Departments ââ -->
+  <!-- ── Departments ── -->
   <section>
     <div class="section-wrap">
       <div class="section-eyebrow">ORGANISATIONAL STRUCTURE</div>
@@ -627,7 +628,7 @@ footer {
         <div class="dept-card">
           <div class="dept-card-accent"></div>
           <div class="dept-card-body">
-            <div class="dept-card-code">MOIAC-DCA Â· DEPT. I</div>
+            <div class="dept-card-code">MOIAC-DCA · DEPT. I</div>
             <div class="dept-card-name">Department of Colonial Administration</div>
             <div class="dept-card-desc">
               Responsible for the planning, licensing, and oversight of all colonial expansion
@@ -653,7 +654,7 @@ footer {
         <div class="dept-card">
           <div class="dept-card-accent gold"></div>
           <div class="dept-card-body">
-            <div class="dept-card-code">MOIAC-DIPS Â· DEPT. II</div>
+            <div class="dept-card-code">MOIAC-DIPS · DEPT. II</div>
             <div class="dept-card-name">Department of Internal &amp; Population Security</div>
             <div class="dept-card-desc">
               Maintains civil order across UA-administered populations. Manages the planetary
@@ -679,7 +680,7 @@ footer {
         <div class="dept-card">
           <div class="dept-card-accent green"></div>
           <div class="dept-card-body">
-            <div class="dept-card-code">MOIAC-DIM Â· DEPT. III</div>
+            <div class="dept-card-code">MOIAC-DIM · DEPT. III</div>
             <div class="dept-card-name">Department of Immigration &amp; Movement</div>
             <div class="dept-card-desc">
               Governs the legal movement of civilians, workers, and specialists between
@@ -705,7 +706,7 @@ footer {
         <div class="dept-card">
           <div class="dept-card-accent orange"></div>
           <div class="dept-card-body">
-            <div class="dept-card-code">MOIAC-DPW Â· DEPT. IV</div>
+            <div class="dept-card-code">MOIAC-DPW · DEPT. IV</div>
             <div class="dept-card-name">Department of Public Works &amp; Infrastructure</div>
             <div class="dept-card-desc">
               Oversees the construction and maintenance of civilian infrastructure:
@@ -732,7 +733,7 @@ footer {
         <div class="dept-card">
           <div class="dept-card-accent"></div>
           <div class="dept-card-body">
-            <div class="dept-card-code">MOIAC-DJC Â· DEPT. V</div>
+            <div class="dept-card-code">MOIAC-DJC · DEPT. V</div>
             <div class="dept-card-name">Department of Justice &amp; Colonial Law</div>
             <div class="dept-card-desc">
               Administers the civil and colonial legal framework across UA territories.
@@ -758,7 +759,7 @@ footer {
         <div class="dept-card">
           <div class="dept-card-accent gold"></div>
           <div class="dept-card-body">
-            <div class="dept-card-code">MOIAC-OCR Â· PROVISIONAL</div>
+            <div class="dept-card-code">MOIAC-OCR · PROVISIONAL</div>
             <div class="dept-card-name">Office of Colonial Resources &amp; Survey</div>
             <div class="dept-card-desc">
               A provisional office established to coordinate the cataloguing and
@@ -786,11 +787,11 @@ footer {
 
 </main>
 
-<!-- ââ Footer ââ -->
+<!-- ── Footer ── -->
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">UA.GOV</div>
-    <div class="footer-copy">Â© UNITED ADMIRALTY Â· REGULUS SYSTEM Â· ALL RIGHTS RESERVED</div>
+    <div class="footer-copy">© UNITED ADMIRALTY · REGULUS SYSTEM · ALL RIGHTS RESERVED</div>
     <div class="footer-links">
       <a href="index.html">HOME</a>
       <a href="#">LEGAL</a>
