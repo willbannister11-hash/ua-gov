@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOIAC â Ministry of Internal Affairs &amp; Colonial Affairs</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #03060e;
+  --surface: #0b1120;
+  --surface2: #101828;
+  --border: rgba(40,100,180,0.25);
+  --border-bright: rgba(47,168,255,0.4);
+  --accent: #2fa8ff;
+  --accent2: #00ffc6;
+  --accent3: #ff6b35;
+  --gold: #ffcc44;
+  --green: #00ffc6;
+  --text: rgba(160,200,230,0.85);
+  --text-bright: #e8f4ff;
+  --dim: rgba(100,140,180,0.45);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ââ Starfield ââ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 16% 82%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 91%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 75%, rgba(255,255,255,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 52%, rgba(200,220,255,0.40) 0%, transparent 100%),
+    radial-gradient(2px 2px at 68% 43%, rgba(255,240,200,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 5%  65%, rgba(200,230,255,0.30) 0%, transparent 100%),
+    radial-gradient(2px 2px at 88% 35%, rgba(255,230,200,0.28) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ââ Header ââ */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 52px;
+  background: rgba(3,6,14,0.95);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0;
+  backdrop-filter: blur(10px);
+}
+
+.logo-mark {
+  width: 32px; height: 32px; border-radius: 50%;
+  margin: 0 14px 0 16px; flex-shrink: 0;
+  background: radial-gradient(circle at 35% 35%, #fff5d0, #ffcc44 30%, #ff6600 65%, #220000);
+  box-shadow: 0 0 14px 3px rgba(255,180,50,0.45);
+}
+
+.header-brand { display: flex; flex-direction: column; justify-content: center; }
+.header-title {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.15em; color: var(--gold); white-space: nowrap;
+}
+.header-sub {
+  font-size: 9px; letter-spacing: 0.18em; color: var(--accent); margin-top: 1px;
+}
+
+.header-nav {
+  margin-left: auto;
+  display: flex; align-items: stretch;
+  height: 100%;
+  border-left: 1px solid var(--border);
+}
+
+.nav-item {
+  display: flex; align-items: center;
+  padding: 0 18px;
+  font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+  color: var(--dim);
+  text-decoration: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer; transition: color .2s, background .2s;
+}
+.nav-item:hover { color: var(--accent); background: rgba(47,168,255,0.05); }
+.nav-item.active { color: var(--accent); background: rgba(47,168,255,0.07); }
+
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; }
+.nav-dropdown-toggle::after {
+  content: 'â¾'; font-size: 9px; color: var(--dim);
+  transition: transform .2s;
+}
+.nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(180deg); color: var(--accent); }
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute; top: 100%; left: 0;
+  min-width: 240px;
+  background: rgba(3,6,14,0.97);
+  border: 1px solid var(--border); border-top: none;
+  backdrop-filter: blur(10px);
+  z-index: 300;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 10px 16px;
+  font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+  color: var(--dim); text-decoration: none;
+  border-bottom: 1px solid rgba(40,100,180,0.12);
+  transition: color .15s, background .15s;
+}
+.nav-dropdown-menu a:last-child { border-bottom: none; }
+.nav-dropdown-menu a:hover { color: var(--accent); background: rgba(47,168,255,0.06); }
+.nav-dropdown-menu .menu-section {
+  padding: 8px 16px 4px;
+  font-size: 8px; letter-spacing: 0.18em;
+  color: rgba(40,100,180,0.5);
+  border-bottom: 1px solid rgba(40,100,180,0.12);
+}
+
+/* ââ Main ââ */
+main { padding-top: 52px; position: relative; z-index: 1; }
+
+/* ââ Hero Banner ââ */
+.hero {
+  position: relative;
+  background: linear-gradient(180deg, rgba(11,17,32,0.0) 0%, var(--surface) 100%),
+              linear-gradient(135deg, rgba(47,168,255,0.04) 0%, transparent 60%);
+  border-bottom: 1px solid var(--border);
+  padding: 52px 32px 40px;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 28px,
+    rgba(47,168,255,0.025) 28px,
+    rgba(47,168,255,0.025) 29px
+  );
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1440px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  font-size: 9px; letter-spacing: 0.28em; color: var(--accent);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 32px; height: 1px; background: var(--accent); opacity: 0.5;
+}
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(22px, 3vw, 36px); font-weight: 900;
+  color: var(--text-bright); letter-spacing: 0.06em;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.hero-title span { color: var(--accent); }
+.hero-subtitle {
+  font-size: 11px; color: var(--dim); letter-spacing: 0.1em;
+  margin-bottom: 28px; max-width: 640px;
+}
+.hero-stats {
+  display: flex; gap: 20px; flex-wrap: wrap;
+}
+.hero-stat {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 10px 18px;
+  background: rgba(11,17,32,0.8);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+}
+.hero-stat-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px; font-weight: 600; color: var(--accent);
+}
+.hero-stat-label {
+  font-size: 8px; letter-spacing: 0.2em; color: var(--dim);
+}
+
+/* ââ Section scaffolding ââ */
+.section-wrap {
+  max-width: 1440px; margin: 0 auto;
+  padding: 48px 32px;
+}
+.section-eyebrow {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--accent);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 24px; height: 1px; background: var(--accent); opacity: 0.6;
+}
+.section-heading {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.section-desc {
+  font-size: 11px; color: var(--dim); letter-spacing: 0.06em;
+  margin-bottom: 32px; max-width: 700px;
+}
+
+/* ââ Divider ââ */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ââ Minister Card ââ */
+.minister-card {
+  display: flex; gap: 28px; align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  padding: 28px 32px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.minister-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 200px;
+  background: linear-gradient(90deg, transparent, rgba(255,204,68,0.03));
+  pointer-events: none;
+}
+.minister-avatar {
+  width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+  background: radial-gradient(circle at 40% 35%, #2fa8ff 0%, #0b3a6e 50%, #03060e 100%);
+  border: 2px solid rgba(255,204,68,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700;
+  color: var(--gold);
+}
+.minister-info { flex: 1; }
+.minister-title-label {
+  font-size: 8px; letter-spacing: 0.22em; color: var(--gold); margin-bottom: 4px;
+}
+.minister-name {
+  font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.minister-bio {
+  font-size: 11px; color: var(--text); line-height: 1.7;
+  max-width: 680px;
+}
+.minister-tags {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;
+}
+.minister-tag {
+  padding: 3px 10px;
+  font-size: 8px; letter-spacing: 0.14em;
+  border: 1px solid rgba(255,204,68,0.25);
+  color: rgba(255,204,68,0.6);
+}
+
+/* ââ Department Grid ââ */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+.dept-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .2s, transform .2s;
+}
+.dept-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+}
+.dept-card-accent {
+  height: 3px;
+  background: var(--accent);
+}
+.dept-card-accent.gold { background: var(--gold); }
+.dept-card-accent.green { background: var(--accent2); }
+.dept-card-accent.orange { background: var(--accent3); }
+.dept-card-body { padding: 22px 24px 18px; }
+.dept-card-code {
+  font-size: 8px; letter-spacing: 0.22em; color: var(--dim);
+  margin-bottom: 8px;
+}
+.dept-card-name {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.06em;
+  margin-bottom: 10px; line-height: 1.4;
+}
+.dept-card-desc {
+  font-size: 10px; color: var(--text); line-height: 1.7;
+  margin-bottom: 16px;
+}
+.dept-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 24px;
+  background: rgba(3,6,14,0.4);
+  border-top: 1px solid var(--border);
+}
+.dept-card-stat {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.dept-card-stat-val {
+  font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 600;
+  color: var(--accent);
+}
+.dept-card-stat-val.gold { color: var(--gold); }
+.dept-card-stat-val.green { color: var(--accent2); }
+.dept-card-stat-val.orange { color: var(--accent3); }
+.dept-card-stat-label {
+  font-size: 7px; letter-spacing: 0.18em; color: var(--dim);
+}
+.dept-card-link {
+  font-size: 9px; letter-spacing: 0.1em; color: var(--accent);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+}
+.dept-card-link::after { content: 'â'; }
+.dept-card-link:hover { color: var(--accent2); }
+
+/* ââ Bulletin Board ââ */
+.bulletin-list { display: flex; flex-direction: column; gap: 0; }
+.bulletin-item {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(40,100,180,0.12);
+}
+.bulletin-item:last-child { border-bottom: none; }
+.bulletin-date {
+  font-size: 9px; letter-spacing: 0.12em; color: var(--dim);
+  white-space: nowrap; flex-shrink: 0; width: 80px;
+}
+.bulletin-tag {
+  font-size: 7px; letter-spacing: 0.14em; padding: 2px 7px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.bulletin-tag.notice { border-color: rgba(47,168,255,0.35); color: var(--accent); }
+.bulletin-tag.directive { border-color: rgba(255,204,68,0.35); color: var(--gold); }
+.bulletin-tag.alert { border-color: rgba(255,107,53,0.35); color: var(--accent3); }
+.bulletin-tag.update { border-color: rgba(0,255,198,0.35); color: var(--accent2); }
+.bulletin-title {
+  font-size: 11px; color: var(--text); flex: 1; line-height: 1.5;
+}
+.bulletin-title a {
+  color: inherit; text-decoration: none;
+  transition: color .15s;
+}
+.bulletin-title a:hover { color: var(--accent); }
+
+/* ââ Two-col layout ââ */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 960px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ââ Info panel ââ */
+.info-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.info-panel-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 8px; letter-spacing: 0.22em; color: var(--accent);
+}
+.info-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(40,100,180,0.10);
+}
+.info-row:last-child { border-bottom: none; }
+.info-label {
+  font-size: 8px; letter-spacing: 0.14em; color: var(--dim);
+  white-space: nowrap; width: 110px; flex-shrink: 0; padding-top: 2px;
+}
+.info-val {
+  font-size: 10px; color: var(--text); line-height: 1.6;
+}
+.info-val.accent { color: var(--accent); }
+.info-val.gold { color: var(--gold); }
+.info-val.green { color: var(--accent2); }
+
+/* ââ Footer ââ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 32px;
+  position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-brand {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--gold); letter-spacing: 0.12em;
+}
+.footer-copy {
+  font-size: 9px; color: var(--dim); letter-spacing: 0.1em;
+}
+.footer-links {
+  display: flex; gap: 20px;
+}
+.footer-links a {
+  font-size: 9px; letter-spacing: 0.1em; color: var(--dim);
+  text-decoration: none; transition: color .15s;
+}
+.footer-links a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- ââ Header ââ -->
+<header>
+  <div class="logo-mark"></div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY PORTAL</div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-item">HOME</a>
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle active">MINISTRIES</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">EXECUTIVE</div>
+        <a href="moiac.html">MOIAC â Internal &amp; Colonial Affairs</a>
+        <a href="#">MOD â Ministry of Defence</a>
+        <a href="#">DOE â Department of Energy</a>
+        <div class="menu-section">REGULATORY</div>
+        <a href="#">ADA â Abaia Development Authority</a>
+        <a href="#">LDA â Liora Development Authority</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item">COMMERCE</a>
+    <a href="#" class="nav-item">INTELLIGENCE</a>
+    <a href="#" class="nav-item">CONTACT</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ââ Hero ââ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">MINISTRY OF INTERNAL AFFAIRS &amp; COLONIAL AFFAIRS</div>
+      <h1 class="hero-title">MOIAC<br><span>Governance. Settlement. Order.</span></h1>
+      <p class="hero-subtitle">
+        The Ministry of Internal Affairs and Colonial Affairs oversees civilian governance,
+        population administration, and colonial expansion across all United Admiralty-held
+        worlds in the Regulus system.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">3</div>
+          <div class="hero-stat-label">ADMINISTERED WORLDS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">6</div>
+          <div class="hero-stat-label">DEPARTMENTS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">EST. Y.14</div>
+          <div class="hero-stat-label">FOUNDING YEAR</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">ACTIVE</div>
+          <div class="hero-stat-label">MINISTRY STATUS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ââ Minister & Quick Info ââ -->
+  <section>
+    <div class="section-wrap" style="padding-bottom: 0;">
+      <div class="two-col">
+
+        <div>
+          <!-- Minister -->
+          <div class="minister-card">
+            <div class="minister-avatar">V</div>
+            <div class="minister-info">
+              <div class="minister-title-label">MINISTER OF INTERNAL &amp; COLONIAL AFFAIRS</div>
+              <div class="minister-name">Director-General Valdris Omaen</div>
+              <div class="minister-bio">
+                A career administrator drawn from Abaia's founding colonial corps, Valdris Omaen
+                has served the United Admiralty for over two decades. His tenure has seen the
+                formalization of colonial transit rights, the drafting of the Regulus Settlement
+                Charter, and the integration of Vexsis outpost governance under central UA authority.
+              </div>
+              <div class="minister-tags">
+                <span class="minister-tag">COLONIAL CHARTER ARCHITECT</span>
+                <span class="minister-tag">REGULUS SETTLEMENT BOARD</span>
+                <span class="minister-tag">APPOINTED Y.31</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bulletin -->
+          <div class="section-eyebrow">MINISTRY BULLETINS</div>
+          <div class="section-heading">Recent Directives &amp; Notices</div>
+          <div class="bulletin-list">
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.38 / Q2</span>
+              <span class="bulletin-tag directive">DIRECTIVE</span>
+              <span class="bulletin-title"><a href="#">Colonial Transit Levy Amendment â revised fuel surcharge schedule for intra-Regulus civilian convoys</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.38 / Q1</span>
+              <span class="bulletin-tag notice">NOTICE</span>
+              <span class="bulletin-title"><a href="#">Vexsis Outpost Zoning Expansion â new residential and industrial sectors approved for northern plateau</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.37 / Q4</span>
+              <span class="bulletin-tag update">UPDATE</span>
+              <span class="bulletin-title"><a href="#">Liora Colonial Registry â population census reconciliation complete, records open for query</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.37 / Q4</span>
+              <span class="bulletin-tag alert">ALERT</span>
+              <span class="bulletin-title"><a href="#">Abaia Infrastructure Review â elevated dust storm activity has prompted temporary suspension of new surface construction permits</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.37 / Q3</span>
+              <span class="bulletin-tag notice">NOTICE</span>
+              <span class="bulletin-title"><a href="#">Inter-Planetary Movement Protocol updated â biometric registry requirements now mandatory for all colonial transfers</a></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick-info panel -->
+        <div class="info-panel">
+          <div class="info-panel-header">MINISTRY REFERENCE</div>
+          <div class="info-row">
+            <div class="info-label">DESIGNATION</div>
+            <div class="info-val accent">MOIAC</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">FULL TITLE</div>
+            <div class="info-val">Ministry of Internal Affairs and Colonial Affairs</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">JURISDICTION</div>
+            <div class="info-val">Abaia Â· Liora Â· Vexsis Outpost</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">HEADQUARTERS</div>
+            <div class="info-val">Abaia, Central Administrative District, Sector 1-A</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">REPORTING TO</div>
+            <div class="info-val gold">Office of the High Admiral</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">ESTABLISHED</div>
+            <div class="info-val">Year 14 Post-Settlement</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">DEPARTMENTS</div>
+            <div class="info-val">6 active Â· 1 provisional</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">BUDGET CYCLE</div>
+            <div class="info-val green">Y.38 APPROVED</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">CHARTER REF.</div>
+            <div class="info-val">RSC-IV Â§Â§ 12â34, 88â91</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">PUBLIC CONTACT</div>
+            <div class="info-val">moiac-public@ua.gov.reg</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" style="margin: 0 32px;">
+
+  <!-- ââ Departments ââ -->
+  <section>
+    <div class="section-wrap">
+      <div class="section-eyebrow">ORGANISATIONAL STRUCTURE</div>
+      <div class="section-heading">Departments &amp; Offices</div>
+      <div class="section-desc">
+        MOIAC operates through six primary departments responsible for civilian governance,
+        colonial development, internal security, and population administration across the
+        Regulus system.
+      </div>
+
+      <div class="dept-grid">
+
+        <!-- DCA -->
+        <div class="dept-card">
+          <div class="dept-card-accent"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MOIAC-DCA Â· DEPT. I</div>
+            <div class="dept-card-name">Department of Colonial Administration</div>
+            <div class="dept-card-desc">
+              Responsible for the planning, licensing, and oversight of all colonial expansion
+              activity. Issues planetary development permits, maintains zoning ordinances for
+              each settled world, and coordinates infrastructure priority lists with the
+              Department of Energy and MOD logistics.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">3</div>
+              <div class="dept-card-stat-label">ACTIVE WORLDS</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">142</div>
+              <div class="dept-card-stat-label">OPEN PERMITS</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DIPS -->
+        <div class="dept-card">
+          <div class="dept-card-accent gold"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MOIAC-DIPS Â· DEPT. II</div>
+            <div class="dept-card-name">Department of Internal &amp; Population Security</div>
+            <div class="dept-card-desc">
+              Maintains civil order across UA-administered populations. Manages the planetary
+              constabulary forces on Abaia and Liora, enforces movement protocols between
+              worlds, and operates the Biometric Colonial Registry. Works in close liaison
+              with MOD on threat escalation procedures.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val gold">ACTIVE</div>
+              <div class="dept-card-stat-label">STATUS</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">2</div>
+              <div class="dept-card-stat-label">CONSTABULARIES</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DIM -->
+        <div class="dept-card">
+          <div class="dept-card-accent green"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MOIAC-DIM Â· DEPT. III</div>
+            <div class="dept-card-name">Department of Immigration &amp; Movement</div>
+            <div class="dept-card-desc">
+              Governs the legal movement of civilians, workers, and specialists between
+              Regulus worlds. Processes colonial transfer applications, issues planetary
+              residence permits, and maintains inter-world transit agreements. Also
+              administers the Specialist Relocation Programme.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val green">1,840</div>
+              <div class="dept-card-stat-label">TRANSFERS / QTR</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">98.2%</div>
+              <div class="dept-card-stat-label">PERMIT COMPLIANCE</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DPW -->
+        <div class="dept-card">
+          <div class="dept-card-accent orange"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MOIAC-DPW Â· DEPT. IV</div>
+            <div class="dept-card-name">Department of Public Works &amp; Infrastructure</div>
+            <div class="dept-card-desc">
+              Oversees the construction and maintenance of civilian infrastructure:
+              habitat complexes, spaceport terminals, road networks, atmospheric
+              processing facilities, and communications arrays. Coordinates closely
+              with the ADA and LDA on planetary development priorities and funding
+              allocation.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val orange">14</div>
+              <div class="dept-card-stat-label">ACTIVE PROJECTS</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">3</div>
+              <div class="dept-card-stat-label">WORLDS</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DJC -->
+        <div class="dept-card">
+          <div class="dept-card-accent"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MOIAC-DJC Â· DEPT. V</div>
+            <div class="dept-card-name">Department of Justice &amp; Colonial Law</div>
+            <div class="dept-card-desc">
+              Administers the civil and colonial legal framework across UA territories.
+              Operates the planetary magistracy courts on Abaia and Liora, enforces
+              the Regulus Settlement Charter, and prosecutes violations of colonial
+              ordinances. Provides legal counsel to all MOIAC departments.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">2</div>
+              <div class="dept-card-stat-label">MAGISTRACY COURTS</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">RSC-IV</div>
+              <div class="dept-card-stat-label">PRIMARY CHARTER</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- OCR (Provisional) -->
+        <div class="dept-card">
+          <div class="dept-card-accent gold"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MOIAC-OCR Â· PROVISIONAL</div>
+            <div class="dept-card-name">Office of Colonial Resources &amp; Survey</div>
+            <div class="dept-card-desc">
+              A provisional office established to coordinate the cataloguing and
+              initial licensing of newly surveyed resource sites. Works closely with
+              the Department of Energy and the Taruscav Sorium Auction Authority.
+              Full departmental status pending Year 39 budget review.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val gold">PROVISIONAL</div>
+              <div class="dept-card-stat-label">STATUS</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">Y.39</div>
+              <div class="dept-card-stat-label">REVIEW DATE</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ââ Footer ââ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">UA.GOV</div>
+    <div class="footer-copy">Â© UNITED ADMIRALTY Â· REGULUS SYSTEM Â· ALL RIGHTS RESERVED</div>
+    <div class="footer-links">
+      <a href="index.html">HOME</a>
+      <a href="#">LEGAL</a>
+      <a href="#">ACCESSIBILITY</a>
+      <a href="#">CONTACT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
