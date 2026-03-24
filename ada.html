@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADA — Abaia Development Authority</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #03060e;
+  --surface: #0b1120;
+  --surface2: #101828;
+  --border: rgba(40,100,180,0.25);
+  --border-bright: rgba(47,168,255,0.4);
+  --accent: #2fa8ff;
+  --accent2: #00ffc6;
+  --accent3: #ff6b35;
+  --gold: #ffcc44;
+  --green: #00ffc6;
+  --red: #ff4455;
+  --amber: #ff9a1f;
+  --text: rgba(160,200,230,0.85);
+  --text-bright: #e8f4ff;
+  --dim: rgba(100,140,180,0.45);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Starfield ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 16% 82%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 91%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 75%, rgba(255,255,255,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 52%, rgba(200,220,255,0.40) 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 35%, rgba(200,220,255,0.35) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; height: 56px;
+  background: rgba(3,6,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 2px solid var(--accent);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(47,168,255,0.08);
+}
+.header-brand { display: flex; flex-direction: column; gap: 1px; }
+.header-title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--accent); letter-spacing: 0.18em; }
+.header-sub { font-size: 8px; color: var(--dim); letter-spacing: 0.22em; }
+.header-nav { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.nav-item {
+  padding: 0 14px; height: 56px; display: flex; align-items: center;
+  font-size: 11px; letter-spacing: 0.12em; color: var(--dim);
+  text-decoration: none; cursor: pointer;
+  transition: color .15s, background .15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-item:hover { color: var(--text-bright); background: rgba(47,168,255,0.04); }
+.nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { user-select: none; }
+.nav-dropdown-toggle::after { content: ' ▾'; font-size: 9px; }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: 56px; right: 0;
+  background: rgba(5,10,22,0.98);
+  border: 1px solid var(--border-bright);
+  min-width: 260px; padding: 6px 0;
+  backdrop-filter: blur(16px);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 8px 18px;
+  font-size: 11px; letter-spacing: 0.1em; color: var(--dim);
+  text-decoration: none; transition: color .1s, background .1s;
+}
+.nav-dropdown-menu a:hover { color: var(--text-bright); background: rgba(47,168,255,0.07); }
+.nav-dropdown-menu a.active { color: var(--accent); }
+.menu-section {
+  padding: 10px 18px 4px; font-size: 9px;
+  letter-spacing: 0.22em; color: rgba(100,140,180,0.35);
+  border-top: 1px solid rgba(40,100,180,0.15); margin-top: 4px;
+}
+.menu-section:first-child { border-top: none; margin-top: 0; }
+
+/* ── Grid lines ── */
+.grid-lines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(47,168,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47,168,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Main ── */
+main { position: relative; z-index: 1; }
+
+/* ── Status Banner ── */
+.dev-banner {
+  background: rgba(0,255,198,0.05);
+  border-bottom: 1px solid rgba(0,255,198,0.25);
+  padding: 10px 32px;
+  display: flex; align-items: center; gap: 20px;
+  font-size: 11px; letter-spacing: 0.14em;
+}
+.dev-banner-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-green 2s ease-in-out infinite;
+}
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.dev-banner-label {
+  color: var(--green); font-weight: 600; letter-spacing: 0.2em;
+}
+.dev-banner-text { color: var(--text); }
+.dev-banner-status {
+  margin-left: auto; display: flex; gap: 24px;
+}
+.dev-banner-stat { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.dev-banner-stat-val { font-size: 13px; color: var(--green); font-weight: 600; }
+.dev-banner-stat-label { font-size: 8px; color: var(--dim); letter-spacing: 0.18em; }
+
+/* ── Hero ── */
+.hero {
+  padding: 64px 32px 48px;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: start;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.28em; color: var(--green);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 24px; height: 1px; background: var(--green);
+}
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 900;
+  color: var(--text-bright); line-height: 1.1;
+  letter-spacing: 0.04em; margin-bottom: 8px;
+}
+.hero-title span { color: var(--green); }
+.hero-subtitle {
+  font-family: 'Exo 2', sans-serif; font-style: italic;
+  font-size: 14px; color: var(--dim); margin-bottom: 28px;
+  letter-spacing: 0.08em;
+}
+.hero-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 14px;
+  color: var(--text); line-height: 1.7; max-width: 580px;
+  margin-bottom: 32px;
+}
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-val {
+  font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 600;
+  color: var(--green); line-height: 1;
+}
+.hero-stat-label { font-size: 9px; letter-spacing: 0.2em; color: var(--dim); }
+
+/* Governor card */
+.governor-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px; min-width: 240px;
+  position: relative; overflow: hidden;
+}
+.governor-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--green), var(--accent2));
+}
+.governor-badge {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--green);
+  margin-bottom: 14px;
+}
+.governor-avatar {
+  width: 52px; height: 52px; margin-bottom: 14px;
+  border: 1px solid rgba(0,255,198,0.3);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(0,255,198,0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900;
+  color: var(--green);
+}
+.governor-name {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 4px; letter-spacing: 0.06em;
+}
+.governor-title { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+.governor-divider {
+  height: 1px; background: var(--border); margin: 14px 0;
+}
+.governor-meta { display: flex; flex-direction: column; gap: 6px; }
+.governor-meta-row { display: flex; justify-content: space-between; gap: 12px; }
+.governor-meta-key { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; }
+.governor-meta-val { font-size: 9px; color: var(--text); text-align: right; }
+
+/* ── Grid Status Section ── */
+.section {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 32px 64px;
+}
+.section-header {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.18em;
+}
+.section-sub { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+
+/* ── Resource Cards ── */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.resource-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+  position: relative; overflow: hidden;
+}
+.resource-card-accent {
+  height: 3px; width: 100%; margin: -20px -20px 0 -20px; margin-bottom: 20px;
+}
+.resource-label { font-size: 9px; letter-spacing: 0.18em; color: var(--dim); margin-bottom: 6px; }
+.resource-name { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+.resource-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(40,100,180,0.15); }
+.resource-stat:last-child { border-bottom: none; }
+.resource-stat-key { font-size: 10px; color: var(--dim); }
+.resource-stat-val { font-size: 12px; font-weight: 600; color: var(--text-bright); }
+.resource-stat-val.critical { color: var(--red); }
+.resource-stat-val.caution { color: var(--amber); }
+.resource-stat-val.ok { color: var(--green); }
+
+/* ── Info Panel ── */
+.info-panel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px;
+  margin-bottom: 48px;
+}
+.info-group {}
+.info-group-title {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--green);
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0,255,198,0.15);
+}
+.info-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.info-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; }
+.info-val { font-size: 10px; color: var(--text-bright); text-align: right; }
+.info-val.green { color: var(--green); }
+.info-val.amber { color: var(--amber); }
+.info-val.red { color: var(--red); }
+
+/* ── Bulletins ── */
+.bulletins { display: flex; flex-direction: column; gap: 0; margin-bottom: 48px; }
+.bulletin {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 20px; align-items: start;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+}
+.bulletin:last-child { border-bottom: none; }
+.bulletin-index { font-size: 10px; color: var(--dim); padding-top: 1px; min-width: 24px; }
+.bulletin-body {}
+.bulletin-title { font-size: 13px; color: var(--text-bright); margin-bottom: 4px; letter-spacing: 0.04em; }
+.bulletin-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.bulletin-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.bulletin-date { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; white-space: nowrap; }
+.bulletin-tag {
+  font-size: 8px; letter-spacing: 0.16em; padding: 2px 7px;
+  border: 1px solid;
+}
+.bulletin-tag.approved { color: var(--green); border-color: rgba(0,255,198,0.3); }
+.bulletin-tag.construction { color: var(--gold); border-color: rgba(255,204,68,0.3); }
+.bulletin-tag.planning { color: var(--accent); border-color: rgba(47,168,255,0.3); }
+.bulletin-tag.alert { color: var(--red); border-color: rgba(255,68,85,0.3); }
+
+/* ── Facility Grid ── */
+.facility-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.facility-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  transition: border-color .2s;
+}
+.facility-card:hover { border-color: var(--border-bright); }
+.facility-card-accent {
+  height: 3px; flex-shrink: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+.facility-card-body { padding: 20px 20px 0; flex: 1; }
+.facility-card-code {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--dim);
+  margin-bottom: 6px;
+}
+.facility-card-name {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 10px; letter-spacing: 0.06em;
+}
+.facility-card-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 12px;
+  color: var(--dim); line-height: 1.65;
+}
+.facility-card-footer {
+  padding: 16px 20px 20px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  border-top: 1px solid var(--border); margin-top: 16px;
+}
+.facility-card-stat { display: flex; flex-direction: column; gap: 2px; }
+.facility-card-stat-val { font-size: 16px; font-weight: 600; color: var(--text-bright); }
+.facility-card-stat-val.green { color: var(--green); }
+.facility-card-stat-label { font-size: 8px; letter-spacing: 0.16em; color: var(--dim); }
+.facility-card-link {
+  margin-left: auto; font-size: 9px; letter-spacing: 0.18em;
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid rgba(47,168,255,0.3);
+  padding-bottom: 1px; white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.facility-card-link:hover { color: var(--text-bright); border-color: var(--text-bright); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 32px;
+  position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.footer-brand {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+  color: var(--accent); letter-spacing: 0.2em;
+}
+.footer-copy { font-size: 9px; color: var(--dim); letter-spacing: 0.14em; }
+.footer-links { margin-left: auto; display: flex; gap: 20px; }
+.footer-links a { font-size: 9px; letter-spacing: 0.16em; color: var(--dim); text-decoration: none; }
+.footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="grid-lines"></div>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo-mark"></div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY · REGULUS SYSTEM</div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-item">HOME</a>
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle active">MINISTRIES</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">EXECUTIVE</div>
+        <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
+        <a href="mic.html">MIC — Industry &amp; Commerce</a>
+        <a href="mod.html">MOD — Ministry of Defence</a>
+        <a href="doe.html">DOE — Department of Energy</a>
+        <div class="menu-section">REGULATORY</div>
+        <a href="ada.html" class="active">ADA — Abaia Development Authority</a>
+        <a href="#">LDA — Liora Development Authority</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item">INTELLIGENCE</a>
+    <a href="#" class="nav-item">CONTACT</a>
+  </nav>
+</header>
+
+<!-- ── Development Status Banner ── -->
+<div class="dev-banner">
+  <div class="dev-banner-dot"></div>
+  <span class="dev-banner-label">DEVELOPMENT STATUS: ACTIVE</span>
+  <span class="dev-banner-text">Abaia experiencing sustained growth &amp; development. Construction sector operating at capacity. 7.2M worker surplus available for new projects. 900 construction factories online.</span>
+  <div class="dev-banner-status">
+    <div class="dev-banner-stat">
+      <div class="dev-banner-stat-val">583.12M</div>
+      <div class="dev-banner-stat-label">POPULATION</div>
+    </div>
+    <div class="dev-banner-stat">
+      <div class="dev-banner-stat-val">7.2M</div>
+      <div class="dev-banner-stat-label">WORKER SURPLUS</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">ADA · ABAIA DEVELOPMENT AUTHORITY</div>
+      <h1 class="hero-title">ABAIA<br><span>DEVELOPMENT</span></h1>
+      <div class="hero-subtitle">Planetary Growth &amp; Infrastructure Authority · Home World</div>
+      <p class="hero-desc">
+        The Abaia Development Authority oversees all infrastructure, construction, industrial expansion, and resource development on the United Admiralty's primary world. Manages 900 construction factories, regulates mining operations, licenses industrial zones, and coordinates capital projects across all economic sectors. The engine of Regulus system development.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">900</div>
+          <div class="hero-stat-label">CONSTRUCTION FACTORIES</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">700</div>
+          <div class="hero-stat-label">SORIUM MINES</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">7.2M</div>
+          <div class="hero-stat-label">WORKER SURPLUS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">EST. Y.04</div>
+          <div class="hero-stat-label">ESTABLISHED</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Governor Card -->
+    <div class="governor-card">
+      <div class="governor-badge">GOVERNOR · ABAIA</div>
+      <div class="governor-avatar">WN</div>
+      <div class="governor-name">WILLNerb</div>
+      <div class="governor-title">PLANETARY GOVERNOR</div>
+      <div class="governor-divider"></div>
+      <div class="governor-meta">
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">APPOINTED</span>
+          <span class="governor-meta-val">Y.12</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">TENURE</span>
+          <span class="governor-meta-val">26 standard years</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">OFFICE</span>
+          <span class="governor-meta-val">New Meridian Capital</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">POPULATION</span>
+          <span class="governor-meta-val">583.12M</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">AUTHORITY</span>
+          <span class="governor-meta-val">Admiralty Charter VIII</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Mineral Reserves ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">CRITICAL MINERAL RESERVES</div>
+      <div class="section-sub">RESOURCE SUSTAINABILITY & EXTRACTION STATUS</div>
+    </div>
+
+    <div class="resource-grid">
+
+      <!-- Duranium -->
+      <div class="resource-card">
+        <div class="resource-card-accent" style="background: linear-gradient(90deg, #6b9bd1, #5a8bc9);"></div>
+        <div class="resource-label">STRATEGIC RESOURCE · ABUNDANT</div>
+        <div class="resource-name">Duranium</div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Reserves</span>
+          <span class="resource-stat-val">2.56M units</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Annual Production</span>
+          <span class="resource-stat-val">9,660 units/yr</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Depletion Years</span>
+          <span class="resource-stat-val ok">266 years</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Accessibility</span>
+          <span class="resource-stat-val">Tech 12 · 100%</span>
+        </div>
+      </div>
+
+      <!-- Neutronium -->
+      <div class="resource-card">
+        <div class="resource-card-accent" style="background: linear-gradient(90deg, #d9a574, #c99468);"></div>
+        <div class="resource-label">CRITICAL RESOURCE · LOW RESERVES</div>
+        <div class="resource-name">Neutronium</div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Reserves</span>
+          <span class="resource-stat-val">92,530 units</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Annual Production</span>
+          <span class="resource-stat-val">7,728 units/yr</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Depletion Years</span>
+          <span class="resource-stat-val critical">~12 years ⚠</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Status</span>
+          <span class="resource-stat-val critical">CRITICAL</span>
+        </div>
+      </div>
+
+      <!-- Tritanium -->
+      <div class="resource-card">
+        <div class="resource-card-accent" style="background: linear-gradient(90deg, #a89b6f, #9a8d63);"></div>
+        <div class="resource-label">CRITICAL RESOURCE · LOW RESERVES</div>
+        <div class="resource-name">Tritanium</div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Reserves</span>
+          <span class="resource-stat-val">109,265 units</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Annual Production</span>
+          <span class="resource-stat-val">8,694 units/yr</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Depletion Years</span>
+          <span class="resource-stat-val critical">~13 years ⚠</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Status</span>
+          <span class="resource-stat-val critical">CRITICAL</span>
+        </div>
+      </div>
+
+      <!-- Mecassium -->
+      <div class="resource-card">
+        <div class="resource-card-accent" style="background: linear-gradient(90deg, #d4a574, #c49468);"></div>
+        <div class="resource-label">CRITICAL RESOURCE · DEPLETING</div>
+        <div class="resource-name">Mecassium</div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Reserves</span>
+          <span class="resource-stat-val">60,084 units</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Annual Production</span>
+          <span class="resource-stat-val">6,762 units/yr</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Depletion Years</span>
+          <span class="resource-stat-val critical">~9 years ⚠</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Status</span>
+          <span class="resource-stat-val critical">CRITICAL</span>
+        </div>
+      </div>
+
+      <!-- Sorium -->
+      <div class="resource-card">
+        <div class="resource-card-accent" style="background: linear-gradient(90deg, #ffcc44, #ff9a1f);"></div>
+        <div class="resource-label">FUEL RESOURCE · ABUNDANT</div>
+        <div class="resource-name">Sorium</div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Reserves</span>
+          <span class="resource-stat-val">2.44M units</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Annual Production</span>
+          <span class="resource-stat-val">7,728 units/yr</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Depletion Years</span>
+          <span class="resource-stat-val ok">316 years</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Status</span>
+          <span class="resource-stat-val ok">SECURE</span>
+        </div>
+      </div>
+
+      <!-- Gallicite -->
+      <div class="resource-card">
+        <div class="resource-card-accent" style="background: linear-gradient(90deg, #8b7c47, #7d6f3e);"></div>
+        <div class="resource-label">INDUSTRIAL RESOURCE · ABUNDANT</div>
+        <div class="resource-name">Gallicite</div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Reserves</span>
+          <span class="resource-stat-val">4.61M units</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Annual Production</span>
+          <span class="resource-stat-val">9,660 units/yr</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Depletion Years</span>
+          <span class="resource-stat-val ok">477 years</span>
+        </div>
+        <div class="resource-stat">
+          <span class="resource-stat-key">Status</span>
+          <span class="resource-stat-val ok">ABUNDANT</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Info Panel ── -->
+    <div class="info-panel">
+      <div class="info-group">
+        <div class="info-group-title">DEVELOPMENT METRICS</div>
+        <div class="info-row">
+          <span class="info-key">POPULATION</span>
+          <span class="info-val">583.12 million</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">GROWTH RATE</span>
+          <span class="info-val">+2.46% / year</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">WORKER SURPLUS</span>
+          <span class="info-val green">+7.2M available</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">EMPLOYMENT</span>
+          <span class="info-val">~567M engaged</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ECONOMIC ROLE</span>
+          <span class="info-val">Capital / Industrial / R&amp;D</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">INDUSTRIAL CAPACITY</div>
+        <div class="info-row">
+          <span class="info-key">CONSTRUCTION FACTORIES</span>
+          <span class="info-val green">900</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ORDNANCE FACTORIES</span>
+          <span class="info-val">20</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">RESEARCH LABORATORIES</span>
+          <span class="info-val">25</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">FUEL REFINERIES</span>
+          <span class="info-val">150</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TOTAL FACILITIES</span>
+          <span class="info-val green">1,940+</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">AUTHORITY REFERENCE</div>
+        <div class="info-row">
+          <span class="info-key">GOVERNOR</span>
+          <span class="info-val">WILLNerb</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ESTABLISHED</span>
+          <span class="info-val">Year 04 of Admiralty</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">CHARTER</span>
+          <span class="info-val">Admiralty VIII, Sec. 2</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TERRAIN</span>
+          <span class="info-val">Mountain / Developed</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">OVERSIGHT</span>
+          <span class="info-val">UA Cabinet &amp; Admiralty</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Recent Activity ── -->
+    <div class="section-header">
+      <div class="section-title">RECENT DEVELOPMENT ACTIVITY</div>
+      <div class="section-sub">INFRASTRUCTURE & RESOURCE MANAGEMENT UPDATES</div>
+    </div>
+    <div class="bulletins">
+      <div class="bulletin">
+        <div class="bulletin-index">01</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Mineral Depletion Alert — Resource Sustainability Plan</div>
+          <div class="bulletin-desc">Neutronium (~12 yrs), Tritanium (~13 yrs), and Mecassium (~9 yrs) approaching critical depletion. ADA coordinating with DOE and MIC to expand survey efforts on Vexsis and identify new deposits. Taruscav survey underway.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q3 / D.05</span>
+          <span class="bulletin-tag alert">CRITICAL ⚠</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">02</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">New Industrial Zone Approved — Southern Mountains Development</div>
+          <div class="bulletin-desc">Zoning authority approved expansion of manufacturing and refining capacity in Southern Mountain sector. Will support 60 additional construction factories. Environmental impact assessment completed. Construction commencing Q4.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q3 / D.02</span>
+          <span class="bulletin-tag construction">APPROVED</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">03</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Worker Allocation: 7.2M Surplus Available for New Projects</div>
+          <div class="bulletin-desc">ADA current surplus stands at +7.2M workers. No shortage constraints. Capacity available for expanded mining, manufacturing, research, and infrastructure projects. Recommend capital expansion in mineral survey and extraction technology development.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.28</span>
+          <span class="bulletin-tag approved">ACTIVE</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">04</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Research Facility Expansion — Advanced Material Sciences Lab</div>
+          <div class="bulletin-desc">New Advanced Material Sciences Laboratory commissioned. Focused on developing extraction and processing technology for rare mineral accessibility improvements. Will expand Abaia research capacity to 30+ labs within Y.39.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.15</span>
+          <span class="bulletin-tag construction">CONSTRUCTION</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">05</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Sorium Mining & Fuel Production — System Supply Security</div>
+          <div class="bulletin-desc">Abaia Sorium reserves secure for 316+ years at current extraction rates. Primary fuel source for entire Regulus system. DOE coordination ensures steady supply to fleet and DOE-FRD refining network. Liora supports distributed refining capacity.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.08</span>
+          <span class="bulletin-tag approved">STABLE</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Major Facilities ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">MAJOR DEVELOPMENT FACILITIES</div>
+      <div class="section-sub">INFRASTRUCTURE & INDUSTRIAL ANCHORS</div>
+    </div>
+
+    <div class="facility-grid">
+
+      <!-- Construction -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">ADA-CONSTR · SECTOR I</div>
+          <div class="facility-card-name">Construction Factory Network</div>
+          <div class="facility-card-desc">
+            900 construction factories distributed across Abaia's primary industrial zones. Capable of executing massive infrastructure and manufacturing projects. Primary driver of planetary development and economic growth.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val green">900</div>
+            <div class="facility-card-stat-label">FACTORIES</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">Unlimited</div>
+            <div class="facility-card-stat-label">CAPACITY</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW NETWORK</a>
+        </div>
+      </div>
+
+      <!-- Mining -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">ADA-MINING · SECTOR II</div>
+          <div class="facility-card-name">Sorium Mining Operations</div>
+          <div class="facility-card-desc">
+            700 active Sorium mines across Abaia's mineral-rich regions. Primary fuel supply for entire Regulus system. Extracts 7,728 units annually. Reserves sufficient for 316+ years at current rates.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val green">700</div>
+            <div class="facility-card-stat-label">MINES ACTIVE</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val green">SECURE</div>
+            <div class="facility-card-stat-label">RESERVE STATUS</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW OPERATIONS</a>
+        </div>
+      </div>
+
+      <!-- Research -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">ADA-RESEARCH · SECTOR III</div>
+          <div class="facility-card-name">Research &amp; Development Complex</div>
+          <div class="facility-card-desc">
+            25 research laboratories focused on mineral extraction technology, manufacturing efficiency, and advanced materials science. Latest facility: Advanced Material Sciences Lab. Drives system innovation.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">25</div>
+            <div class="facility-card-stat-label">LABORATORIES</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">Expanding</div>
+            <div class="facility-card-stat-label">CAPACITY</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW PROGRAMS</a>
+        </div>
+      </div>
+
+      <!-- Refining -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">ADA-REFINING · SECTOR IV</div>
+          <div class="facility-card-name">Fuel Refining Network</div>
+          <div class="facility-card-desc">
+            150 Sorium refining facilities processing raw fuel for fleet supply, civilian consumption, and DOE distribution. Total capacity 7.2M kL. Supplies Abaia internal needs and Liora import demand.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">150</div>
+            <div class="facility-card-stat-label">REFINERIES</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">7.2M kL</div>
+            <div class="facility-card-stat-label">CAPACITY</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW NETWORK</a>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">UA.GOV</div>
+    <div class="footer-copy">© UNITED ADMIRALTY · REGULUS SYSTEM · ALL RIGHTS RESERVED</div>
+    <div class="footer-links">
+      <a href="index.html">HOME</a>
+      <a href="#">LEGAL</a>
+      <a href="#">ACCESSIBILITY</a>
+      <a href="#">CONTACT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
