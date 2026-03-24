@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOE — Department of Energy</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #03060e;
+  --surface: #0b1120;
+  --surface2: #101828;
+  --border: rgba(40,100,180,0.25);
+  --border-bright: rgba(47,168,255,0.4);
+  --accent: #2fa8ff;
+  --accent2: #00ffc6;
+  --accent3: #ff6b35;
+  --gold: #ffcc44;
+  --green: #00ffc6;
+  --red: #ff4455;
+  --amber: #ff9a1f;
+  --text: rgba(160,200,230,0.85);
+  --text-bright: #e8f4ff;
+  --dim: rgba(100,140,180,0.45);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Starfield ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 16% 82%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 91%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 75%, rgba(255,255,255,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 52%, rgba(200,220,255,0.40) 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 35%, rgba(200,220,255,0.35) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; height: 56px;
+  background: rgba(3,6,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 2px solid var(--gold);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(255,204,68,0.08);
+}
+.header-brand { display: flex; flex-direction: column; gap: 1px; }
+.header-title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--gold); letter-spacing: 0.18em; }
+.header-sub { font-size: 8px; color: var(--dim); letter-spacing: 0.22em; }
+.header-nav { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.nav-item {
+  padding: 0 14px; height: 56px; display: flex; align-items: center;
+  font-size: 11px; letter-spacing: 0.12em; color: var(--dim);
+  text-decoration: none; cursor: pointer;
+  transition: color .15s, background .15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-item:hover { color: var(--text-bright); background: rgba(47,168,255,0.04); }
+.nav-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* Dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { user-select: none; }
+.nav-dropdown-toggle::after { content: ' ▾'; font-size: 9px; }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: 56px; right: 0;
+  background: rgba(5,10,22,0.98);
+  border: 1px solid var(--border-bright);
+  min-width: 260px; padding: 6px 0;
+  backdrop-filter: blur(16px);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 8px 18px;
+  font-size: 11px; letter-spacing: 0.1em; color: var(--dim);
+  text-decoration: none; transition: color .1s, background .1s;
+}
+.nav-dropdown-menu a:hover { color: var(--text-bright); background: rgba(47,168,255,0.07); }
+.nav-dropdown-menu a.active { color: var(--gold); }
+.menu-section {
+  padding: 10px 18px 4px; font-size: 9px;
+  letter-spacing: 0.22em; color: rgba(100,140,180,0.35);
+  border-top: 1px solid rgba(40,100,180,0.15); margin-top: 4px;
+}
+.menu-section:first-child { border-top: none; margin-top: 0; }
+
+/* ── Grid lines ── */
+.grid-lines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(47,168,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47,168,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Main ── */
+main { position: relative; z-index: 1; }
+
+/* ── Energy Status Banner ── */
+.energy-banner {
+  background: rgba(255,204,68,0.06);
+  border-bottom: 1px solid rgba(255,204,68,0.25);
+  padding: 10px 32px;
+  display: flex; align-items: center; gap: 20px;
+  font-size: 11px; letter-spacing: 0.14em;
+}
+.energy-banner-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+@keyframes pulse-gold {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.energy-banner-label {
+  color: var(--gold); font-weight: 600; letter-spacing: 0.2em;
+}
+.energy-banner-text { color: var(--text); }
+.energy-banner-status {
+  margin-left: auto; display: flex; gap: 24px;
+}
+.energy-banner-stat { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.energy-banner-stat-val { font-size: 13px; color: var(--gold); font-weight: 600; }
+.energy-banner-stat-label { font-size: 8px; color: var(--dim); letter-spacing: 0.18em; }
+
+/* ── Hero ── */
+.hero {
+  padding: 64px 32px 48px;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: start;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.28em; color: var(--gold);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 24px; height: 1px; background: var(--gold);
+}
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 900;
+  color: var(--text-bright); line-height: 1.1;
+  letter-spacing: 0.04em; margin-bottom: 8px;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-family: 'Exo 2', sans-serif; font-style: italic;
+  font-size: 14px; color: var(--dim); margin-bottom: 28px;
+  letter-spacing: 0.08em;
+}
+.hero-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 14px;
+  color: var(--text); line-height: 1.7; max-width: 580px;
+  margin-bottom: 32px;
+}
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-val {
+  font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 600;
+  color: var(--gold); line-height: 1;
+}
+.hero-stat-label { font-size: 9px; letter-spacing: 0.2em; color: var(--dim); }
+
+/* Director card */
+.director-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px; min-width: 240px;
+  position: relative; overflow: hidden;
+}
+.director-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--gold), var(--amber));
+}
+.director-badge {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--gold);
+  margin-bottom: 14px;
+}
+.director-avatar {
+  width: 52px; height: 52px; margin-bottom: 14px;
+  border: 1px solid rgba(255,204,68,0.3);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(255,204,68,0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900;
+  color: var(--gold);
+}
+.director-name {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 4px; letter-spacing: 0.06em;
+}
+.director-title { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+.director-divider {
+  height: 1px; background: var(--border); margin: 14px 0;
+}
+.director-meta { display: flex; flex-direction: column; gap: 6px; }
+.director-meta-row { display: flex; justify-content: space-between; gap: 12px; }
+.director-meta-key { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; }
+.director-meta-val { font-size: 9px; color: var(--text); text-align: right; }
+
+/* ── Grid Status Section ── */
+.section {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 32px 64px;
+}
+.section-header {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.18em;
+}
+.section-sub { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+
+/* ── Grid Status Cards ── */
+.grid-status-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-bottom: 48px;
+}
+.grid-card {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 20px; position: relative; overflow: hidden;
+}
+.grid-card-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 16px;
+}
+.grid-card-world {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.14em;
+}
+.grid-card-code { font-size: 9px; color: var(--dim); letter-spacing: 0.18em; margin-top: 2px; }
+.grid-card-status {
+  font-size: 9px; letter-spacing: 0.18em; padding: 3px 8px;
+  border: 1px solid;
+}
+.grid-card-status.nominal { color: var(--green); border-color: rgba(0,255,198,0.3); background: rgba(0,255,198,0.05); }
+.grid-card-status.reduced { color: var(--amber); border-color: rgba(255,154,31,0.3); background: rgba(255,154,31,0.05); }
+.grid-card-status.critical { color: var(--red); border-color: rgba(255,68,85,0.3); background: rgba(255,68,85,0.05); }
+
+/* Capacity bar */
+.capacity-bar-label {
+  display: flex; justify-content: space-between;
+  font-size: 9px; color: var(--dim); letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+.capacity-bar-track {
+  height: 4px; background: rgba(40,100,180,0.15); border-radius: 0;
+  margin-bottom: 14px; overflow: hidden;
+}
+.capacity-bar-fill {
+  height: 100%; transition: width 0.6s ease;
+}
+.capacity-bar-fill.nominal { background: linear-gradient(90deg, var(--green), rgba(0,255,198,0.5)); }
+.capacity-bar-fill.reduced { background: linear-gradient(90deg, var(--amber), rgba(255,154,31,0.5)); }
+.capacity-bar-fill.critical { background: linear-gradient(90deg, var(--red), rgba(255,68,85,0.5)); }
+
+.grid-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-mini-stat-val { font-size: 14px; color: var(--text-bright); font-weight: 600; }
+.grid-mini-stat-label { font-size: 8px; color: var(--dim); letter-spacing: 0.14em; margin-top: 2px; }
+
+/* ── Bulletins ── */
+.bulletins { display: flex; flex-direction: column; gap: 0; margin-bottom: 48px; }
+.bulletin {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 20px; align-items: start;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+}
+.bulletin:last-child { border-bottom: none; }
+.bulletin-index { font-size: 10px; color: var(--dim); padding-top: 1px; min-width: 24px; }
+.bulletin-body {}
+.bulletin-title { font-size: 13px; color: var(--text-bright); margin-bottom: 4px; letter-spacing: 0.04em; }
+.bulletin-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.bulletin-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.bulletin-date { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; white-space: nowrap; }
+.bulletin-tag {
+  font-size: 8px; letter-spacing: 0.16em; padding: 2px 7px;
+  border: 1px solid;
+}
+.bulletin-tag.notice { color: var(--accent); border-color: rgba(47,168,255,0.3); }
+.bulletin-tag.active { color: var(--green); border-color: rgba(0,255,198,0.3); }
+.bulletin-tag.pending { color: var(--gold); border-color: rgba(255,204,68,0.3); }
+.bulletin-tag.maint { color: var(--amber); border-color: rgba(255,154,31,0.3); }
+.bulletin-tag.classified { color: var(--red); border-color: rgba(255,68,85,0.3); }
+
+/* ── Info Panel ── */
+.info-panel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px;
+  margin-bottom: 48px;
+}
+.info-group {}
+.info-group-title {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--gold);
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,204,68,0.15);
+}
+.info-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.info-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; }
+.info-val { font-size: 10px; color: var(--text-bright); text-align: right; }
+.info-val.gold { color: var(--gold); }
+.info-val.green { color: var(--green); }
+.info-val.amber { color: var(--amber); }
+.info-val.red { color: var(--red); }
+
+/* ── Dept Cards ── */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.dept-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  transition: border-color .2s;
+}
+.dept-card:hover { border-color: var(--border-bright); }
+.dept-card-accent {
+  height: 3px; flex-shrink: 0;
+  background: var(--accent);
+}
+.dept-card-accent.gold { background: linear-gradient(90deg, var(--gold), var(--amber)); }
+.dept-card-accent.green { background: var(--green); }
+.dept-card-accent.amber { background: var(--amber); }
+.dept-card-accent.red { background: var(--red); }
+.dept-card-body { padding: 20px 20px 0; flex: 1; }
+.dept-card-code {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--dim);
+  margin-bottom: 6px;
+}
+.dept-card-name {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 10px; letter-spacing: 0.06em;
+}
+.dept-card-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 12px;
+  color: var(--dim); line-height: 1.65;
+}
+.dept-card-footer {
+  padding: 16px 20px 20px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  border-top: 1px solid var(--border); margin-top: 16px;
+}
+.dept-card-stat { display: flex; flex-direction: column; gap: 2px; }
+.dept-card-stat-val { font-size: 16px; font-weight: 600; color: var(--text-bright); }
+.dept-card-stat-val.gold { color: var(--gold); }
+.dept-card-stat-val.green { color: var(--green); }
+.dept-card-stat-val.amber { color: var(--amber); }
+.dept-card-stat-val.red { color: var(--red); }
+.dept-card-stat-label { font-size: 8px; letter-spacing: 0.16em; color: var(--dim); }
+.dept-card-link {
+  margin-left: auto; font-size: 9px; letter-spacing: 0.18em;
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid rgba(47,168,255,0.3);
+  padding-bottom: 1px; white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.dept-card-link:hover { color: var(--text-bright); border-color: var(--text-bright); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 32px;
+  position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.footer-brand {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+  color: var(--gold); letter-spacing: 0.2em;
+}
+.footer-copy { font-size: 9px; color: var(--dim); letter-spacing: 0.14em; }
+.footer-links { margin-left: auto; display: flex; gap: 20px; }
+.footer-links a { font-size: 9px; letter-spacing: 0.16em; color: var(--dim); text-decoration: none; }
+.footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="grid-lines"></div>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo-mark"></div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY · REGULUS SYSTEM</div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-item">HOME</a>
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle active">MINISTRIES</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">EXECUTIVE</div>
+        <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
+        <a href="mic.html">MIC — Industry &amp; Commerce</a>
+        <a href="mod.html">MOD — Ministry of Defence</a>
+        <a href="doe.html" class="active">DOE — Department of Energy</a>
+        <div class="menu-section">REGULATORY</div>
+        <a href="#">ADA — Abaia Development Authority</a>
+        <a href="#">LDA — Liora Development Authority</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item">INTELLIGENCE</a>
+    <a href="#" class="nav-item">CONTACT</a>
+  </nav>
+</header>
+
+<!-- ── Energy Status Banner ── -->
+<div class="energy-banner">
+  <div class="energy-banner-dot"></div>
+  <span class="energy-banner-label">SYSTEM STATUS: CAUTION</span>
+  <span class="energy-banner-text">Abaia and Vexsis fuel production nominal. Liora fuel reserves critical — importing from Abaia with elevated cost (+70.13 Cr/L markup). All refinery capacity engaged to support demand.</span>
+  <div class="energy-banner-status">
+    <div class="energy-banner-stat">
+      <div class="energy-banner-stat-val">175</div>
+      <div class="energy-banner-stat-label">REFINERIES ONLINE</div>
+    </div>
+    <div class="energy-banner-stat">
+      <div class="energy-banner-stat-val">8.4M kL</div>
+      <div class="energy-banner-stat-label">TOTAL CAPACITY</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">DOE · DEPARTMENT OF ENERGY</div>
+      <h1 class="hero-title">DEPARTMENT<br>OF <span>ENERGY</span></h1>
+      <div class="hero-subtitle">Fuel Authority &amp; Power Grid Command · Regulus System</div>
+      <p class="hero-desc">
+        The Department of Energy oversees all fuel production, energy generation, and power distribution infrastructure across United Admiralty-held worlds in the Regulus system. Responsible for Sorium refining operations, planetary grid management, fleet fuel provisioning, and the strategic energy reserve programme.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">175</div>
+          <div class="hero-stat-label">FUEL REFINERIES</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">6</div>
+          <div class="hero-stat-label">DIVISIONS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">8.4 M kL</div>
+          <div class="hero-stat-label">CAPACITY</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">EST. Y.02</div>
+          <div class="hero-stat-label">FOUNDED</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Director Card -->
+    <div class="director-card">
+      <div class="director-badge">MINISTER-DIRECTOR · DOE</div>
+      <div class="director-avatar">SV</div>
+      <div class="director-name">Sera Vanthos</div>
+      <div class="director-title">MINISTER-DIRECTOR OF ENERGY</div>
+      <div class="director-divider"></div>
+      <div class="director-meta">
+        <div class="director-meta-row">
+          <span class="director-meta-key">CLEARANCE</span>
+          <span class="director-meta-val">EXECUTIVE-1</span>
+        </div>
+        <div class="director-meta-row">
+          <span class="director-meta-key">APPOINTED</span>
+          <span class="director-meta-val">Y.31</span>
+        </div>
+        <div class="director-meta-row">
+          <span class="director-meta-key">OFFICE</span>
+          <span class="director-meta-val">Abaia Prime, Sector 3</span>
+        </div>
+        <div class="director-meta-row">
+          <span class="director-meta-key">AUTHORITY</span>
+          <span class="director-meta-val">Admiralty Charter IX</span>
+        </div>
+        <div class="director-meta-row">
+          <span class="director-meta-key">DIVISIONS</span>
+          <span class="director-meta-val">FRD · PGA · ERO · NTE · SPC · EIC</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Planetary Grid Status ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">PLANETARY GRID STATUS</div>
+      <div class="section-sub">LIVE NETWORK TELEMETRY · Y.38 / Q3</div>
+    </div>
+
+    <div class="grid-status-row">
+
+      <!-- Abaia -->
+      <div class="grid-card">
+        <div class="grid-card-top">
+          <div>
+            <div class="grid-card-world">ABAIA</div>
+            <div class="grid-card-code">HOME WORLD · GRID-A1</div>
+          </div>
+          <div class="grid-card-status nominal">NOMINAL</div>
+        </div>
+        <div class="capacity-bar-label">
+          <span>FUEL REFINERY CAPACITY</span>
+          <span>78%</span>
+        </div>
+        <div class="capacity-bar-track">
+          <div class="capacity-bar-fill nominal" style="width:78%"></div>
+        </div>
+        <div class="grid-card-stats">
+          <div>
+            <div class="grid-mini-stat-val">150</div>
+            <div class="grid-mini-stat-label">REFINERIES</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">7.2 M</div>
+            <div class="grid-mini-stat-label">CAPACITY (kL)</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">700</div>
+            <div class="grid-mini-stat-label">SORIUM MINES</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">583.12M</div>
+            <div class="grid-mini-stat-label">POPULATION</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liora -->
+      <div class="grid-card">
+        <div class="grid-card-top">
+          <div>
+            <div class="grid-card-world">LIORA</div>
+            <div class="grid-card-code">COLONY WORLD · GRID-L2</div>
+          </div>
+          <div class="grid-card-status reduced">CONSTRAINED</div>
+        </div>
+        <div class="capacity-bar-label">
+          <span>FUEL REFINERY CAPACITY</span>
+          <span>82%</span>
+        </div>
+        <div class="capacity-bar-track">
+          <div class="capacity-bar-fill reduced" style="width:82%"></div>
+        </div>
+        <div class="grid-card-stats">
+          <div>
+            <div class="grid-mini-stat-val">20</div>
+            <div class="grid-mini-stat-label">REFINERIES</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">960 K</div>
+            <div class="grid-mini-stat-label">CAPACITY (kL)</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">100</div>
+            <div class="grid-mini-stat-label">SORIUM MINES</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">298.76M</div>
+            <div class="grid-mini-stat-label">POPULATION</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vexsis -->
+      <div class="grid-card">
+        <div class="grid-card-top">
+          <div>
+            <div class="grid-card-world">VEXSIS</div>
+            <div class="grid-card-code">CORE WORLD · GRID-V3</div>
+          </div>
+          <div class="grid-card-status reduced">CAUTION</div>
+        </div>
+        <div class="capacity-bar-label">
+          <span>FUEL REFINERY CAPACITY</span>
+          <span>61%</span>
+        </div>
+        <div class="capacity-bar-track">
+          <div class="capacity-bar-fill reduced" style="width:61%"></div>
+        </div>
+        <div class="grid-card-stats">
+          <div>
+            <div class="grid-mini-stat-val">5</div>
+            <div class="grid-mini-stat-label">REFINERIES</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">240 K</div>
+            <div class="grid-mini-stat-label">CAPACITY (kL)</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">1,000</div>
+            <div class="grid-mini-stat-label">SORIUM MINES</div>
+          </div>
+          <div>
+            <div class="grid-mini-stat-val">123.42M</div>
+            <div class="grid-mini-stat-label">POPULATION</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Info Panel ── -->
+    <div class="info-panel">
+      <div class="info-group">
+        <div class="info-group-title">SORIUM STATUS</div>
+        <div class="info-row">
+          <span class="info-key">SPOT RATE</span>
+          <span class="info-val gold">2,840 Cr/t</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ABAIA RESERVES</span>
+          <span class="info-val green">2.44M units</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">VEXSIS RESERVES</span>
+          <span class="info-val green">7.06M units</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LIORA RESERVES</span>
+          <span class="info-val red">DEPLETED ⚠</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LIORA FUEL COST</span>
+          <span class="info-val amber">+70.13 Cr/L import markup</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">REFINERY INVENTORY</div>
+        <div class="info-row">
+          <span class="info-key">ABAIA</span>
+          <span class="info-val">150 refineries</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">LIORA</span>
+          <span class="info-val">20 refineries</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">VEXSIS</span>
+          <span class="info-val">5 refineries</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TOTAL SYSTEM</span>
+          <span class="info-val gold">175 refineries</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TOTAL CAPACITY</span>
+          <span class="info-val gold">8.4M kL</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">MINISTRY REFERENCE</div>
+        <div class="info-row">
+          <span class="info-key">CHARTER</span>
+          <span class="info-val">Admiralty IX, Sec. 3</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ESTABLISHED</span>
+          <span class="info-val">Year 02 of Admiralty</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">DIVISIONS</span>
+          <span class="info-val">6</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">COORDINATES WITH</span>
+          <span class="info-val">MIC-DRE · MOD-LSC</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TARUSCAV LIAISON</span>
+          <span class="info-val">MIC-ORL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Recent Bulletins ── -->
+    <div class="section-header">
+      <div class="section-title">RECENT BULLETINS</div>
+      <div class="section-sub">OFFICIAL COMMUNICATIONS · DOE</div>
+    </div>
+    <div class="bulletins">
+      <div class="bulletin">
+        <div class="bulletin-index">01</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Q3 Sorium Allocation Report — Submitted to MIC-ORL</div>
+          <div class="bulletin-desc">Annual Q3 allocation report compiled and submitted to the Office of Resource Licensing for review ahead of the Taruscav Sorium Auction. Fleet and civilian fuel quotas confirmed. No shortfall projected.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q3 / D.04</span>
+          <span class="bulletin-tag active">SUBMITTED</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">02</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Vexsis Emergency Fuel Cache — Phase II Expansion Approved</div>
+          <div class="bulletin-desc">Minister-Director Vanthos authorised Phase II expansion of the Vexsis forward fuel cache. Construction to be managed by DOE-EIC in coordination with MOD-LSC. Estimated completion Y.39 / Q1.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q3 / D.02</span>
+          <span class="bulletin-tag active">APPROVED</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">03</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Liora Sorium Reserves — CRITICAL DEPLETION ALERT</div>
+          <div class="bulletin-desc">Liora's Sorium reserves have reached complete depletion. DOE now procures all refined fuel for Liora from Abaia at a 70.13 Cr/L import markup. This has elevated fuel costs across the colony's industrial sector. MIC-ORL and DOE-SPC coordinating emergency procurement protocols.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.15</span>
+          <span class="bulletin-tag classified">CRITICAL</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">04</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">New Taruscav Survey Site — DOE-FRD Pre-Feasibility Assessment</div>
+          <div class="bulletin-desc">MIC-DRE forwarded survey data for newly identified Taruscav Sorium deposit at grid reference T-7-Gamma. DOE-FRD conducting pre-feasibility review. Preliminary results expected within 30 standard days.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.28</span>
+          <span class="bulletin-tag pending">REVIEW</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">05</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Annual Fleet Fuel Reserve Assessment — In Progress</div>
+          <div class="bulletin-desc">DOE-ERO has commenced the annual strategic fuel reserve audit in coordination with MOD-LSC and MOD-FLCOM. Assessment covers all three theatre fuel caches and deep-space depot stocks.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.20</span>
+          <span class="bulletin-tag notice">IN PROGRESS</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Divisions ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">DIVISIONS &amp; DIRECTORATES</div>
+      <div class="section-sub">6 ACTIVE DIVISIONS · ADMIRALTY CHARTER IX</div>
+    </div>
+
+    <div class="dept-grid">
+
+      <!-- FRD -->
+      <div class="dept-card">
+        <div class="dept-card-accent gold"></div>
+        <div class="dept-card-body">
+          <div class="dept-card-code">DOE-FRD · DIVISION I</div>
+          <div class="dept-card-name">Fuel Refining Directorate</div>
+          <div class="dept-card-desc">
+            Operates and maintains all 175 Sorium refining facilities across the Regulus system. Responsible for raw Sorium intake from MIC-DRE licensed extraction sites, refining throughput scheduling, quality assurance, and refined fuel distribution. Currently supplies Liora from Abaia due to Sorium depletion on colony world.
+          </div>
+        </div>
+        <div class="dept-card-footer">
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val gold">175</div>
+            <div class="dept-card-stat-label">SYSTEM REFINERIES</div>
+          </div>
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">8.4M kL</div>
+            <div class="dept-card-stat-label">CAPACITY</div>
+          </div>
+          <a href="#" class="dept-card-link">VIEW DIVISION</a>
+        </div>
+      </div>
+
+      <!-- PGA -->
+      <div class="dept-card">
+        <div class="dept-card-accent"></div>
+        <div class="dept-card-body">
+          <div class="dept-card-code">DOE-PGA · DIVISION II</div>
+          <div class="dept-card-name">Power Grid Authority</div>
+          <div class="dept-card-desc">
+            Administers the planetary power distribution networks across all UA-held worlds. Manages grid topology, load balancing, inter-district transmission lines, and emergency switching protocols. Oversees civilian and industrial power allocation and coordinates planned outages with the Departments of Industry and Colonial Affairs.
+          </div>
+        </div>
+        <div class="dept-card-footer">
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val green">97.2%</div>
+            <div class="dept-card-stat-label">SYSTEM UPTIME</div>
+          </div>
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">25.9 TW</div>
+            <div class="dept-card-stat-label">TOTAL OUTPUT</div>
+          </div>
+          <a href="#" class="dept-card-link">VIEW DIVISION</a>
+        </div>
+      </div>
+
+      <!-- ERO -->
+      <div class="dept-card">
+        <div class="dept-card-accent amber"></div>
+        <div class="dept-card-body">
+          <div class="dept-card-code">DOE-ERO · DIVISION III</div>
+          <div class="dept-card-name">Emergency Reserve Office</div>
+          <div class="dept-card-desc">
+            Manages the system-wide strategic fuel and energy reserve programme. Maintains sealed emergency caches on all three worlds and a designated deep-space depot. Conducts annual reserve audits, sets minimum stockpile thresholds, and coordinates drawdown authorisation with the Minister-Director and MOD-LSC during contingency operations.
+          </div>
+        </div>
+        <div class="dept-card-footer">
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val amber">1,238 kt</div>
+            <div class="dept-card-stat-label">TOTAL RESERVE</div>
+          </div>
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">90 days</div>
+            <div class="dept-card-stat-label">CONTINGENCY COVERAGE</div>
+          </div>
+          <a href="#" class="dept-card-link">VIEW DIVISION</a>
+        </div>
+      </div>
+
+      <!-- NTE -->
+      <div class="dept-card">
+        <div class="dept-card-accent green"></div>
+        <div class="dept-card-body">
+          <div class="dept-card-code">DOE-NTE · DIVISION IV</div>
+          <div class="dept-card-name">Nuclear Thermal Engineering Corps</div>
+          <div class="dept-card-desc">
+            Designs, constructs, and maintains the thermal fission and fusion reactor plants that power the Regulus system's cities and industrial zones. Manages reactor licensing, safety certification, and plant lifecycle programmes. Provides engineering advisory services for new colonial power infrastructure proposals submitted by MOIAC-DCC.
+          </div>
+        </div>
+        <div class="dept-card-footer">
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val green">6 / 7</div>
+            <div class="dept-card-stat-label">PLANTS ONLINE</div>
+          </div>
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">3</div>
+            <div class="dept-card-stat-label">PROJECTS IN BUILD</div>
+          </div>
+          <a href="#" class="dept-card-link">VIEW DIVISION</a>
+        </div>
+      </div>
+
+      <!-- SPC -->
+      <div class="dept-card">
+        <div class="dept-card-accent gold"></div>
+        <div class="dept-card-body">
+          <div class="dept-card-code">DOE-SPC · DIVISION V</div>
+          <div class="dept-card-name">Sorium Procurement &amp; Control</div>
+          <div class="dept-card-desc">
+            Coordinates Sorium acquisition strategy across the system. Acts as DOE's liaison to MIC-ORL for the Taruscav Sorium Auction and works with MIC-DRE on extraction quota compliance. Sets internal purchase targets, negotiates bulk supply agreements, and manages the Sorium transfer ledger between extraction operators and the refining network.
+          </div>
+        </div>
+        <div class="dept-card-footer">
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val gold">2,840 Cr/t</div>
+            <div class="dept-card-stat-label">PROCUREMENT RATE</div>
+          </div>
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">12</div>
+            <div class="dept-card-stat-label">ACTIVE CONTRACTS</div>
+          </div>
+          <a href="#" class="dept-card-link">VIEW DIVISION</a>
+        </div>
+      </div>
+
+      <!-- EIC -->
+      <div class="dept-card">
+        <div class="dept-card-accent"></div>
+        <div class="dept-card-body">
+          <div class="dept-card-code">DOE-EIC · DIVISION VI</div>
+          <div class="dept-card-name">Energy Infrastructure Command</div>
+          <div class="dept-card-desc">
+            Manages planning, procurement, and construction of new energy infrastructure across the Regulus system. Oversees the Vexsis grid expansion programme, coordinates with MOIAC on colonial energy development plans, and administers capital works budgets for refinery and plant construction. Works in liaison with MOD-LSC on forward-theatre fuel depot projects.
+          </div>
+        </div>
+        <div class="dept-card-footer">
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">4</div>
+            <div class="dept-card-stat-label">ACTIVE PROJECTS</div>
+          </div>
+          <div class="dept-card-stat">
+            <div class="dept-card-stat-val">1,240 Cr</div>
+            <div class="dept-card-stat-label">CAPEX / QTR</div>
+          </div>
+          <a href="#" class="dept-card-link">VIEW DIVISION</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">UA.GOV</div>
+    <div class="footer-copy">© UNITED ADMIRALTY · REGULUS SYSTEM · ALL RIGHTS RESERVED</div>
+    <div class="footer-links">
+      <a href="index.html">HOME</a>
+      <a href="#">LEGAL</a>
+      <a href="#">ACCESSIBILITY</a>
+      <a href="#">CONTACT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
