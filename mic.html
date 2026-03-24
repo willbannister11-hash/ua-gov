@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIC — Ministry of Industry &amp; Commerce</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #03060e;
+  --surface: #0b1120;
+  --surface2: #101828;
+  --border: rgba(40,100,180,0.25);
+  --border-bright: rgba(47,168,255,0.4);
+  --accent: #2fa8ff;
+  --accent2: #00ffc6;
+  --accent3: #ff6b35;
+  --gold: #ffcc44;
+  --green: #00ffc6;
+  --text: rgba(160,200,230,0.85);
+  --text-bright: #e8f4ff;
+  --dim: rgba(100,140,180,0.45);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Starfield ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 16% 82%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 91%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 75%, rgba(255,255,255,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 52%, rgba(200,220,255,0.40) 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 35%, rgba(200,220,255,0.35) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; height: 56px;
+  background: rgba(3,6,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 2px solid var(--gold);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(255,204,68,0.08);
+}
+.header-brand { display: flex; flex-direction: column; gap: 1px; }
+.header-title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--gold); letter-spacing: 0.18em; }
+.header-sub { font-size: 8px; color: var(--dim); letter-spacing: 0.22em; }
+.header-nav { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.nav-item {
+  padding: 0 14px; height: 56px; display: flex; align-items: center;
+  font-size: 11px; letter-spacing: 0.12em; color: var(--dim);
+  text-decoration: none; cursor: pointer;
+  transition: color .15s, background .15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-item:hover { color: var(--accent); background: rgba(47,168,255,0.05); }
+.nav-item.active { color: var(--accent); background: rgba(47,168,255,0.07); border-bottom-color: var(--accent); }
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; }
+.nav-dropdown-toggle::after {
+  content: '▾'; font-size: 9px; color: var(--dim);
+  transition: transform .2s, color .15s;
+}
+.nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(180deg); color: var(--accent); }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: 100%; left: 0;
+  min-width: 280px;
+  background: rgba(3,6,14,0.97);
+  border: 1px solid var(--border-bright);
+  border-top: none; z-index: 200;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 10px 18px;
+  font-size: 10px; letter-spacing: 0.1em; color: var(--text);
+  text-decoration: none; border-bottom: 1px solid var(--border);
+  transition: color .15s, background .15s;
+}
+.nav-dropdown-menu a:last-child { border-bottom: none; }
+.nav-dropdown-menu a:hover { color: var(--accent); background: rgba(47,168,255,0.06); }
+.nav-dropdown-menu .menu-section {
+  padding: 8px 18px 6px; font-size: 8px; letter-spacing: 0.2em;
+  color: var(--gold); border-bottom: 1px solid var(--border);
+}
+
+/* ── Section scaffolding ── */
+.section-wrap { max-width: 1440px; margin: 0 auto; padding: 56px 32px; position: relative; z-index: 1; }
+.section-eyebrow { font-size: 9px; letter-spacing: 0.22em; color: var(--accent); margin-bottom: 10px; }
+.section-heading { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 600; color: var(--text-bright); margin-bottom: 12px; line-height: 1.3; }
+.section-desc { font-size: 11px; color: var(--text); line-height: 1.7; max-width: 640px; margin-bottom: 32px; }
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 0 32px; position: relative; z-index: 1; }
+
+/* ── Hero ── */
+.hero {
+  position: relative; z-index: 1;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,204,68,0.04) 0%, transparent 100%);
+  overflow: hidden;
+}
+.hero::before {
+  content: 'MIC';
+  position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+  font-family: 'Orbitron', sans-serif; font-size: 200px; font-weight: 900;
+  color: rgba(255,204,68,0.04); letter-spacing: -0.05em; pointer-events: none;
+}
+.hero-inner { max-width: 1440px; margin: 0 auto; padding: 72px 32px 64px; position: relative; z-index: 1; }
+.hero-eyebrow { font-size: 9px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 16px; }
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--text-bright); margin-bottom: 20px;
+}
+.hero-title span { color: var(--gold); font-weight: 300; font-style: italic; font-family: 'Exo 2', sans-serif; }
+.hero-subtitle { font-size: 12px; color: var(--text); line-height: 1.7; max-width: 600px; margin-bottom: 40px; }
+.hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-val { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; }
+.hero-stat-label { font-size: 8px; letter-spacing: 0.2em; color: var(--dim); }
+
+/* ── Minister card ── */
+.minister-card {
+  display: flex; gap: 24px; align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px; margin-bottom: 40px;
+}
+.minister-avatar {
+  width: 72px; height: 72px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(255,204,68,0.15), rgba(255,204,68,0.04));
+  border: 1px solid rgba(255,204,68,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold);
+}
+.minister-info { flex: 1; }
+.minister-title-label { font-size: 8px; letter-spacing: 0.2em; color: var(--dim); margin-bottom: 6px; }
+.minister-name { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 600; color: var(--text-bright); margin-bottom: 12px; }
+.minister-bio { font-size: 11px; color: var(--text); line-height: 1.7; margin-bottom: 14px; }
+.minister-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.minister-tag {
+  font-size: 8px; letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border: 1px solid rgba(255,204,68,0.25);
+  color: var(--gold); background: rgba(255,204,68,0.05);
+}
+
+/* ── Bulletin list ── */
+.bulletin-list { display: flex; flex-direction: column; }
+.bulletin-item {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.bulletin-item:last-child { border-bottom: none; }
+.bulletin-date { font-size: 9px; color: var(--dim); white-space: nowrap; flex-shrink: 0; }
+.bulletin-tag {
+  font-size: 8px; letter-spacing: 0.1em; padding: 2px 8px; flex-shrink: 0;
+  border: 1px solid transparent;
+}
+.bulletin-tag.directive { border-color: rgba(47,168,255,0.4); color: var(--accent); background: rgba(47,168,255,0.06); }
+.bulletin-tag.notice    { border-color: rgba(255,204,68,0.4); color: var(--gold); background: rgba(255,204,68,0.06); }
+.bulletin-tag.update    { border-color: rgba(0,255,198,0.35); color: var(--accent2); background: rgba(0,255,198,0.05); }
+.bulletin-tag.alert     { border-color: rgba(255,107,53,0.4); color: var(--accent3); background: rgba(255,107,53,0.06); }
+.bulletin-title { font-size: 11px; color: var(--text); flex: 1; line-height: 1.5; }
+.bulletin-title a { color: inherit; text-decoration: none; transition: color .15s; }
+.bulletin-title a:hover { color: var(--accent); }
+
+/* ── Two-col layout ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 960px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── Info panel ── */
+.info-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.info-panel-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 8px; letter-spacing: 0.22em; color: var(--accent);
+}
+.info-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(40,100,180,0.10);
+}
+.info-row:last-child { border-bottom: none; }
+.info-label {
+  font-size: 8px; letter-spacing: 0.14em; color: var(--dim);
+  white-space: nowrap; width: 110px; flex-shrink: 0; padding-top: 2px;
+}
+.info-val { font-size: 10px; color: var(--text); line-height: 1.6; }
+.info-val.accent { color: var(--accent); }
+.info-val.gold { color: var(--gold); }
+.info-val.green { color: var(--accent2); }
+
+/* ── Market ticker ── */
+.ticker-bar {
+  position: relative; z-index: 1;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  padding: 0;
+}
+.ticker-inner {
+  display: flex; align-items: center;
+  height: 36px;
+  overflow: hidden;
+}
+.ticker-label {
+  flex-shrink: 0;
+  padding: 0 16px;
+  font-size: 8px; letter-spacing: 0.2em; color: var(--gold);
+  border-right: 1px solid var(--border);
+  height: 100%; display: flex; align-items: center;
+  background: var(--surface2);
+}
+.ticker-items {
+  display: flex; gap: 0;
+  white-space: nowrap;
+  padding: 0 32px;
+}
+.ticker-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 24px;
+  font-size: 9px;
+  border-right: 1px solid var(--border);
+}
+.ticker-item:last-child { border-right: none; }
+.ticker-name { color: var(--dim); letter-spacing: 0.1em; }
+.ticker-val { color: var(--text-bright); font-weight: 600; }
+.ticker-delta.up { color: var(--accent2); }
+.ticker-delta.down { color: var(--accent3); }
+.ticker-delta.flat { color: var(--dim); }
+
+/* ── Dept grid ── */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.dept-card {
+  background: var(--surface);
+  display: flex; flex-direction: column;
+  transition: background .2s;
+}
+.dept-card:hover { background: var(--surface2); }
+.dept-card-accent { height: 3px; background: var(--accent); }
+.dept-card-accent.gold { background: var(--gold); }
+.dept-card-accent.green { background: var(--accent2); }
+.dept-card-accent.orange { background: var(--accent3); }
+.dept-card-body { padding: 24px 24px 0; flex: 1; }
+.dept-card-code { font-size: 8px; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 8px; }
+.dept-card-name { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 12px; line-height: 1.4; }
+.dept-card-desc { font-size: 10px; color: var(--text); line-height: 1.7; }
+.dept-card-footer {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+}
+.dept-card-stat { display: flex; flex-direction: column; gap: 2px; }
+.dept-card-stat-val { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-bright); line-height: 1; }
+.dept-card-stat-val.gold { color: var(--gold); }
+.dept-card-stat-val.green { color: var(--accent2); }
+.dept-card-stat-val.orange { color: var(--accent3); }
+.dept-card-stat-label { font-size: 7px; letter-spacing: 0.14em; color: var(--dim); }
+.dept-card-link { margin-left: auto; font-size: 9px; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; transition: opacity .15s; }
+.dept-card-link:hover { opacity: 0.7; }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 32px;
+  position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-brand { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 0.12em; }
+.footer-copy { font-size: 9px; color: var(--dim); letter-spacing: 0.1em; }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 9px; letter-spacing: 0.1em; color: var(--dim); text-decoration: none; transition: color .15s; }
+.footer-links a:hover { color: var(--accent); }
+
+@media (max-width: 1200px) { .two-col { grid-template-columns: 1fr; } }
+@media (max-width: 768px) {
+  .header-sub { display: none; }
+  .section-wrap { padding: 40px 20px; }
+  .hero-inner { padding: 48px 20px 40px; }
+  .hero-title { font-size: 32px; }
+  .hero-stats { gap: 24px; }
+  footer { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo-mark"></div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY PORTAL</div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-item">HOME</a>
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle active">MINISTRIES</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">EXECUTIVE</div>
+        <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
+        <a href="mic.html">MIC — Industry &amp; Commerce</a>
+        <a href="#">MOD — Ministry of Defence</a>
+        <a href="#">DOE — Department of Energy</a>
+        <div class="menu-section">REGULATORY</div>
+        <a href="#">ADA — Abaia Development Authority</a>
+        <a href="#">LDA — Liora Development Authority</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item">INTELLIGENCE</a>
+    <a href="#" class="nav-item">CONTACT</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">MINISTRY OF INDUSTRY &amp; COMMERCE</div>
+      <h1 class="hero-title">MIC<br><span>Trade. Production. Prosperity.</span></h1>
+      <p class="hero-subtitle">
+        The Ministry of Industry and Commerce governs commercial activity, industrial licensing,
+        resource extraction rights, and inter-planetary trade across all United Admiralty-held
+        worlds in the Regulus system.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">3</div>
+          <div class="hero-stat-label">REGULATED WORLDS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">5</div>
+          <div class="hero-stat-label">DEPARTMENTS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">847</div>
+          <div class="hero-stat-label">ACTIVE LICENCES</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">EST. Y.18</div>
+          <div class="hero-stat-label">FOUNDING YEAR</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Sorium Market Ticker ── -->
+  <div class="ticker-bar" style="position: relative; z-index: 1;">
+    <div class="ticker-inner">
+      <div class="ticker-label">LIVE MARKETS</div>
+      <div class="ticker-items">
+        <div class="ticker-item">
+          <span class="ticker-name">SOR/ABAIA</span>
+          <span class="ticker-val">2,840 Cr/t</span>
+          <span class="ticker-delta up">▲ +3.2%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">SOR/LIORA</span>
+          <span class="ticker-val">2,790 Cr/t</span>
+          <span class="ticker-delta down">▼ −1.1%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">FUEL/INT</span>
+          <span class="ticker-val">140 Cr/t</span>
+          <span class="ticker-delta flat">— 0.0%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">FREIGHT/UA</span>
+          <span class="ticker-val">18 Cr/t</span>
+          <span class="ticker-delta up">▲ +0.8%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">TARUSCAV AUCTION</span>
+          <span class="ticker-val">Y.38 / Q3 — OPEN</span>
+          <span class="ticker-delta up">BIDDING ACTIVE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Minister & Quick Info ── -->
+  <section>
+    <div class="section-wrap" style="padding-bottom: 0;">
+      <div class="two-col">
+
+        <div>
+          <!-- Minister -->
+          <div class="minister-card">
+            <div class="minister-avatar">K</div>
+            <div class="minister-info">
+              <div class="minister-title-label">MINISTER OF INDUSTRY &amp; COMMERCE</div>
+              <div class="minister-name">Director-General Kael Sorven</div>
+              <div class="minister-bio">
+                A former extraction consortium director elevated to UA service following the Y.29 Sorium
+                Consolidation Act, Kael Sorven has restructured the ministry around trade efficiency and
+                resource licensing transparency. Under his tenure the Taruscav Sorium Auction was formalised
+                into a quarterly cycle, inter-world freight tariffs were renegotiated, and the Industrial
+                Licensing Registry was digitised across all three Regulus worlds.
+              </div>
+              <div class="minister-tags">
+                <span class="minister-tag">SORIUM CONSOLIDATION ARCHITECT</span>
+                <span class="minister-tag">TARUSCAV AUCTION BOARD</span>
+                <span class="minister-tag">APPOINTED Y.29</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bulletin -->
+          <div class="section-eyebrow">MINISTRY BULLETINS</div>
+          <div class="section-heading">Recent Directives &amp; Notices</div>
+          <div class="bulletin-list">
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.38 / Q3</span>
+              <span class="bulletin-tag notice">NOTICE</span>
+              <span class="bulletin-title"><a href="#">Taruscav Sorium Auction Y.38/Q3 — bidding window open, 14 registered extraction lots available</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.38 / Q2</span>
+              <span class="bulletin-tag directive">DIRECTIVE</span>
+              <span class="bulletin-title"><a href="#">Inter-World Freight Levy Amendment — revised rate schedule for civilian and commercial convoys effective Q3</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.38 / Q1</span>
+              <span class="bulletin-tag update">UPDATE</span>
+              <span class="bulletin-title"><a href="#">Industrial Licensing Registry — Liora deep-sea extraction sector open for new applications following seismic survey clearance</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.37 / Q4</span>
+              <span class="bulletin-tag alert">ALERT</span>
+              <span class="bulletin-title"><a href="#">Abaia Surface Mining Suspension — temporary halt on new surface extraction permits pending dust-storm impact assessment</a></span>
+            </div>
+            <div class="bulletin-item">
+              <span class="bulletin-date">Y.37 / Q3</span>
+              <span class="bulletin-tag notice">NOTICE</span>
+              <span class="bulletin-title"><a href="#">Regulus Commercial Transit Framework updated — biometric cargo manifests now mandatory for all inter-world freight transfers</a></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick-info panel -->
+        <div class="info-panel">
+          <div class="info-panel-header">MINISTRY REFERENCE</div>
+          <div class="info-row">
+            <div class="info-label">DESIGNATION</div>
+            <div class="info-val accent">MIC</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">FULL TITLE</div>
+            <div class="info-val">Ministry of Industry and Commerce</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">JURISDICTION</div>
+            <div class="info-val">Abaia · Liora · Vexsis Outpost</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">HEADQUARTERS</div>
+            <div class="info-val">Abaia, Commerce District, Sector 3-C</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">REPORTING TO</div>
+            <div class="info-val gold">Office of the High Admiral</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">ESTABLISHED</div>
+            <div class="info-val">Year 18 Post-Settlement</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">DEPARTMENTS</div>
+            <div class="info-val">5 active</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">BUDGET CYCLE</div>
+            <div class="info-val green">Y.38 APPROVED</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">CHARTER REF.</div>
+            <div class="info-val">RSC-II §§ 44–61, 88–102</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">PUBLIC CONTACT</div>
+            <div class="info-val">mic-public@ua.gov.reg</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" style="margin: 0 32px;">
+
+  <!-- ── Departments ── -->
+  <section>
+    <div class="section-wrap">
+      <div class="section-eyebrow">ORGANISATIONAL STRUCTURE</div>
+      <div class="section-heading">Departments &amp; Offices</div>
+      <div class="section-desc">
+        MIC operates through five primary departments responsible for commercial licensing, industrial
+        oversight, resource extraction governance, and inter-planetary trade administration across the
+        Regulus system.
+      </div>
+
+      <div class="dept-grid">
+
+        <!-- DCT -->
+        <div class="dept-card">
+          <div class="dept-card-accent gold"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MIC-DCT · DEPT. I</div>
+            <div class="dept-card-name">Department of Commerce &amp; Trade</div>
+            <div class="dept-card-desc">
+              Governs commercial activity across the Regulus system. Issues trade licences, enforces
+              commercial regulations, negotiates inter-world trade agreements, and maintains the
+              Central Commerce Registry. Oversees the Taruscav Sorium Auction process in conjunction
+              with the Office of Resource Licensing.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val gold">847</div>
+              <div class="dept-card-stat-label">ACTIVE LICENCES</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">14</div>
+              <div class="dept-card-stat-label">AUCTION LOTS / QTR</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DIL -->
+        <div class="dept-card">
+          <div class="dept-card-accent"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MIC-DIL · DEPT. II</div>
+            <div class="dept-card-name">Department of Industry &amp; Licensing</div>
+            <div class="dept-card-desc">
+              Administers the Industrial Licensing Registry for all manufacturing, processing, and
+              production facilities across UA-held worlds. Reviews and approves new industrial
+              applications, enforces operational safety standards, and monitors compliance with
+              planetary environmental ordinances.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">312</div>
+              <div class="dept-card-stat-label">REGISTERED FACILITIES</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val green">94.7%</div>
+              <div class="dept-card-stat-label">COMPLIANCE RATE</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DRE -->
+        <div class="dept-card">
+          <div class="dept-card-accent green"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MIC-DRE · DEPT. III</div>
+            <div class="dept-card-name">Department of Resource &amp; Extraction</div>
+            <div class="dept-card-desc">
+              Manages the licensing, monitoring, and taxation of all resource extraction operations
+              in the Regulus system — including sorium, mineral, and atmospheric extraction. Operates
+              the Taruscav Survey Grid and maintains extraction quota frameworks for each world.
+              Coordinates with the OCR (MOIAC) on newly surveyed sites.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val green">2,840</div>
+              <div class="dept-card-stat-label">SOR PRICE Cr/T</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">38</div>
+              <div class="dept-card-stat-label">ACTIVE EXTRACTION SITES</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- DFT -->
+        <div class="dept-card">
+          <div class="dept-card-accent orange"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MIC-DFT · DEPT. IV</div>
+            <div class="dept-card-name">Department of Freight &amp; Transit</div>
+            <div class="dept-card-desc">
+              Regulates commercial freight movement between Regulus worlds. Sets and enforces
+              inter-world freight tariff schedules, issues commercial transit permits, and administers
+              the Cargo Manifest Registry. Works in liaison with MOD logistics and MOIAC-DIM on
+              movement protocol compliance.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val orange">18 Cr/t</div>
+              <div class="dept-card-stat-label">FREIGHT RATE</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">2,140</div>
+              <div class="dept-card-stat-label">MANIFESTS / QTR</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+        <!-- ORL -->
+        <div class="dept-card">
+          <div class="dept-card-accent gold"></div>
+          <div class="dept-card-body">
+            <div class="dept-card-code">MIC-ORL · DEPT. V</div>
+            <div class="dept-card-name">Office of Resource Licensing &amp; Auction</div>
+            <div class="dept-card-desc">
+              Administers the quarterly Taruscav Sorium Auction — the primary mechanism by which
+              extraction rights are allocated across the system. Manages the bidder registry,
+              conducts due-diligence reviews, publishes lot specifications, and oversees settlement
+              of awarded contracts. Coordinates with the Department of Resource &amp; Extraction
+              on quota compliance.
+            </div>
+          </div>
+          <div class="dept-card-footer">
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val gold">OPEN</div>
+              <div class="dept-card-stat-label">AUCTION STATUS</div>
+            </div>
+            <div class="dept-card-stat">
+              <div class="dept-card-stat-val">Y.38/Q3</div>
+              <div class="dept-card-stat-label">CURRENT CYCLE</div>
+            </div>
+            <a href="#" class="dept-card-link">VIEW DEPT</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">UA.GOV</div>
+    <div class="footer-copy">© UNITED ADMIRALTY · REGULUS SYSTEM · ALL RIGHTS RESERVED</div>
+    <div class="footer-links">
+      <a href="index.html">HOME</a>
+      <a href="#">LEGAL</a>
+      <a href="#">ACCESSIBILITY</a>
+      <a href="#">CONTACT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
