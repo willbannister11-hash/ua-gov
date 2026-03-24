@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LDA — Liora Development Authority</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Exo+2:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #03060e;
+  --surface: #0b1120;
+  --surface2: #101828;
+  --border: rgba(40,100,180,0.25);
+  --border-bright: rgba(47,168,255,0.4);
+  --accent: #2fa8ff;
+  --accent2: #00ffc6;
+  --accent3: #ff6b35;
+  --gold: #ffcc44;
+  --green: #00ffc6;
+  --red: #ff4455;
+  --amber: #ff9a1f;
+  --text: rgba(160,200,230,0.85);
+  --text-bright: #e8f4ff;
+  --dim: rgba(100,140,180,0.45);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Starfield ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 16% 82%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 91%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 75%, rgba(255,255,255,0.38) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 52%, rgba(200,220,255,0.40) 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 35%, rgba(200,220,255,0.35) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; height: 56px;
+  background: rgba(3,6,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 2px solid var(--accent);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(47,168,255,0.08);
+}
+.header-brand { display: flex; flex-direction: column; gap: 1px; }
+.header-title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--accent); letter-spacing: 0.18em; }
+.header-sub { font-size: 8px; color: var(--dim); letter-spacing: 0.22em; }
+.header-nav { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.nav-item {
+  padding: 0 14px; height: 56px; display: flex; align-items: center;
+  font-size: 11px; letter-spacing: 0.12em; color: var(--dim);
+  text-decoration: none; cursor: pointer;
+  transition: color .15s, background .15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-item:hover { color: var(--text-bright); background: rgba(47,168,255,0.04); }
+.nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { user-select: none; }
+.nav-dropdown-toggle::after { content: ' ▾'; font-size: 9px; }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: 56px; right: 0;
+  background: rgba(5,10,22,0.98);
+  border: 1px solid var(--border-bright);
+  min-width: 260px; padding: 6px 0;
+  backdrop-filter: blur(16px);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 8px 18px;
+  font-size: 11px; letter-spacing: 0.1em; color: var(--dim);
+  text-decoration: none; transition: color .1s, background .1s;
+}
+.nav-dropdown-menu a:hover { color: var(--text-bright); background: rgba(47,168,255,0.07); }
+.nav-dropdown-menu a.active { color: var(--accent); }
+.menu-section {
+  padding: 10px 18px 4px; font-size: 9px;
+  letter-spacing: 0.22em; color: rgba(100,140,180,0.35);
+  border-top: 1px solid rgba(40,100,180,0.15); margin-top: 4px;
+}
+.menu-section:first-child { border-top: none; margin-top: 0; }
+
+/* ── Grid lines ── */
+.grid-lines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(47,168,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47,168,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Main ── */
+main { position: relative; z-index: 1; }
+
+/* ── Status Banner ── */
+.growth-banner {
+  background: rgba(255,204,68,0.05);
+  border-bottom: 1px solid rgba(255,204,68,0.25);
+  padding: 10px 32px;
+  display: flex; align-items: center; gap: 20px;
+  font-size: 11px; letter-spacing: 0.14em;
+}
+.growth-banner-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+@keyframes pulse-gold {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.growth-banner-label {
+  color: var(--gold); font-weight: 600; letter-spacing: 0.2em;
+}
+.growth-banner-text { color: var(--text); }
+.growth-banner-status {
+  margin-left: auto; display: flex; gap: 24px;
+}
+.growth-banner-stat { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.growth-banner-stat-val { font-size: 13px; color: var(--gold); font-weight: 600; }
+.growth-banner-stat-label { font-size: 8px; color: var(--dim); letter-spacing: 0.18em; }
+
+/* ── Alert Banner ── */
+.alert-banner {
+  background: rgba(255,68,85,0.06);
+  border-top: 1px solid rgba(255,68,85,0.3);
+  border-bottom: 1px solid rgba(255,68,85,0.3);
+  padding: 10px 32px;
+  display: flex; align-items: center; gap: 16px;
+}
+.alert-tag { font-size: 8px; letter-spacing: 0.18em; color: var(--red); border: 1px solid rgba(255,68,85,0.4); padding: 2px 8px; flex-shrink: 0; }
+.alert-text { font-size: 10px; color: var(--text); }
+
+/* ── Hero ── */
+.hero {
+  padding: 64px 32px 48px;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: start;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.28em; color: var(--gold);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 24px; height: 1px; background: var(--gold);
+}
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 900;
+  color: var(--text-bright); line-height: 1.1;
+  letter-spacing: 0.04em; margin-bottom: 8px;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-family: 'Exo 2', sans-serif; font-style: italic;
+  font-size: 14px; color: var(--dim); margin-bottom: 28px;
+  letter-spacing: 0.08em;
+}
+.hero-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 14px;
+  color: var(--text); line-height: 1.7; max-width: 580px;
+  margin-bottom: 32px;
+}
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-val {
+  font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 600;
+  color: var(--gold); line-height: 1;
+}
+.hero-stat-label { font-size: 9px; letter-spacing: 0.2em; color: var(--dim); }
+
+/* Governor card */
+.governor-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px; min-width: 240px;
+  position: relative; overflow: hidden;
+}
+.governor-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--gold), var(--accent3));
+}
+.governor-badge {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--gold);
+  margin-bottom: 14px;
+}
+.governor-avatar {
+  width: 52px; height: 52px; margin-bottom: 14px;
+  border: 1px solid rgba(255,204,68,0.3);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(255,204,68,0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900;
+  color: var(--gold);
+}
+.governor-name {
+  font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 4px; letter-spacing: 0.06em;
+}
+.governor-title { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+.governor-divider {
+  height: 1px; background: var(--border); margin: 14px 0;
+}
+.governor-meta { display: flex; flex-direction: column; gap: 6px; }
+.governor-meta-row { display: flex; justify-content: space-between; gap: 12px; }
+.governor-meta-key { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; }
+.governor-meta-val { font-size: 9px; color: var(--text); text-align: right; }
+
+/* ── Section ── */
+.section {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 32px 64px;
+}
+.section-header {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.18em;
+}
+.section-sub { font-size: 10px; color: var(--dim); letter-spacing: 0.14em; }
+
+/* ── Info Panel ── */
+.info-panel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px;
+  margin-bottom: 48px;
+}
+.info-group {}
+.info-group-title {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--gold);
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,204,68,0.15);
+}
+.info-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.info-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; }
+.info-val { font-size: 10px; color: var(--text-bright); text-align: right; }
+.info-val.gold { color: var(--gold); }
+.info-val.green { color: var(--green); }
+.info-val.red { color: var(--red); }
+
+/* ── Economy Cards ── */
+.economy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.economy-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+  position: relative; overflow: hidden;
+}
+.economy-card-accent {
+  height: 3px; width: 100%; margin: -20px -20px 0 -20px; margin-bottom: 20px;
+}
+.economy-label { font-size: 9px; letter-spacing: 0.18em; color: var(--dim); margin-bottom: 6px; }
+.economy-name { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 12px; }
+.economy-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(40,100,180,0.15); }
+.economy-stat:last-child { border-bottom: none; }
+.economy-stat-key { font-size: 10px; color: var(--dim); }
+.economy-stat-val { font-size: 12px; font-weight: 600; color: var(--text-bright); }
+.economy-stat-val.gold { color: var(--gold); }
+.economy-stat-val.red { color: var(--red); }
+
+/* ── Bulletins ── */
+.bulletins { display: flex; flex-direction: column; gap: 0; margin-bottom: 48px; }
+.bulletin {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 20px; align-items: start;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+}
+.bulletin:last-child { border-bottom: none; }
+.bulletin-index { font-size: 10px; color: var(--dim); padding-top: 1px; min-width: 24px; }
+.bulletin-body {}
+.bulletin-title { font-size: 13px; color: var(--text-bright); margin-bottom: 4px; letter-spacing: 0.04em; }
+.bulletin-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.bulletin-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.bulletin-date { font-size: 9px; color: var(--dim); letter-spacing: 0.12em; white-space: nowrap; }
+.bulletin-tag {
+  font-size: 8px; letter-spacing: 0.16em; padding: 2px 7px;
+  border: 1px solid;
+}
+.bulletin-tag.growth { color: var(--gold); border-color: rgba(255,204,68,0.3); }
+.bulletin-tag.active { color: var(--green); border-color: rgba(0,255,198,0.3); }
+.bulletin-tag.alert { color: var(--red); border-color: rgba(255,68,85,0.3); }
+
+/* ── Facility Grid ── */
+.facility-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.facility-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  transition: border-color .2s;
+}
+.facility-card:hover { border-color: var(--border-bright); }
+.facility-card-accent {
+  height: 3px; flex-shrink: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+}
+.facility-card-body { padding: 20px 20px 0; flex: 1; }
+.facility-card-code {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--dim);
+  margin-bottom: 6px;
+}
+.facility-card-name {
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 10px; letter-spacing: 0.06em;
+}
+.facility-card-desc {
+  font-family: 'Exo 2', sans-serif; font-size: 12px;
+  color: var(--dim); line-height: 1.65;
+}
+.facility-card-footer {
+  padding: 16px 20px 20px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  border-top: 1px solid var(--border); margin-top: 16px;
+}
+.facility-card-stat { display: flex; flex-direction: column; gap: 2px; }
+.facility-card-stat-val { font-size: 16px; font-weight: 600; color: var(--text-bright); }
+.facility-card-stat-val.gold { color: var(--gold); }
+.facility-card-stat-label { font-size: 8px; letter-spacing: 0.16em; color: var(--dim); }
+.facility-card-link {
+  margin-left: auto; font-size: 9px; letter-spacing: 0.18em;
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid rgba(47,168,255,0.3);
+  padding-bottom: 1px; white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.facility-card-link:hover { color: var(--text-bright); border-color: var(--text-bright); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 32px;
+  position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.footer-brand {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+  color: var(--accent); letter-spacing: 0.2em;
+}
+.footer-copy { font-size: 9px; color: var(--dim); letter-spacing: 0.14em; }
+.footer-links { margin-left: auto; display: flex; gap: 20px; }
+.footer-links a { font-size: 9px; letter-spacing: 0.16em; color: var(--dim); text-decoration: none; }
+.footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="grid-lines"></div>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo-mark"></div>
+  <div class="header-brand">
+    <div class="header-title">UA.GOV</div>
+    <div class="header-sub">UNITED ADMIRALTY · REGULUS SYSTEM</div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-item">HOME</a>
+    <div class="nav-item nav-dropdown">
+      <span class="nav-dropdown-toggle active">MINISTRIES</span>
+      <div class="nav-dropdown-menu">
+        <div class="menu-section">EXECUTIVE</div>
+        <a href="moiac.html">MOIAC — Internal &amp; Colonial Affairs</a>
+        <a href="mic.html">MIC — Industry &amp; Commerce</a>
+        <a href="mod.html">MOD — Ministry of Defence</a>
+        <a href="doe.html">DOE — Department of Energy</a>
+        <div class="menu-section">REGULATORY</div>
+        <a href="ada.html">ADA — Abaia Development Authority</a>
+        <a href="lda.html" class="active">LDA — Liora Development Authority</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item">INTELLIGENCE</a>
+    <a href="#" class="nav-item">CONTACT</a>
+  </nav>
+</header>
+
+<!-- ── Growth Status Banner ── -->
+<div class="growth-banner">
+  <div class="growth-banner-dot"></div>
+  <span class="growth-banner-label">GROWTH STATUS: ACCELERATING</span>
+  <span class="growth-banner-text">Liora fastest-growing world in system (+3.29% annually). Financial sector thriving: 1,000 Financial Centres generating 28.14 Cr/centre. Worker surplus available for expansion projects.</span>
+  <div class="growth-banner-status">
+    <div class="growth-banner-stat">
+      <div class="growth-banner-stat-val">298.76M</div>
+      <div class="growth-banner-stat-label">POPULATION</div>
+    </div>
+    <div class="growth-banner-stat">
+      <div class="growth-banner-stat-val">+3.29%</div>
+      <div class="growth-banner-stat-label">ANNUAL GROWTH</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Critical Alert Banner ── -->
+<div class="alert-banner">
+  <span class="alert-tag">⚠ CRITICAL DEPENDENCY</span>
+  <span class="alert-text">Liora Sorium reserves DEPLETED. Colony dependent on fuel imports from Abaia at +70.13 Cr/L markup. DOE and MIC coordinating emergency supply protocols. Long-term mineral survey expansion required on Vexsis.</span>
+</div>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">LDA · LIORA DEVELOPMENT AUTHORITY</div>
+      <h1 class="hero-title">LIORA<br><span>GROWTH</span></h1>
+      <div class="hero-subtitle">Colonial Economic Development &amp; Finance Authority · Financial Hub</div>
+      <p class="hero-desc">
+        The Liora Development Authority oversees economic development, financial sector regulation, and infrastructure expansion on the fastest-growing colony world in the Regulus system. Manages 1,000 Financial Centres, oversees industrial expansion via 250 construction factories, and regulates colony-wide commerce &amp; trade. Primary revenue engine of the United Admiralty government.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">1,000</div>
+          <div class="hero-stat-label">FINANCIAL CENTRES</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">250</div>
+          <div class="hero-stat-label">CONSTRUCTION FACTORIES</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">+3.29%</div>
+          <div class="hero-stat-label">ANNUAL GROWTH</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">EST. Y.08</div>
+          <div class="hero-stat-label">ESTABLISHED</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Governor Card -->
+    <div class="governor-card">
+      <div class="governor-badge">GOVERNOR · LIORA</div>
+      <div class="governor-avatar">CR</div>
+      <div class="governor-name">ChetR</div>
+      <div class="governor-title">PLANETARY GOVERNOR</div>
+      <div class="governor-divider"></div>
+      <div class="governor-meta">
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">APPOINTED</span>
+          <span class="governor-meta-val">Y.28</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">TENURE</span>
+          <span class="governor-meta-val">10 standard years</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">OFFICE</span>
+          <span class="governor-meta-val">Financial District, Port City</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">POPULATION</span>
+          <span class="governor-meta-val">298.76M</span>
+        </div>
+        <div class="governor-meta-row">
+          <span class="governor-meta-key">AUTHORITY</span>
+          <span class="governor-meta-val">Admiralty Charter VIII</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Economic Overview ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">ECONOMIC PERFORMANCE</div>
+      <div class="section-sub">FINANCIAL SECTOR & REVENUE ANALYSIS</div>
+    </div>
+
+    <div class="economy-grid">
+
+      <!-- Financial Centres -->
+      <div class="economy-card">
+        <div class="economy-card-accent" style="background: linear-gradient(90deg, #ffcc44, #ff9a1f);"></div>
+        <div class="economy-label">PRIMARY REVENUE SOURCE</div>
+        <div class="economy-name">Financial Centre Network</div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Operational Centres</span>
+          <span class="economy-stat-val gold">1,000</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Revenue Per Centre</span>
+          <span class="economy-stat-val gold">28.14 Cr/yr</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Total Annual Revenue</span>
+          <span class="economy-stat-val gold">28,140 Cr/yr</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">% of UA Tax Revenue</span>
+          <span class="economy-stat-val gold">49.7%</span>
+        </div>
+      </div>
+
+      <!-- Worker Taxes -->
+      <div class="economy-card">
+        <div class="economy-card-accent" style="background: linear-gradient(90deg, #00ffc6, #2fa8ff);"></div>
+        <div class="economy-label">SECONDARY REVENUE</div>
+        <div class="economy-name">Worker Taxation</div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Employed Workers</span>
+          <span class="economy-stat-val">296.5M</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Annual Tax Revenue</span>
+          <span class="economy-stat-val">8,160 Cr/yr</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">% of UA Tax Revenue</span>
+          <span class="economy-stat-val">14.4%</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Worker Surplus Available</span>
+          <span class="economy-stat-val" style="color: var(--green);">+2.19M</span>
+        </div>
+      </div>
+
+      <!-- Growth Metrics -->
+      <div class="economy-card">
+        <div class="economy-card-accent" style="background: linear-gradient(90deg, #ff9a1f, #ff6b35);"></div>
+        <div class="economy-label">COLONY EXPANSION</div>
+        <div class="economy-name">Growth Trajectory</div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Population (Current)</span>
+          <span class="economy-stat-val">298.76M</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Annual Growth Rate</span>
+          <span class="economy-stat-val" style="color: var(--gold);">+3.29% / yr</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Fastest Growing World</span>
+          <span class="economy-stat-val" style="color: var(--green);">YES</span>
+        </div>
+        <div class="economy-stat">
+          <span class="economy-stat-key">Projected Pop (Y.40)</span>
+          <span class="economy-stat-val">319M+</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Info Panel ── -->
+    <div class="info-panel">
+      <div class="info-group">
+        <div class="info-group-title">DEMOGRAPHICS & CAPACITY</div>
+        <div class="info-row">
+          <span class="info-key">POPULATION</span>
+          <span class="info-val">298.76 million</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">GROWTH RATE</span>
+          <span class="info-val gold">+3.29% / year</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">WORKER SURPLUS</span>
+          <span class="info-val">+2.19M available</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">EMPLOYMENT TOTAL</span>
+          <span class="info-val">~296.5M engaged</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ECONOMIC ROLE</span>
+          <span class="info-val">Financial Hub & Colony</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">INDUSTRIAL INFRASTRUCTURE</div>
+        <div class="info-row">
+          <span class="info-key">CONSTRUCTION FACTORIES</span>
+          <span class="info-val">250</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">FUEL REFINERIES</span>
+          <span class="info-val">20</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">CARGO SHUTTLE STATIONS</span>
+          <span class="info-val">1</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">DEEP SPACE TRACKING</span>
+          <span class="info-val">1 station</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TOTAL FACILITIES</span>
+          <span class="info-val">1,800+</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="info-group-title">AUTHORITY REFERENCE</div>
+        <div class="info-row">
+          <span class="info-key">GOVERNOR</span>
+          <span class="info-val">ChetR</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">ESTABLISHED</span>
+          <span class="info-val">Year 08 of Admiralty</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">CHARTER</span>
+          <span class="info-val">Admiralty VIII, Sec. 2</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">TERRAIN</span>
+          <span class="info-val">Mountain / Developed</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">MOONS</span>
+          <span class="info-val">1 (Liora Beta)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Recent Activity ── -->
+    <div class="section-header">
+      <div class="section-title">RECENT ECONOMIC ACTIVITY</div>
+      <div class="section-sub">DEVELOPMENT & MARKET UPDATES</div>
+    </div>
+    <div class="bulletins">
+      <div class="bulletin">
+        <div class="bulletin-index">01</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Fuel Crisis Impact — Sorium Reserves Depleted</div>
+          <div class="bulletin-desc">Liora's Sorium reserves have reached zero. Colony now depends on fuel imports from Abaia at +70.13 Cr/L markup. This represents a 6.1% increase in refinery operational costs. DOE and MIC-ORL implementing emergency procurement protocols to stabilize fuel supply.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q3 / D.05</span>
+          <span class="bulletin-tag alert">CRITICAL ⚠</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">02</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Financial Centre Growth — 1,000 Centres Operating</div>
+          <div class="bulletin-desc">Liora's Financial Centre network continues robust operation at full capacity. Q3 revenue: 28,140 Cr. Represents 49.7% of all system taxation. Infrastructure upgrade study commissioned to support projected population growth of 20M+ by Y.40.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q3 / D.02</span>
+          <span class="bulletin-tag growth">STABLE</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">03</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Population Boom — Fastest Growth in System</div>
+          <div class="bulletin-desc">Liora added ~9.8M workers this year at +3.29% growth rate. Colony now home to 298.76M people. Worker surplus of +2.19M available for new manufacturing &amp; infrastructure projects. LDA recommending expansion of industrial capacity to match population influx.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.20</span>
+          <span class="bulletin-tag growth">ACTIVE</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">04</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Infrastructure Investment — Construction Capacity Expansion</div>
+          <div class="bulletin-desc">250 construction factories operating at capacity. LDA approved 40 new factory construction to support colony expansion &amp; infrastructure demands. Factories will support residential development, industrial zones, and research facilities to accommodate projected growth.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q2 / D.08</span>
+          <span class="bulletin-tag growth">APPROVED</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div class="bulletin-index">05</div>
+        <div class="bulletin-body">
+          <div class="bulletin-title">Colonial Development Plan — Next 5-Year Horizon</div>
+          <div class="bulletin-desc">LDA published 5-year development roadmap. Goals: stabilize fuel supply chain, grow population to 325M+, expand financial centre operations, support MOIAC colonial affairs expansion, and reduce economic dependency on Abaia through local mineral survey &amp; extraction capability.</div>
+        </div>
+        <div class="bulletin-meta">
+          <span class="bulletin-date">Y.38 / Q1 / D.15</span>
+          <span class="bulletin-tag growth">PLANNING</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Key Facilities ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">ECONOMIC ANCHORS</div>
+      <div class="section-sub">FINANCIAL & INFRASTRUCTURE FACILITIES</div>
+    </div>
+
+    <div class="facility-grid">
+
+      <!-- Financial Centres -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">LDA-FINANCIAL · SECTOR I</div>
+          <div class="facility-card-name">Financial Centre Network</div>
+          <div class="facility-card-desc">
+            1,000 Financial Centres across Liora generating 28,140 Cr annually. This single facility type produces nearly 50% of all United Admiralty taxation. Central to economy and government budgeting. Liora's primary strategic asset.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val gold">1,000</div>
+            <div class="facility-card-stat-label">CENTRES OPERATIONAL</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val gold">28,140 Cr/yr</div>
+            <div class="facility-card-stat-label">ANNUAL REVENUE</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW NETWORK</a>
+        </div>
+      </div>
+
+      <!-- Construction -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">LDA-CONSTRUCTION · SECTOR II</div>
+          <div class="facility-card-name">Construction Factory Network</div>
+          <div class="facility-card-desc">
+            250 construction factories supporting colony expansion. Population growth of +3.29% annually drives infrastructure demand. 40 new factories approved for Y.39 to accommodate projected 20M+ population increase by Y.40.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">250</div>
+            <div class="facility-card-stat-label">CURRENT FACTORIES</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val gold">40 Approved</div>
+            <div class="facility-card-stat-label">NEW CONSTRUCTION</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW NETWORK</a>
+        </div>
+      </div>
+
+      <!-- Refineries -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">LDA-REFINING · SECTOR III</div>
+          <div class="facility-card-name">Fuel Refining Operations</div>
+          <div class="facility-card-desc">
+            20 Sorium refineries (960K kL capacity). Now dependent on fuel imports from Abaia due to local Sorium depletion. DOE coordinating emergency supply. Long-term sustainability requires expanding mineral survey operations on Vexsis.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">20</div>
+            <div class="facility-card-stat-label">REFINERIES</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val" style="color: var(--red);">IMPORTING</div>
+            <div class="facility-card-stat-label">FUEL STATUS</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW OPERATIONS</a>
+        </div>
+      </div>
+
+      <!-- Infrastructure -->
+      <div class="facility-card">
+        <div class="facility-card-accent"></div>
+        <div class="facility-card-body">
+          <div class="facility-card-code">LDA-INFRASTRUCTURE · SECTOR IV</div>
+          <div class="facility-card-name">Colonial Infrastructure Grid</div>
+          <div class="facility-card-desc">
+            400 infrastructure units supporting colony development &amp; growth. Includes tracking stations, cargo facilities, and development support systems. Expansion underway to accommodate population growth &amp; industrial expansion.
+          </div>
+        </div>
+        <div class="facility-card-footer">
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">400</div>
+            <div class="facility-card-stat-label">INFRASTRUCTURE UNITS</div>
+          </div>
+          <div class="facility-card-stat">
+            <div class="facility-card-stat-val">Expanding</div>
+            <div class="facility-card-stat-label">STATUS</div>
+          </div>
+          <a href="#" class="facility-card-link">VIEW SYSTEM</a>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">UA.GOV</div>
+    <div class="footer-copy">© UNITED ADMIRALTY · REGULUS SYSTEM · ALL RIGHTS RESERVED</div>
+    <div class="footer-links">
+      <a href="index.html">HOME</a>
+      <a href="#">LEGAL</a>
+      <a href="#">ACCESSIBILITY</a>
+      <a href="#">CONTACT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
